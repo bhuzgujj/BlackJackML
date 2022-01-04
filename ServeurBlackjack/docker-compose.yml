@@ -1,0 +1,17 @@
+version: '3'
+services:
+    blackjack_web:
+        build: 
+            context: "./app"
+            args:
+                # le paramètre est passé au moment du docker build alors si on le change, il faut faire docker-compose build 
+                SERVER_URL: "\"http://localhost:3000/\""
+        restart: on-failure
+        ports:
+            - 17031:8080
+    blackjack_server:
+        build: ./server
+        restart: on-failure
+        ports:
+            - 3000:3000
+            

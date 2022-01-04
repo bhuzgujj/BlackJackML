@@ -7,12 +7,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("ai-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1200, 500);
+        stage.setMinWidth(1220);
+        stage.setMaxWidth(1220);
+        stage.setTitle("BlackJack MachineLearning");
         stage.setScene(scene);
         stage.show();
     }

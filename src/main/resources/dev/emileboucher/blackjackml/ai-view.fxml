@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.emileboucher.blackjackml.controllers.AiController">
+   <TableView
+           fx:id="gamesDones"
+           layoutX="20.0"
+           layoutY="20.0"
+           prefHeight="380.0"
+           prefWidth="780.0"
+   />
+   <TableView
+           fx:id="modelData"
+           layoutX="820.0"
+           layoutY="20.0"
+           prefHeight="380.0"
+           prefWidth="360.0"
+   />
+   <Button
+           onAction="#onAddDataClick"
+           layoutX="14.0"
+           layoutY="412.0"
+           mnemonicParsing="false"
+           text="Add data"
+   />
+</AnchorPane>
