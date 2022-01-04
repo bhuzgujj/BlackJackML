@@ -6,4 +6,6 @@ module dev.emileboucher.blackjackml {
 
     opens dev.emileboucher.blackjackml to javafx.fxml;
     exports dev.emileboucher.blackjackml;
+    exports dev.emileboucher.blackjackml.controllers;
+    opens dev.emileboucher.blackjackml.controllers to javafx.fxml;
 }
