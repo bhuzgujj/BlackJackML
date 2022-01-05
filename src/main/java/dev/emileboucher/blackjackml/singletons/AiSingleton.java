@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.singleton;
+package dev.emileboucher.blackjackml.singletons;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,14 +27,13 @@ public class AiSingleton {
         listeners.put(p_listener.toString(), p_listener);
     }
 
-    public void addData(String key, Integer value) {
-        model.put(key, value);
-        notification();
-    }
-
     public void notification() {
         for (var runnable: listeners.values()) {
             runnable.run();
         }
+    }
+
+    public void clearNotificationList() {
+        listeners.clear();
     }
 }
