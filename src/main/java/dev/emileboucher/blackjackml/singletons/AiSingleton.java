@@ -1,20 +1,20 @@
-package dev.emileboucher.blackjackml.singleton;
+package dev.emileboucher.blackjackml.singletons;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BlackJackSingleton {
-    private static BlackJackSingleton instance = null;
+public class AiSingleton {
+    private static AiSingleton instance = null;
     private final HashMap<String, Integer> model;
     private final Map<String, Runnable> listeners;
-    private BlackJackSingleton() {
+    private AiSingleton() {
         model = new HashMap<>();
         listeners = new HashMap<>();
     }
 
-    public static BlackJackSingleton getInstance() {
+    public static AiSingleton getInstance() {
         if (instance == null) {
-            instance = new BlackJackSingleton();
+            instance = new AiSingleton();
         }
         return instance;
     }
@@ -27,14 +27,13 @@ public class BlackJackSingleton {
         listeners.put(p_listener.toString(), p_listener);
     }
 
-    public void addData(String key, Integer value) {
-        model.put(key, value);
-        notification();
-    }
-
     public void notification() {
         for (var runnable: listeners.values()) {
             runnable.run();
         }
+    }
+
+    public void clearNotificationList() {
+        listeners.clear();
     }
 }

@@ -5,7 +5,7 @@
 
 <AnchorPane prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.emileboucher.blackjackml.controllers.AiController">
    <TableView
-           fx:id="gamesDones"
+           fx:id="sessionsResults"
            layoutX="20.0"
            layoutY="20.0"
            prefHeight="380.0"
@@ -24,5 +24,12 @@
            layoutY="412.0"
            mnemonicParsing="false"
            text="Add data"
+   />
+   <Button
+           onAction="#refreshBtn"
+           layoutX="14.0"
+           layoutY="440.0"
+           mnemonicParsing="false"
+           text="Refresh"
    />
 </AnchorPane>

@@ -1,32 +1,29 @@
 package dev.emileboucher.blackjackml.controllers;
 
-import dev.emileboucher.blackjackml.controllers.ModelRow;
-import dev.emileboucher.blackjackml.controllers.ReportRow;
-import dev.emileboucher.blackjackml.singleton.BlackJackSingleton;
+import dev.emileboucher.blackjackml.singletons.AiSingleton;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AiController implements Initializable {
     private Integer lastVal = 0;
+    @FXML
+    private TableView<ModelRow> modelData = new TableView<>();
+    @FXML
+    private TableView<ReportRow> sessionsResults = new TableView<>();
+
     public AiController() {
 
     }
 
     @FXML
-    private TableView<ModelRow> modelData = new TableView<>();
-    @FXML
-    private TableView<ReportRow> gamesDones = new TableView<>();
-
-    @FXML
     protected void onAddDataClick() {
-        BlackJackSingleton.getInstance().addData("lastVal", lastVal);
-        gamesDones.getItems().add(0, new ReportRow(
+        sessionsResults.getItems().add(0, new ReportRow(
                 lastVal,
                 1,
                 3,
@@ -38,17 +35,32 @@ public class AiController implements Initializable {
         lastVal++;
     }
 
+    @FXML
+    protected void refreshBtn() {
+        AiSingleton.getInstance().notification();
+    }
+
     @Override
     public void initialize(URL p_url, ResourceBundle p_resourceBundle) {
+        AiSingleton.getInstance().clearNotificationList();
         initializeGamesDonesTable();
         initializeModelDataTable();
         updateUI();
-        BlackJackSingleton.getInstance().setListener(this::updateUI);
+        AiSingleton.getInstance().setListener(this::updateUI);
     }
 
     private void updateUI() {
+        updateModelData();
+        updateSessionResults();
+    }
+
+    private void updateSessionResults() {
+        sessionsResults.getItems().clear();
+    }
+
+    private void updateModelData() {
         modelData.getItems().clear();
-        for (var row : BlackJackSingleton.getInstance().getModel().entrySet()) {
+        for (var row : AiSingleton.getInstance().getModel().entrySet()) {
             modelData.getItems().add(new ModelRow(row.getKey(), row.getValue()));
         }
     }
@@ -60,15 +72,15 @@ public class AiController implements Initializable {
     }
 
     private void initializeGamesDonesTable() {
-        gamesDones.setEditable(true);
-        double width = gamesDones.getPrefWidth() / 7;
-        gamesDones.getColumns().add(createColumnsFromClass("Session number", "sessionNumber", width));
-        gamesDones.getColumns().add(createColumnsFromClass("Session won", "sessionsWon", width));
-        gamesDones.getColumns().add(createColumnsFromClass("Session lost", "sessionsLost", width));
-        gamesDones.getColumns().add(createColumnsFromClass("Games played", "gamesPlayed", width));
-        gamesDones.getColumns().add(createColumnsFromClass("Games won", "gamesWon", width));
-        gamesDones.getColumns().add(createColumnsFromClass("Games lost", "gamesLost", width));
-        gamesDones.getColumns().add(createColumnsFromClass("Win/Loss ratio", "winLostRatio", width));
+        sessionsResults.setEditable(true);
+        double width = sessionsResults.getPrefWidth() / 7;
+        sessionsResults.getColumns().add(createColumnsFromClass("Session number", "sessionNumber", width));
+        sessionsResults.getColumns().add(createColumnsFromClass("Session won", "sessionsWon", width));
+        sessionsResults.getColumns().add(createColumnsFromClass("Session lost", "sessionsLost", width));
+        sessionsResults.getColumns().add(createColumnsFromClass("Games played", "gamesPlayed", width));
+        sessionsResults.getColumns().add(createColumnsFromClass("Games won", "gamesWon", width));
+        sessionsResults.getColumns().add(createColumnsFromClass("Games lost", "gamesLost", width));
+        sessionsResults.getColumns().add(createColumnsFromClass("Win/Loss ratio", "winLostRatio", width));
     }
 
     private <Model, Type> TableColumn<Model, Type> createColumnsFromClass(String title, String name, double width) {
