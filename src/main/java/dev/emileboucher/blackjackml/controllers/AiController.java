@@ -1,8 +1,6 @@
 package dev.emileboucher.blackjackml.controllers;
 
-import dev.emileboucher.blackjackml.controllers.ModelRow;
-import dev.emileboucher.blackjackml.controllers.ReportRow;
-import dev.emileboucher.blackjackml.singleton.BlackJackSingleton;
+import dev.emileboucher.blackjackml.singleton.AiSingleton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -25,7 +23,7 @@ public class AiController implements Initializable {
 
     @FXML
     protected void onAddDataClick() {
-        BlackJackSingleton.getInstance().addData("lastVal", lastVal);
+        AiSingleton.getInstance().addData("lastVal", lastVal);
         gamesDones.getItems().add(0, new ReportRow(
                 lastVal,
                 1,
@@ -43,12 +41,12 @@ public class AiController implements Initializable {
         initializeGamesDonesTable();
         initializeModelDataTable();
         updateUI();
-        BlackJackSingleton.getInstance().setListener(this::updateUI);
+        AiSingleton.getInstance().setListener(this::updateUI);
     }
 
     private void updateUI() {
         modelData.getItems().clear();
-        for (var row : BlackJackSingleton.getInstance().getModel().entrySet()) {
+        for (var row : AiSingleton.getInstance().getModel().entrySet()) {
             modelData.getItems().add(new ModelRow(row.getKey(), row.getValue()));
         }
     }

@@ -3,18 +3,18 @@ package dev.emileboucher.blackjackml.singleton;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BlackJackSingleton {
-    private static BlackJackSingleton instance = null;
+public class AiSingleton {
+    private static AiSingleton instance = null;
     private final HashMap<String, Integer> model;
     private final Map<String, Runnable> listeners;
-    private BlackJackSingleton() {
+    private AiSingleton() {
         model = new HashMap<>();
         listeners = new HashMap<>();
     }
 
-    public static BlackJackSingleton getInstance() {
+    public static AiSingleton getInstance() {
         if (instance == null) {
-            instance = new BlackJackSingleton();
+            instance = new AiSingleton();
         }
         return instance;
     }
