@@ -37,7 +37,7 @@ public class ReinforcementLearningHandling extends AiHandling {
             row.increaseSessionNumber();
             if (!AiSingleton.getInstance().getPlaying()) break;
             AiSingleton.getInstance().incrementeSessionNumber();
-            AiSingleton.getInstance().setGamePlayed(row.getGamesPlayed());
+            AiSingleton.getInstance().setGamePlayed(row.getTotalGamesPlayed());
         } while (row.getSessionNumber() % amountSessions != 0);
         nbReport++;
         return row.copy();

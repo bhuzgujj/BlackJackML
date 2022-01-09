@@ -59,8 +59,8 @@ public class AiController implements Initializable {
         try {
             while (AiSingleton.getInstance().getPlaying()) {
                 AiSingleton.getInstance().getReports().add(ai.play(Integer.parseInt(sessionToDo.getText())));
-                AiSingleton.getInstance().saveModel();
                 updateUI();
+                AiSingleton.getInstance().saveModel();
             }
         } catch (Exception exception) {
             System.out.println(exception.getMessage());

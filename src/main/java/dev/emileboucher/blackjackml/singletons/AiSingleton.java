@@ -129,7 +129,7 @@ public class AiSingleton {
      * @param gamePlayed in total
      */
     public void setGamePlayed(long gamePlayed) {
-        model.setGamePlayed(gamePlayed + model.getGamePlayed());
+        model.setGamePlayed(gamePlayed);
     }
 
     /**
