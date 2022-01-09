@@ -1,14 +1,11 @@
 package dev.emileboucher.blackjackml.models;
 
-public class ModelRow {
-    private final String key;
-    private final Integer value;
-
-    public ModelRow(String p_key, Integer p_value) {
-        key = p_key;
-        value = p_value;
-    }
-
+/**
+ * An object to show a row of the model
+ * @param key   of the row
+ * @param value of the weight of the state
+ */
+public record ModelRow(String key, Integer value) {
     public String getKey() {
         return key;
     }

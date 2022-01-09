@@ -3,33 +3,66 @@ package dev.emileboucher.blackjackml.models;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/**
+ * An object to show a row of X sessions played
+ */
 public class ReportRow {
     private long  sessionNumber;
     private int sessionsWon;
     private int  sessionsLost;
-    private long  gamesPlayed;
+    private long totalGamesPlayed;
     private int  gamesWon;
     private int  gamesLost;
 
-    public ReportRow(long p_sessionNumber, int p_sessionsWon, int p_sessionsLost, long p_gamesPlayed, int p_gamesWon, int p_gamesLost) {
-        sessionNumber = p_sessionNumber;
-        sessionsWon = p_sessionsWon;
-        sessionsLost = p_sessionsLost;
-        gamesPlayed = p_gamesPlayed;
-        gamesWon = p_gamesWon;
-        gamesLost = p_gamesLost;
+    /**
+     * Full constructor if we need to change any value
+     * @param sessionNumber of the row
+     * @param sessionsWon of the row
+     * @param sessionsLost of the row
+     * @param totalGamesPlayed in total
+     * @param gamesWon in the row
+     * @param gamesLost in the row
+     */
+    public ReportRow(long sessionNumber, int sessionsWon, int sessionsLost, long totalGamesPlayed, int gamesWon, int gamesLost) {
+        this.sessionNumber = sessionNumber;
+        this.sessionsWon = sessionsWon;
+        this.sessionsLost = sessionsLost;
+        this.totalGamesPlayed = totalGamesPlayed;
+        this.gamesWon = gamesWon;
+        this.gamesLost = gamesLost;
     }
 
+    /**
+     * Partial constructor if we need to change any value
+     * @param sessionNumber of the row
+     * @param totalGamesPlayed in total
+     */
+    public ReportRow(long sessionNumber, long totalGamesPlayed) {
+        this.sessionNumber = sessionNumber;
+        this.sessionsWon = 0;
+        this.sessionsLost = 0;
+        this.totalGamesPlayed = totalGamesPlayed;
+        this.gamesWon = 0;
+        this.gamesLost = 0;
+    }
+
+    /**
+     * Increase the session number by 1
+     */
     public void increaseSessionNumber() {
         sessionNumber++;
     }
 
+    /**
+     * Reset infos that are linked to the row
+     */
     public void reset() {
         sessionsWon = 0;
         sessionsLost = 0;
         gamesWon = 0;
         gamesLost = 0;
     }
+
 
     public String getWinLostRatio() {
         if (gamesWon + gamesLost < 1) return "Exploration";
@@ -51,8 +84,12 @@ public class ReportRow {
         return sessionsLost;
     }
 
-    public long getGamesPlayed() {
-        return gamesPlayed;
+    public long getTotalGamesPlayed() {
+        return totalGamesPlayed;
+    }
+
+    public int getGamesPlayed() {
+        return gamesLost + gamesWon;
     }
 
     public int getGamesWon() {
@@ -75,8 +112,8 @@ public class ReportRow {
         this.sessionsLost = sessionsLost;
     }
 
-    public void setGamesPlayed(long gamesPlayed) {
-        this.gamesPlayed = gamesPlayed;
+    public void setTotalGamesPlayed(long totalGamesPlayed) {
+        this.totalGamesPlayed = totalGamesPlayed;
     }
 
     public void setGamesWon(int gamesWon) {
@@ -87,7 +124,11 @@ public class ReportRow {
         this.gamesLost = gamesLost;
     }
 
+    /**
+     * Create a full copy of the row
+     * @return [ReportRow]
+     */
     public ReportRow copy() {
-        return new ReportRow(sessionNumber, sessionsWon, sessionsLost, gamesPlayed, gamesWon, gamesLost);
+        return new ReportRow(sessionNumber, sessionsWon, sessionsLost, totalGamesPlayed, gamesWon, gamesLost);
     }
 }

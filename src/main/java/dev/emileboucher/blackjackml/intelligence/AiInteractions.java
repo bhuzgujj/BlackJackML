@@ -9,38 +9,52 @@ import dev.emileboucher.blackjackml.singletons.AiSingleton;
 
 import java.io.IOException;
 
-public class ArtificialIntelligence {
-    private final ReportRow row = new ReportRow(0,0,0,0,0,0);
+/**
+ * Ai interaction with the api
+ */
+public class AiInteractions {
+    private final ReportRow row = new ReportRow(0,0);
     private final RestClient client = new RestClient("http://localhost:3000");
     private int nbReport = 0;
     private int money = 1000;
-    public ReportRow play() {
-        row.reset();
-        report();
-        return row.copy();
-    }
 
-    private void report() {
+    /**
+     * Let the AI play
+     * @param amountSessions played before ending
+     * @return [ReportRow]
+     */
+    public ReportRow play(int amountSessions) {
+        row.reset();
         Boolean exploration = nbReport % 5 == 0;
         do {
             session(exploration);
             row.increaseSessionNumber();
-        } while (row.getSessionNumber() % 100 != 0);
+        } while (row.getSessionNumber() % amountSessions != 0);
         nbReport++;
+        return row.copy();
     }
 
-    private void session(Boolean exploration) {
+    /**
+     * Play until the AI has either won or lost
+     * @param isExploring other solution possible (choice random)
+     */
+    private void session(Boolean isExploring) {
         Response response = new Response();
         int gamePlayed = 0;
         do {
-            response = game(exploration);
+            response = game(isExploring);
             gamePlayed++;
             if (!AiSingleton.getInstance().getPlaying()) break;
         } while (!recordSession(response));
         client.resetCookies();
-        row.setGamesPlayed(row.getGamesPlayed() + gamePlayed);
+        row.setTotalGamesPlayed(row.getTotalGamesPlayed() + gamePlayed);
     }
 
+    /**
+     * Add the information of a session into the global [ReportRow] object
+     * @param response from the api
+     * @return if the session is done
+     */
     private boolean recordSession(Response response) {
         switch (response.getSessionState()) {
             case WON -> {
@@ -60,27 +74,48 @@ public class ArtificialIntelligence {
         return false;
     }
 
-    private Response game(Boolean exploration) {
+    /**
+     * AI plays a game with the API
+     * @param isExploring other solution possible (choice random)
+     * @return The last [Response] from the api
+     */
+    private Response game(Boolean isExploring) {
         Response response = null;
         try {
-            int bet = Math.min(money, 50);
-            response = client.send(new Deal(bet));
-            while (response == null) {
-                response = client.send(new Deal(bet));
-            }
-            money = response.cash;
+            response = deal();
             while (response.isPlaying()) {
-                response = client.send(DecisionMaker.reinforcementLearning(response, exploration));
+                response = client.send(DecisionMaker.reinforcementLearning(response, isExploring));
             }
-            recordResults(response, exploration);
+            recordResults(response, isExploring);
         }  catch (IOException | InterruptedException e) {
             System.out.println(e.getMessage());
         }
         return response;
     }
 
-    private void recordResults(Response response, Boolean exploration) {
-        if (!exploration) {
+    /**
+     * Do a deal command to the api
+     * @return [Response] from the api
+     * @throws IOException from the [HttpClient]
+     * @throws InterruptedException from the [HttpClient]
+     */
+    private Response deal() throws IOException, InterruptedException {
+        int bet = Math.min(money, 50);
+        Response response = client.send(new Deal(bet));
+        while (response == null) {
+            response = client.send(new Deal(bet));
+        }
+        money = response.cash;
+        return response;
+    }
+
+    /**
+     * Add the response to the [ReportRow]
+     * @param response from the api
+     * @param isExploring other solution possible (choice random)
+     */
+    private void recordResults(Response response, Boolean isExploring) {
+        if (!isExploring) {
             switch (response.getResult()) {
                 case WON -> {
                     row.setGamesWon(row.getGamesWon() + 1);

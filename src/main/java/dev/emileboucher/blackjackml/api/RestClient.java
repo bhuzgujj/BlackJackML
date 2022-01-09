@@ -10,7 +10,6 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.URI;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 /**
@@ -39,6 +38,9 @@ public class RestClient {
     /**
      * Send a request to the server et receives it.
      * @param requestBuilder builder to send
+     * @return [Response] from the api queried
+     * @throws IOException from the [HttpClient]
+     * @throws InterruptedException from the [HttpClient]
      */
     public Response send(RequestBuilder requestBuilder) throws IOException, InterruptedException {
         HttpResponse<String> response = client.send(
