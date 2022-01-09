@@ -1,8 +1,6 @@
 package dev.emileboucher.blackjackml.singletons;
 
-import dev.emileboucher.blackjackml.controllers.AiController;
 import dev.emileboucher.blackjackml.models.datamodel.ReinforcementLearning;
-import dev.emileboucher.blackjackml.files.DataManager;
 import dev.emileboucher.blackjackml.files.JsonFiles;
 import dev.emileboucher.blackjackml.models.ReportRow;
 
@@ -18,8 +16,7 @@ public class AiSingleton {
     private final ReinforcementLearning model;
     private final List<ReportRow> reports;
     private Boolean isPlaying = false;
-    private final DataManager dataManager;
-    private long sessionNumber = 0;
+    private final JsonFiles dataManager;
     private List<Runnable> callbacks = new LinkedList<>();
 
     private AiSingleton() {
@@ -93,23 +90,59 @@ public class AiSingleton {
         dataManager.save(model);
     }
 
+    /**
+     * Get the actual session number
+     * @return session number
+     */
     public long getSessionNumber() {
-        return sessionNumber;
+        return model.getSessionNumber();
     }
 
+    /**
+     * Get the pourcentage of progression toward the next update
+     * @param maximum session number per updates
+     * @return pourcentage of progression toward the next update
+     */
     public double getProgression(int maximum) {
-        return (double) (sessionNumber % maximum) / maximum;
+        return (double) (model.getSessionNumber() % maximum) / maximum;
     }
 
-    public void setSessionNumber(long sessionNumber) {
-        this.sessionNumber = sessionNumber;
+    /**
+     * Incremente the session number and trigger an update
+     *      on the progression bar
+     */
+    public void incrementeSessionNumber() {
+        model.setSessionNumber(model.getSessionNumber() + 1);
         callbacks.forEach(Runnable::run);
     }
 
+    /**
+     * Get the actual session number
+     * @return session number
+     */
+    public long getGamePlayed() {
+        return model.getGamePlayed();
+    }
+
+    /**
+     * Add game played
+     * @param gamePlayed in total
+     */
+    public void setGamePlayed(long gamePlayed) {
+        model.setGamePlayed(gamePlayed + model.getGamePlayed());
+    }
+
+    /**
+     * Get the list of callbacks
+     * @return the list of callbacks
+     */
     public List<Runnable> getCallbacks() {
         return callbacks;
     }
 
+    /**
+     * Empty the list of callbacks
+     */
     public void EmptyCallbacks() {
         callbacks = new LinkedList<>();
     }

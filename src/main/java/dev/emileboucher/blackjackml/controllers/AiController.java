@@ -1,6 +1,7 @@
 package dev.emileboucher.blackjackml.controllers;
 
-import dev.emileboucher.blackjackml.intelligence.AiInteractions;
+import dev.emileboucher.blackjackml.intelligence.AiHandling;
+import dev.emileboucher.blackjackml.intelligence.ReinforcementLearningHandling;
 import dev.emileboucher.blackjackml.models.ModelRow;
 import dev.emileboucher.blackjackml.models.ReportRow;
 import dev.emileboucher.blackjackml.singletons.AiSingleton;
@@ -16,7 +17,7 @@ import java.util.ResourceBundle;
  * Controller for the AI training/play
  */
 public class AiController implements Initializable {
-    private final AiInteractions ai = new AiInteractions();
+    private final AiHandling ai = new ReinforcementLearningHandling();
     @FXML
     private Button start = new Button();
     @FXML
@@ -99,6 +100,9 @@ public class AiController implements Initializable {
         updateUI();
     }
 
+    /**
+     * Update the progress bar for the amount of session done
+     */
     private void progressBarUpdate() {
         progress.setProgress(
                 AiSingleton.getInstance().getProgression(Integer.parseInt(sessionToDo.getText()))

@@ -1,6 +1,5 @@
 package dev.emileboucher.blackjackml.intelligence;
 
-import dev.emileboucher.blackjackml.api.RestClient;
 import dev.emileboucher.blackjackml.api.models.Response;
 import dev.emileboucher.blackjackml.api.requests.concretes.Deal;
 import dev.emileboucher.blackjackml.api.requests.concretes.Flag;
@@ -12,11 +11,18 @@ import java.io.IOException;
 /**
  * Ai interaction with the api
  */
-public class AiInteractions {
-    private final ReportRow row = new ReportRow(0,0);
-    private final RestClient client = new RestClient("http://localhost:3000");
+public class ReinforcementLearningHandling extends AiHandling {
     private int nbReport = 0;
     private int money = 1000;
+
+    /**
+     * Constructor of the class handling the interaction between the AI and the api
+     */
+    public ReinforcementLearningHandling() {
+        row = new ReportRow(0,0);
+        row.setTotalGamesPlayed(AiSingleton.getInstance().getGamePlayed());
+        row.setSessionNumber(AiSingleton.getInstance().getSessionNumber());
+    }
 
     /**
      * Let the AI play
@@ -30,7 +36,8 @@ public class AiInteractions {
             session(exploration);
             row.increaseSessionNumber();
             if (!AiSingleton.getInstance().getPlaying()) break;
-            AiSingleton.getInstance().setSessionNumber(AiSingleton.getInstance().getSessionNumber() + 1);
+            AiSingleton.getInstance().incrementeSessionNumber();
+            AiSingleton.getInstance().setGamePlayed(row.getGamesPlayed());
         } while (row.getSessionNumber() % amountSessions != 0);
         nbReport++;
         return row.copy();
@@ -40,7 +47,7 @@ public class AiInteractions {
      * Play until the AI has either won or lost
      * @param isExploring other solution possible (choice random)
      */
-    private void session(Boolean isExploring) {
+    protected void session(Boolean isExploring) {
         Response response = new Response();
         int gamePlayed = 0;
         do {
@@ -81,7 +88,7 @@ public class AiInteractions {
      * @param isExploring other solution possible (choice random)
      * @return The last [Response] from the api
      */
-    private Response game(Boolean isExploring) {
+    protected Response game(Boolean isExploring) {
         Response response = null;
         try {
             response = deal();
