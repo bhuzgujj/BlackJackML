@@ -4,7 +4,6 @@ import dev.emileboucher.blackjackml.intelligence.AiInteractions;
 import dev.emileboucher.blackjackml.models.ModelRow;
 import dev.emileboucher.blackjackml.models.ReportRow;
 import dev.emileboucher.blackjackml.singletons.AiSingleton;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -20,8 +19,6 @@ public class AiController implements Initializable {
     private final AiInteractions ai = new AiInteractions();
     @FXML
     private Button start = new Button();
-    @FXML
-    private Button refresher = new Button();
     @FXML
     private TextField sessionToDo = new TextField();
     @FXML
@@ -42,8 +39,8 @@ public class AiController implements Initializable {
         } else {
             if (sessionToDo.getText().length() == 0) return;
             AiSingleton.getInstance().setPlaying(true);
-            Platform.runLater(() -> start.setText("mdr"));
             Thread game = new Thread(this::useAi);
+            sessionToDo.setDisable(true);
             try {
                 game.join();
                 game.start();
