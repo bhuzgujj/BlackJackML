@@ -29,6 +29,8 @@ public class AiInteractions {
         do {
             session(exploration);
             row.increaseSessionNumber();
+            if (!AiSingleton.getInstance().getPlaying()) break;
+            AiSingleton.getInstance().setSessionNumber(AiSingleton.getInstance().getSessionNumber() + 1);
         } while (row.getSessionNumber() % amountSessions != 0);
         nbReport++;
         return row.copy();
@@ -88,7 +90,7 @@ public class AiInteractions {
             }
             recordResults(response, isExploring);
         }  catch (IOException | InterruptedException e) {
-            System.out.println(e.getMessage());
+            System.out.println("game(): " + e.getMessage());
         }
         return response;
     }
