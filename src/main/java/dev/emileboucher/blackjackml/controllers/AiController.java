@@ -1,14 +1,13 @@
 package dev.emileboucher.blackjackml.controllers;
 
-import dev.emileboucher.blackjackml.intelligence.AiInteractions;
+import dev.emileboucher.blackjackml.intelligence.AiHandling;
+import dev.emileboucher.blackjackml.intelligence.ReinforcementLearningHandling;
 import dev.emileboucher.blackjackml.models.ModelRow;
 import dev.emileboucher.blackjackml.models.ReportRow;
 import dev.emileboucher.blackjackml.singletons.AiSingleton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
@@ -18,11 +17,13 @@ import java.util.ResourceBundle;
  * Controller for the AI training/play
  */
 public class AiController implements Initializable {
-    private final AiInteractions ai = new AiInteractions();
+    private final AiHandling ai = new ReinforcementLearningHandling();
     @FXML
     private Button start = new Button();
     @FXML
-    private Button refresher = new Button();
+    private TextField sessionToDo = new TextField();
+    @FXML
+    private ProgressBar progress = new ProgressBar();
     @FXML
     private TableView<ModelRow> modelData = new TableView<>();
     @FXML
@@ -37,8 +38,10 @@ public class AiController implements Initializable {
             AiSingleton.getInstance().setPlaying(false);
             start.setDisable(true);
         } else {
+            if (sessionToDo.getText().length() == 0) return;
             AiSingleton.getInstance().setPlaying(true);
             Thread game = new Thread(this::useAi);
+            sessionToDo.setDisable(true);
             try {
                 game.join();
                 game.start();
@@ -55,7 +58,8 @@ public class AiController implements Initializable {
     private void useAi() {
         try {
             while (AiSingleton.getInstance().getPlaying()) {
-                AiSingleton.getInstance().getReports().add(ai.play(10));
+                AiSingleton.getInstance().getReports().add(ai.play(Integer.parseInt(sessionToDo.getText())));
+                AiSingleton.getInstance().saveModel();
                 updateUI();
             }
         } catch (Exception exception) {
@@ -72,7 +76,7 @@ public class AiController implements Initializable {
      */
     @FXML
     protected void refreshBtn() {
-        modelData.getItems().add(new ModelRow("mdr", 2));
+        AiSingleton.getInstance().saveModel();
         updateUI();
     }
 
@@ -83,9 +87,26 @@ public class AiController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        AiSingleton.getInstance().EmptyCallbacks();
+        AiSingleton.getInstance().getCallbacks().add(this::progressBarUpdate);
+        sessionToDo.setText("100");
+        sessionToDo.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                sessionToDo.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
         initializeSessionResultsTable();
         initializeModelDataTable();
         updateUI();
+    }
+
+    /**
+     * Update the progress bar for the amount of session done
+     */
+    private void progressBarUpdate() {
+        progress.setProgress(
+                AiSingleton.getInstance().getProgression(Integer.parseInt(sessionToDo.getText()))
+        );
     }
 
     /**

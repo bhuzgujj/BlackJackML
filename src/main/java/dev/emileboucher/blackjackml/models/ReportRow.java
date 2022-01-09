@@ -63,7 +63,10 @@ public class ReportRow {
         gamesLost = 0;
     }
 
-
+    /**
+     * Get the win rate as a string with 2 decimale precision
+     * @return XX.XX % or Exploration
+     */
     public String getWinLostRatio() {
         if (gamesWon + gamesLost < 1) return "Exploration";
         BigDecimal fractionaryNumber = BigDecimal.valueOf(
@@ -72,54 +75,106 @@ public class ReportRow {
         return fractionaryNumber + " %";
     }
 
+    /**
+     * Get the session number
+     * @return session number
+     */
     public long getSessionNumber() {
         return sessionNumber;
     }
 
+    /**
+     * Get the amount of session won
+     * @return session won
+     */
     public int getSessionsWon() {
         return sessionsWon;
     }
 
+    /**
+     * Get the amount of session lost
+     * @return session lost
+     */
     public int getSessionsLost() {
         return sessionsLost;
     }
 
+    /**
+     * Get the total of games played
+     * @return total of games played
+     */
     public long getTotalGamesPlayed() {
         return totalGamesPlayed;
     }
 
+    /**
+     * Get the total of games played since the last reset
+     * @return total of games played
+     */
     public int getGamesPlayed() {
         return gamesLost + gamesWon;
     }
 
+    /**
+     * Get games won
+     * @return games won
+     */
     public int getGamesWon() {
         return gamesWon;
     }
 
+    /**
+     * Get games lost
+     * @return games lost
+     */
     public int getGamesLost() {
         return gamesLost;
     }
 
+    /**
+     * Set the session number
+     * @param sessionNumber at the moment
+     */
     public void setSessionNumber(long sessionNumber) {
         this.sessionNumber = sessionNumber;
     }
 
+    /**
+     * Set the session won
+     * @param sessionsWon at that row
+     */
     public void setSessionsWon(int sessionsWon) {
         this.sessionsWon = sessionsWon;
     }
 
+    /**
+     * Set the session lost
+     * @param sessionsLost at that row
+     */
     public void setSessionsLost(int sessionsLost) {
         this.sessionsLost = sessionsLost;
     }
 
+    /**
+     * Set the total of games played
+     * @param totalGamesPlayed at the moment
+     */
     public void setTotalGamesPlayed(long totalGamesPlayed) {
         this.totalGamesPlayed = totalGamesPlayed;
     }
 
+    /**
+     * Set the games won
+     * @param gamesWon at that row
+     */
     public void setGamesWon(int gamesWon) {
         this.gamesWon = gamesWon;
     }
 
+    /**
+     * Set the games lost
+     * @param gamesLost at that row
+     */
     public void setGamesLost(int gamesLost) {
         this.gamesLost = gamesLost;
     }

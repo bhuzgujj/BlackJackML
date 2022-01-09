@@ -6,10 +6,18 @@ package dev.emileboucher.blackjackml.models;
  * @param value of the weight of the state
  */
 public record ModelRow(String key, Integer value) {
+    /**
+     * Get the key of the model row
+     * @return the key of the model row
+     */
     public String getKey() {
         return key;
     }
 
+    /**
+     * Get the value of the model row
+     * @return the value of the model row
+     */
     public Integer getValue() {
         return value;
     }
