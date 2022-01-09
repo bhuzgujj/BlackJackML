@@ -3,6 +3,8 @@ package dev.emileboucher.blackjackml.controllers;
 import com.google.gson.Gson;
 import dev.emileboucher.blackjackml.api.models.bodies.*;
 import dev.emileboucher.blackjackml.intelligence.ArtificialIntelligence;
+import dev.emileboucher.blackjackml.models.ModelRow;
+import dev.emileboucher.blackjackml.models.ReportRow;
 import dev.emileboucher.blackjackml.singletons.AiSingleton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,6 +17,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AiController implements Initializable {
+    ArtificialIntelligence ai = new ArtificialIntelligence();
     @FXML
     private Button start = new Button();
     @FXML
@@ -30,7 +33,6 @@ public class AiController implements Initializable {
 
     @FXML
     protected void startBtn() {
-        System.out.println("BTN PRESSED");
         if (AiSingleton.getInstance().getPlaying()) {
             AiSingleton.getInstance().setPlaying(false);
             start.setDisable(true);
@@ -48,9 +50,12 @@ public class AiController implements Initializable {
     }
 
     private void useAi() {
-        ArtificialIntelligence ai = new ArtificialIntelligence();
         try {
-            ai.play(this::reportHandling);
+            while (AiSingleton.getInstance().getPlaying()) {
+                AiSingleton.getInstance().getReports().add(ai.play());
+                System.out.println("SESSION DONE");
+                updateUI();
+            }
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
             AiSingleton.getInstance().setPlaying(false);
@@ -62,16 +67,7 @@ public class AiController implements Initializable {
 
     @FXML
     protected void refreshBtn() {
-        try {
-            System.out.println(new Gson().toJson(new EmptyBody()));
-            // updateUI();
-         } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-        }
-    }
-
-    private void reportHandling(ReportRow reportRow) {
-
+        updateUI();
     }
 
     @Override
@@ -90,6 +86,9 @@ public class AiController implements Initializable {
 
     private void updateSessionResults() {
         sessionsResults.getItems().clear();
+        for (var row : AiSingleton.getInstance().getReports()) {
+            sessionsResults.getItems().add(row);
+        }
     }
 
     private void updateModelData() {

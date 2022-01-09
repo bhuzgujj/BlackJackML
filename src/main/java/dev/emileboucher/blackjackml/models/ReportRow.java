@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.controllers;
+package dev.emileboucher.blackjackml.models;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -85,5 +85,9 @@ public class ReportRow {
 
     public void setGamesLost(int gamesLost) {
         this.gamesLost = gamesLost;
+    }
+
+    public ReportRow copy() {
+        return new ReportRow(sessionNumber, sessionsWon, sessionsLost, gamesPlayed, gamesWon, gamesLost);
     }
 }

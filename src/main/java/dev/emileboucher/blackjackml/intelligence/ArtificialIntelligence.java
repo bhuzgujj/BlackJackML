@@ -4,34 +4,33 @@ import dev.emileboucher.blackjackml.api.RestClient;
 import dev.emileboucher.blackjackml.api.models.Response;
 import dev.emileboucher.blackjackml.api.requests.concretes.Deal;
 import dev.emileboucher.blackjackml.api.requests.concretes.Flag;
-import dev.emileboucher.blackjackml.controllers.ReportRow;
+import dev.emileboucher.blackjackml.models.ReportRow;
 import dev.emileboucher.blackjackml.singletons.AiSingleton;
 
 import java.io.IOException;
-import java.util.function.Consumer;
 
 public class ArtificialIntelligence {
     private final ReportRow row = new ReportRow(0,0,0,0,0,0);
     private final RestClient client = new RestClient("http://localhost:3000");
+    private int nbReport = 0;
     private int money = 1000;
-    public void play(Consumer<ReportRow> update) {
-        while (AiSingleton.getInstance().getPlaying()) {
-            report();
-            update.accept(row);
-        }
+    public ReportRow play() {
+        row.reset();
+        report();
+        return row.copy();
     }
 
     private void report() {
-        row.reset();
+        Boolean exploration = nbReport % 5 == 0;
         do {
-            session();
+            session(exploration);
             row.increaseSessionNumber();
         } while (row.getSessionNumber() % 100 != 0);
+        nbReport++;
     }
 
-    private void session() {
+    private void session(Boolean exploration) {
         Response response = new Response();
-        Boolean exploration = row.getSessionNumber() % 5 == 0;
         int gamePlayed = 0;
         do {
             response = game(exploration);

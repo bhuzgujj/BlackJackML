@@ -1,16 +1,22 @@
 package dev.emileboucher.blackjackml.singletons;
 
+import dev.emileboucher.blackjackml.models.ReportRow;
+
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class AiSingleton {
     private static AiSingleton instance = null;
     private final HashMap<String, Integer> model;
+    private final List<ReportRow> reports;
     private Boolean isPlaying = false;
     private final Map<String, Runnable> listeners;
     private AiSingleton() {
         model = new HashMap<>();
         listeners = new HashMap<>();
+        reports = new LinkedList<>();
     }
 
     public static AiSingleton getInstance() {
@@ -22,6 +28,10 @@ public class AiSingleton {
 
     public HashMap<String, Integer> getModel() {
         return model;
+    }
+
+    public List<ReportRow> getReports() {
+        return reports;
     }
 
     public Boolean getPlaying() {

@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.controllers;
+package dev.emileboucher.blackjackml.models;
 
 public class ModelRow {
     private final String key;
