@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.api.bodies;
+package dev.emileboucher.blackjackml.api.models.bodies;
 
 /**
  * A json with a bet field

@@ -19,13 +19,15 @@
            prefWidth="360.0"
    />
    <Button
-           onAction="#onAddDataClick"
+           fx:id="start"
+           onAction="#startBtn"
            layoutX="14.0"
            layoutY="412.0"
            mnemonicParsing="false"
-           text="Add data"
+           text="Start"
    />
    <Button
+           fx:id="refresher"
            onAction="#refreshBtn"
            layoutX="14.0"
            layoutY="440.0"

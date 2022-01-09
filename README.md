@@ -1,6 +1,16 @@
 # BlackJackML
+##Description
 
-A client to play blackjack on an API
+---
+A client to play blackjack manually or with an Artificial Intelligence on an API
 
-Authors:
-Émile Boucher
+##Supports
+
+---
+*Artificial Intelligence supported:*
+1. Reinforcement Learning
+
+##Authors
+
+---
+- Émile Boucher

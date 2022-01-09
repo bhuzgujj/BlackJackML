@@ -1,7 +1,7 @@
 package dev.emileboucher.blackjackml.api.requests.abstracts;
 
-import dev.emileboucher.blackjackml.api.bodies.Body;
-import dev.emileboucher.blackjackml.api.bodies.EmptyBody;
+import dev.emileboucher.blackjackml.api.models.bodies.Body;
+import dev.emileboucher.blackjackml.api.models.bodies.EmptyBody;
 
 import java.net.CookieManager;
 import java.net.HttpCookie;
@@ -16,15 +16,15 @@ public abstract class RequestBuilder {
     /**
      * The request builder
      */
-    protected final HttpRequest.Builder builder = HttpRequest.newBuilder();
+    public final HttpRequest.Builder builder = HttpRequest.newBuilder();
     /**
      * The base url of the request
      */
-    protected URI baseURL;
+    public URI baseURL;
     /**
      * The body object
      */
-    protected Body body = new EmptyBody();
+    public Body body = new EmptyBody();
 
     /**
      * Add the ip of the server to the request
