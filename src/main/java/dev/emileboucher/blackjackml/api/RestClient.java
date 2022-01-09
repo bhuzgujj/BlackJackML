@@ -12,16 +12,15 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.function.Consumer;
 
 /**
  * A rest client that sends [RequestBuilder]
  */
 public class RestClient {
-    private final HttpClient client;
+    private final HttpClient client = HttpClient.newBuilder().build();
     private final String ip;
     private final Gson jsonParser = new Gson();
-    private final CookieManager cookieManager = new CookieManager();
+    private CookieManager cookieManager = new CookieManager();
 
     /**
      * Creation of a restclient
@@ -33,30 +32,24 @@ public class RestClient {
         } else {
             this.ip = ip;
         }
-        client = HttpClient.newBuilder().build();
         CookieHandler.setDefault(cookieManager);
         cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
     }
 
     /**
      * Send a request to the server et receives it.
-     * @param request builder to send
-     * @param callback function to execute went successful
-     * @param catcher of exceptions
+     * @param requestBuilder builder to send
      */
-    public void send(RequestBuilder request, Consumer<Response> callback, Consumer<Exception> catcher) {
-        try {
-            HttpRequest req = request
-                    .addIp(ip)
-                    .addCookie(cookieManager)
-                    .addType()
-                    .build();
-            HttpResponse<String> response = client.send(req, HttpResponse.BodyHandlers.ofString());
-            updateCookies(response);
-            callback.accept(Parse(response.body()));
-        } catch (IOException | InterruptedException ex) {
-            catcher.accept(ex);
-        }
+    public Response send(RequestBuilder requestBuilder) throws IOException, InterruptedException {
+        HttpResponse<String> response = client.send(
+            requestBuilder.addIp(ip)
+                .addCookie(cookieManager)
+                .addType()
+                .build(),
+            HttpResponse.BodyHandlers.ofString()
+        );
+        updateCookies(response);
+        return Parse(response.body());
     }
 
     /**
@@ -75,5 +68,12 @@ public class RestClient {
      */
     private Response Parse(String body) {
         return jsonParser.fromJson(body, Response.class);
+    }
+
+    /**
+     * Reset the cookies in the CookieManager
+     */
+    public void resetCookies() {
+        cookieManager = new CookieManager();
     }
 }

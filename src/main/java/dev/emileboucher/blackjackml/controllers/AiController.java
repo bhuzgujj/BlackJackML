@@ -1,17 +1,24 @@
 package dev.emileboucher.blackjackml.controllers;
 
+import com.google.gson.Gson;
+import dev.emileboucher.blackjackml.api.models.bodies.*;
+import dev.emileboucher.blackjackml.intelligence.ArtificialIntelligence;
 import dev.emileboucher.blackjackml.singletons.AiSingleton;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AiController implements Initializable {
-    private Integer lastVal = 0;
+    @FXML
+    private Button start = new Button();
+    @FXML
+    private Button refresher = new Button();
     @FXML
     private TableView<ModelRow> modelData = new TableView<>();
     @FXML
@@ -22,22 +29,49 @@ public class AiController implements Initializable {
     }
 
     @FXML
-    protected void onAddDataClick() {
-        sessionsResults.getItems().add(0, new ReportRow(
-                lastVal,
-                1,
-                3,
-                lastVal + 1 + lastVal % 7,
-                lastVal + 1,
-                lastVal / 7
-            )
-        );
-        lastVal++;
+    protected void startBtn() {
+        System.out.println("BTN PRESSED");
+        if (AiSingleton.getInstance().getPlaying()) {
+            AiSingleton.getInstance().setPlaying(false);
+            start.setDisable(true);
+        } else {
+            AiSingleton.getInstance().setPlaying(true);
+            Thread game = new Thread(this::useAi);
+            try {
+                game.join();
+                game.start();
+                start.setText("Stop");
+            } catch (InterruptedException e) {
+                AiSingleton.getInstance().setPlaying(false);
+            }
+        }
+    }
+
+    private void useAi() {
+        ArtificialIntelligence ai = new ArtificialIntelligence();
+        try {
+            ai.play(this::reportHandling);
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+            AiSingleton.getInstance().setPlaying(false);
+        } finally {
+            start.setDisable(false);
+            start.setText("Start");
+        }
     }
 
     @FXML
     protected void refreshBtn() {
-        AiSingleton.getInstance().notification();
+        try {
+            System.out.println(new Gson().toJson(new EmptyBody()));
+            // updateUI();
+         } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+        }
+    }
+
+    private void reportHandling(ReportRow reportRow) {
+
     }
 
     @Override
