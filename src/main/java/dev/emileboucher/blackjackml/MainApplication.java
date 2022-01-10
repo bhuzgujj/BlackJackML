@@ -23,22 +23,27 @@ public class MainApplication extends Application {
 
     public Scene mainMenu(Stage stage) {
         VBox container = new VBox();
-        container.setPadding(new Insets(50));
-        container.setMinHeight(500);
 
-        VBox menu = new VBox();
-        createMenuButton("Play", stage, menu, "player-view.fxml");
-        createMenuButton("Reinforcement Learning", stage, menu, "ai-view.fxml");
-        container.getChildren().add(menu);
+        VBox topButtons = new VBox();
+        topButtons.setPadding(new Insets(40));
+        createMenuButton("Play", stage, topButtons, "player-view.fxml");
+        createMenuButton("Reinforcement Learning", stage, topButtons, "ai-view.fxml");
+        container.getChildren().add(topButtons);
+
+
+        VBox bottomBtns = new VBox();
+        bottomBtns.setPadding(new Insets(40));
 
         Button exit = new Button("Exit");
         exit.setFont(new Font(14));
         exit.setOnMouseClicked(mouseEvent -> {
             Platform.exit();
         });
-        container.getChildren().add(exit);
+        bottomBtns.getChildren().add(exit);
 
-        VBox.setVgrow(menu, Priority.ALWAYS);
+        container.getChildren().add(bottomBtns);
+
+        VBox.setVgrow(bottomBtns, Priority.ALWAYS);
         VBox.setVgrow(exit, Priority.ALWAYS);
         return new Scene(container);
     }

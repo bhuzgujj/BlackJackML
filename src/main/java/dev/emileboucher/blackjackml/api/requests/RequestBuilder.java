@@ -1,7 +1,7 @@
-package dev.emileboucher.blackjackml.api.requests.abstracts;
+package dev.emileboucher.blackjackml.api.requests;
 
-import dev.emileboucher.blackjackml.api.models.bodies.Body;
-import dev.emileboucher.blackjackml.api.models.bodies.EmptyBody;
+import dev.emileboucher.blackjackml.api.models.Body;
+import dev.emileboucher.blackjackml.api.models.EmptyBody;
 
 import java.net.CookieManager;
 import java.net.HttpCookie;

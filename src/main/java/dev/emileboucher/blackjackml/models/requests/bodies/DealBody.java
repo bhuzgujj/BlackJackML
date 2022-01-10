@@ -1,4 +1,6 @@
-package dev.emileboucher.blackjackml.api.models.bodies;
+package dev.emileboucher.blackjackml.models.requests.bodies;
+
+import dev.emileboucher.blackjackml.api.models.Body;
 
 /**
  * A json with a bet field

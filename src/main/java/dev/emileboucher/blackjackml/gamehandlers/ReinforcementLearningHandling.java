@@ -1,8 +1,8 @@
 package dev.emileboucher.blackjackml.gamehandlers;
 
-import dev.emileboucher.blackjackml.api.models.Response;
-import dev.emileboucher.blackjackml.api.requests.concretes.Deal;
-import dev.emileboucher.blackjackml.api.requests.concretes.Flag;
+import dev.emileboucher.blackjackml.models.responses.BlackJackResponse;
+import dev.emileboucher.blackjackml.models.requests.Deal;
+import dev.emileboucher.blackjackml.models.requests.Flag;
 import dev.emileboucher.blackjackml.models.ReportRow;
 import dev.emileboucher.blackjackml.singletons.AiSingleton;
 
@@ -48,7 +48,7 @@ public class ReinforcementLearningHandling extends AiHandling {
      * @param isExploring other solution possible (choice random)
      */
     protected void session(Boolean isExploring) {
-        Response response = new Response();
+        BlackJackResponse response = new BlackJackResponse();
         int gamePlayed = 0;
         do {
             response = game(isExploring);
@@ -64,7 +64,7 @@ public class ReinforcementLearningHandling extends AiHandling {
      * @param response from the api
      * @return if the session is done
      */
-    private boolean recordSession(Response response) {
+    private boolean recordSession(BlackJackResponse response) {
         switch (response.getSessionState()) {
             case WON -> {
                 row.setSessionsWon(row.getSessionsWon() + 1);
@@ -88,8 +88,8 @@ public class ReinforcementLearningHandling extends AiHandling {
      * @param isExploring other solution possible (choice random)
      * @return The last [Response] from the api
      */
-    protected Response game(Boolean isExploring) {
-        Response response = null;
+    protected BlackJackResponse game(Boolean isExploring) {
+        BlackJackResponse response = null;
         try {
             response = deal();
             while (response.isPlaying()) {
@@ -108,11 +108,11 @@ public class ReinforcementLearningHandling extends AiHandling {
      * @throws IOException from the [HttpClient]
      * @throws InterruptedException from the [HttpClient]
      */
-    private Response deal() throws IOException, InterruptedException {
+    private BlackJackResponse deal() throws IOException, InterruptedException {
         int bet = Math.min(money, 50);
-        Response response = client.send(new Deal(bet));
+        BlackJackResponse response = (BlackJackResponse) client.send(new Deal(bet));
         while (response == null) {
-            response = client.send(new Deal(bet));
+            response = (BlackJackResponse) client.send(new Deal(bet));
         }
         money = response.cash;
         return response;
@@ -123,7 +123,7 @@ public class ReinforcementLearningHandling extends AiHandling {
      * @param response from the api
      * @param isExploring other solution possible (choice random)
      */
-    private void recordResults(Response response, Boolean isExploring) {
+    private void recordResults(BlackJackResponse response, Boolean isExploring) {
         if (!isExploring) {
             switch (response.getResult()) {
                 case WON -> {

@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.api.requests.abstracts;
+package dev.emileboucher.blackjackml.api.requests;
 
 import com.google.gson.Gson;
 

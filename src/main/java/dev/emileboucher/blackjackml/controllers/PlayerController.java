@@ -1,6 +1,6 @@
 package dev.emileboucher.blackjackml.controllers;
 
-import dev.emileboucher.blackjackml.api.models.Card;
+import dev.emileboucher.blackjackml.models.responses.Card;
 import dev.emileboucher.blackjackml.gamehandlers.PlayerHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,6 +27,8 @@ public class PlayerController implements Initializable {
   private Button hitBtn = new Button();
   @FXML
   private Button flagBtn = new Button();
+  @FXML
+  private Button loadBtn = new Button();
   @FXML
   private Slider betSlider = new Slider();
   @FXML
@@ -94,6 +96,7 @@ public class PlayerController implements Initializable {
 
   @FXML
   private void dealBtn() {
+    dealBtn.setDisable(true);
     handler.deal(Integer.parseInt(betAmount.getText()));
     setButtonState(handler.isPlaying());
     updateUI();
@@ -101,6 +104,7 @@ public class PlayerController implements Initializable {
 
   @FXML
   private void hitBtn() {
+    hitBtn.setDisable(true);
     handler.hit();
     setButtonState(handler.isPlaying());
     updateUI();
@@ -108,6 +112,7 @@ public class PlayerController implements Initializable {
 
   @FXML
   private void holdBtn() {
+    holdBtn.setDisable(true);
     handler.hold();
     setButtonState(handler.isPlaying());
     updateUI();
@@ -115,12 +120,14 @@ public class PlayerController implements Initializable {
 
   @FXML
   private void flagBtn() {
+    flagBtn.setDisable(true);
     handler.flag();
     updateUI();
   }
 
   @FXML
   private void loadBtn() {
+    loadBtn.setDisable(true);
     handler.load();
     updateUI();
   }

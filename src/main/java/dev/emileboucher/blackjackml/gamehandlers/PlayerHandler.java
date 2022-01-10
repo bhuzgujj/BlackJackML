@@ -1,10 +1,9 @@
 package dev.emileboucher.blackjackml.gamehandlers;
 
-import dev.emileboucher.blackjackml.api.RestClient;
-import dev.emileboucher.blackjackml.api.models.Card;
-import dev.emileboucher.blackjackml.api.models.Response;
-import dev.emileboucher.blackjackml.api.requests.abstracts.RequestBuilder;
-import dev.emileboucher.blackjackml.api.requests.concretes.*;
+import dev.emileboucher.blackjackml.api.requests.RequestBuilder;
+import dev.emileboucher.blackjackml.models.requests.*;
+import dev.emileboucher.blackjackml.models.responses.BlackJackResponse;
+import dev.emileboucher.blackjackml.models.responses.Card;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class PlayerHandler {
-  private final RestClient client = new RestClient("http://localhost:3000");
-  private Response response = new Response();
+  private final BlackJackClient client = new BlackJackClient("http://localhost:3000");
+  private BlackJackResponse response = new BlackJackResponse();
 
   public PlayerHandler() {
     response.cash = 1000;
@@ -22,28 +21,31 @@ public class PlayerHandler {
     response.dealerHand = new ArrayList<>();
   }
 
-  public Response deal(Integer bet) {
+  public BlackJackResponse deal(Integer bet) {
+    client.resetCookies();
     return send(new Deal(bet));
   }
 
-  public Response hit() {
+  public BlackJackResponse hit() {
     return send(new Hit());
   }
 
-  public Response hold() {
+  public BlackJackResponse hold() {
     return send(new Hold());
   }
 
-  public Response flag() {
-    return send(new Flag());
+  public BlackJackResponse flag() {
+    send(new Flag());
+    client.resetCookies();
+    return load();
   }
 
-  public Response load() {
+  public BlackJackResponse load() {
     return send(new Load());
   }
 
-  private Response send(RequestBuilder builder) {
-    Response resp = null;
+  private BlackJackResponse send(RequestBuilder builder) {
+    BlackJackResponse resp = null;
     try {
       resp = client.send(builder);
     } catch (IOException | InterruptedException e) {

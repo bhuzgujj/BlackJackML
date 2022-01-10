@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.api.models.bodies;
+package dev.emileboucher.blackjackml.api.models;
 
 /**
  * Base for all bodies

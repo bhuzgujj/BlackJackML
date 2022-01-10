@@ -1,8 +1,7 @@
 package dev.emileboucher.blackjackml.api;
 
 import com.google.gson.Gson;
-import dev.emileboucher.blackjackml.api.models.Response;
-import dev.emileboucher.blackjackml.api.requests.abstracts.RequestBuilder;
+import dev.emileboucher.blackjackml.api.requests.RequestBuilder;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -42,7 +41,7 @@ public class RestClient {
      * @throws IOException from the [HttpClient]
      * @throws InterruptedException from the [HttpClient]
      */
-    public Response send(RequestBuilder requestBuilder) throws IOException, InterruptedException {
+    public <Model> Model send(RequestBuilder requestBuilder, Class<Model> modelClass) throws IOException, InterruptedException {
         HttpResponse<String> response = client.send(
             requestBuilder.addIp(ip)
                 .addCookie(cookieManager)
@@ -51,7 +50,7 @@ public class RestClient {
             HttpResponse.BodyHandlers.ofString()
         );
         updateCookies(response);
-        return Parse(response.body());
+        return Parse(response.body(), modelClass);
     }
 
     /**
@@ -66,10 +65,11 @@ public class RestClient {
     /**
      * Create an object from a string formated in json
      * @param body of the request
+     * @param modelClass to return
      * @return the [Response]
      */
-    private Response Parse(String body) {
-        return jsonParser.fromJson(body, Response.class);
+    private<Model> Model Parse(String body, Class<Model> modelClass) {
+        return jsonParser.fromJson(body, modelClass);
     }
 
     /**

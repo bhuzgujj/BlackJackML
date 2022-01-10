@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.api.models;
+package dev.emileboucher.blackjackml.models.responses;
 
 import java.util.List;
 import java.util.Optional;

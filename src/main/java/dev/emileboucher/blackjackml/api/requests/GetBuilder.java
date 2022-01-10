@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.api.requests.abstracts;
+package dev.emileboucher.blackjackml.api.requests;
 
 /**
  * Builder for a classic GET request

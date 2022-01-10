@@ -1,6 +1,6 @@
-package dev.emileboucher.blackjackml.api.requests.concretes;
+package dev.emileboucher.blackjackml.models.requests;
 
-import dev.emileboucher.blackjackml.api.requests.abstracts.GetBuilder;
+import dev.emileboucher.blackjackml.api.requests.GetBuilder;
 
 import java.net.URI;
 
