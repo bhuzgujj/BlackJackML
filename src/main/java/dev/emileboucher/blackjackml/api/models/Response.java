@@ -17,6 +17,7 @@ public class Response {
      */
     @Override
     public String toString() {
+        if (dealerHand == null || dealerHand.size() < 1) return "EMPTY";
         StringBuilder val = new StringBuilder(dealerHand.get(0).toString() + "-");
         for (var card : playerHand) {
             val.append(card.toString());

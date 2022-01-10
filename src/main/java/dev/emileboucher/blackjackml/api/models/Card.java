@@ -5,7 +5,7 @@ package dev.emileboucher.blackjackml.api.models;
  */
 public class Card {
     public String rank;
-    public String suits;
+    public String suit;
 
     /**
      * Get the character representing the card for the singleton

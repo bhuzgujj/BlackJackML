@@ -4,7 +4,6 @@ import dev.emileboucher.blackjackml.api.models.Card;
 import dev.emileboucher.blackjackml.gamehandlers.PlayerHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -13,6 +12,7 @@ import javafx.scene.layout.HBox;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
 public class PlayerController implements Initializable {
   public static final String betPrefix = "Bet : ";
   private final PlayerHandler handler = new PlayerHandler();
@@ -32,11 +32,17 @@ public class PlayerController implements Initializable {
     betText.setText(betPrefix + betSlider.getValue());
     initializeBetSlider();
     initializeBetAmount();
+    handler.load();
     updateUI();
   }
 
   private void updateUI() {
-    dealerCard.getChildren().add(new Label("someting"));
+    for (Card card : handler.getDealerCards()) {
+      System.out.println(card.rank + "" + card.suit);
+    }
+    for (Card card : handler.getPlayerCards()) {
+      System.out.println(card.rank + "" + card.suit);
+    }
   }
 
   private void initializeBetSlider() {

@@ -24,27 +24,31 @@
             <TextField fx:id="betAmount" layoutX="61.0" layoutY="350.0" />
          </HBox>
          <HBox>
-            <Button mnemonicParsing="false" text="Deal" />
-            <Button mnemonicParsing="false" text="Hit" />
-            <Button mnemonicParsing="false" text="Hold" />
-            <Button mnemonicParsing="false" text="Flag" />
+            <Button mnemonicParsing="false" text="Deal" onAction="#dealBtn" />
+            <Button mnemonicParsing="false" text="Hit" onAction="#hitBtn"  />
+            <Button mnemonicParsing="false" text="Hold" onAction="#holdBtn" />
+            <Button mnemonicParsing="false" text="Flag" onAction="#flagBtn" />
          </HBox>
       </VBox>
    </bottom>
    <center>
-      <VBox>
-         <Label text="Dealer's cards: ">
-            <font>
-               <Font size="18.0" />
-            </font>
-         </Label>
-         <HBox fx:id="dealerCard" />
-         <Label text="Player's cards: ">
-            <font>
-               <Font size="18.0" />
-            </font>
-         </Label>
-         <HBox fx:id="playerCard" />
+      <VBox minHeight="300">
+         <VBox minHeight="150">
+            <Label text="Dealer's cards: ">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <HBox fx:id="dealerCard" minHeight="100" />
+         </VBox>
+         <VBox minHeight="150">
+            <Label text="Player's cards: ">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <HBox fx:id="playerCard" minHeight="100"/>
+         </VBox>
       </VBox>
    </center>
 </BorderPane>

@@ -10,13 +10,19 @@ module dev.emileboucher.blackjackml {
     exports dev.emileboucher.blackjackml;
     exports dev.emileboucher.blackjackml.controllers;
     opens dev.emileboucher.blackjackml.controllers to javafx.fxml;
+
+    // API
     exports dev.emileboucher.blackjackml.api;
     exports dev.emileboucher.blackjackml.api.models;
     exports dev.emileboucher.blackjackml.api.models.bodies;
     exports dev.emileboucher.blackjackml.api.requests.abstracts;
     exports dev.emileboucher.blackjackml.api.requests.concretes;
+
+    // MODELS
     exports dev.emileboucher.blackjackml.models;
     exports dev.emileboucher.blackjackml.models.datamodel;
     exports dev.emileboucher.blackjackml.files;
+
+    exports dev.emileboucher.blackjackml.gamehandlers;
     opens dev.emileboucher.blackjackml.models to javafx.fxml;
 }

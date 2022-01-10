@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -23,6 +24,7 @@ public class MainApplication extends Application {
     public Scene mainMenu(Stage stage) {
         VBox container = new VBox();
         container.setPadding(new Insets(50));
+        container.setMinHeight(500);
 
         VBox menu = new VBox();
         createMenuButton("Play", stage, menu, "player-view.fxml");
@@ -36,6 +38,8 @@ public class MainApplication extends Application {
         });
         container.getChildren().add(exit);
 
+        VBox.setVgrow(menu, Priority.ALWAYS);
+        VBox.setVgrow(exit, Priority.ALWAYS);
         return new Scene(container);
     }
 
