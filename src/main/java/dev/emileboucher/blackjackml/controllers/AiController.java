@@ -30,13 +30,34 @@ public class AiController implements Initializable {
     private TableView<ReportRow> sessionsResults = new TableView<>();
 
     /**
+     * Initialize the controller
+     * @param url of the controller
+     * @param resourceBundle of the controller
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        AiSingleton.getInstance().EmptyCallbacks();
+        AiSingleton.getInstance().getCallbacks().add(this::progressBarUpdate);
+        AiSingleton.getInstance().setOnGamestateChange(this::sessionDone);
+        sessionToDo.setText("100");
+        sessionToDo.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                sessionToDo.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+        initializeSessionResultsTable();
+        initializeModelDataTable();
+        updateUI();
+    }
+
+    /**
      * Button to start and stop the game
      */
     @FXML
     protected void startBtn() {
         if (AiSingleton.getInstance().getPlaying()) {
             AiSingleton.getInstance().setPlaying(false);
-            start.setDisable(true);
+            sessionDone();
         } else {
             if (sessionToDo.getText().length() == 0) return;
             AiSingleton.getInstance().setPlaying(true);
@@ -59,13 +80,17 @@ public class AiController implements Initializable {
         try {
             while (AiSingleton.getInstance().getPlaying()) {
                 AiSingleton.getInstance().getReports().add(ai.play(Integer.parseInt(sessionToDo.getText())));
-                updateUI();
                 AiSingleton.getInstance().saveModel();
             }
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
             AiSingleton.getInstance().setPlaying(false);
-        } finally {
+        }
+    }
+
+    private void sessionDone() {
+        if (!AiSingleton.getInstance().getPlaying()) {
+            updateUI();
             start.setDisable(false);
             start.setText("Start");
         }
@@ -77,26 +102,6 @@ public class AiController implements Initializable {
     @FXML
     protected void refreshBtn() {
         AiSingleton.getInstance().saveModel();
-        updateUI();
-    }
-
-    /**
-     * Initialize the controller
-     * @param url of the controller
-     * @param resourceBundle of the controller
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        AiSingleton.getInstance().EmptyCallbacks();
-        AiSingleton.getInstance().getCallbacks().add(this::progressBarUpdate);
-        sessionToDo.setText("100");
-        sessionToDo.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                sessionToDo.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
-        initializeSessionResultsTable();
-        initializeModelDataTable();
         updateUI();
     }
 

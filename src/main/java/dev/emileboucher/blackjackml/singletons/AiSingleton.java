@@ -18,6 +18,7 @@ public class AiSingleton {
     private Boolean isPlaying = false;
     private final JsonFiles dataManager;
     private List<Runnable> callbacks = new LinkedList<>();
+    private Runnable onGamestateChange = null;
 
     private AiSingleton() {
         dataManager = new JsonFiles("./model.json");
@@ -40,7 +41,7 @@ public class AiSingleton {
 
     /**
      * Get the model of the Reinformencent Learning
-     * @return [HashMap<String, Integer>]
+     * @return the model of Reinformencent Learning
      */
     public HashMap<String, Integer> getModel() {
         return model.getData();
@@ -48,7 +49,7 @@ public class AiSingleton {
 
     /**
      * Get the list of the reports row
-     * @return [List<ReportRow>]
+     * @return the list of all reports
      */
     public List<ReportRow> getReports() {
         return reports;
@@ -56,7 +57,7 @@ public class AiSingleton {
 
     /**
      * Tell the ai if it needs to stop
-     * @return [Boolean]
+     * @return isPlaying with the api
      */
     public Boolean getPlaying() {
         return isPlaying;
@@ -68,6 +69,9 @@ public class AiSingleton {
      */
     public void setPlaying(Boolean isPlaying) {
         this.isPlaying = isPlaying;
+        if (onGamestateChange != null) {
+            onGamestateChange.run();
+        }
     }
 
     /**
@@ -145,5 +149,9 @@ public class AiSingleton {
      */
     public void EmptyCallbacks() {
         callbacks = new LinkedList<>();
+    }
+
+    public void setOnGamestateChange(Runnable onGamestateChange) {
+        this.onGamestateChange = onGamestateChange;
     }
 }

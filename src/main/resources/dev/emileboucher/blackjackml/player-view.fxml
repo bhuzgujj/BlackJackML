@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.emileboucher.blackjackml.controllers.PlayerController">
+   <Button layoutX="21.0" layoutY="403.0" mnemonicParsing="false" text="Deal" />
+   <Button layoutX="68.0" layoutY="403.0" mnemonicParsing="false" text="Hit" />
+   <Button layoutX="108.0" layoutY="403.0" mnemonicParsing="false" text="Hold" />
+   <Button layoutX="158.0" layoutY="403.0" mnemonicParsing="false" text="Flag" />
+   <Canvas height="300.0" layoutX="14.0" layoutY="14.0" width="450.0" />
+   <Slider fx:id="bet" layoutX="21.0" layoutY="320.0" prefHeight="14.0" prefWidth="385.0" />
+   <Label fx:id="betText" layoutX="21.0" layoutY="349.0" text="Bet :">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </Label>
+   <TextField fx:id="betAmount" layoutX="61.0" layoutY="350.0" />
+</AnchorPane>
