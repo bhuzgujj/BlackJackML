@@ -63,4 +63,8 @@ public class PlayerHandler {
     return Optional.ofNullable(response.playerHand)
             .orElse(new LinkedList<>());
   }
+
+  public Boolean isPlaying() {
+    return response.isPlaying();
+  }
 }

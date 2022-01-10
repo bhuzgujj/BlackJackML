@@ -1,6 +1,7 @@
 package dev.emileboucher.blackjackml.api.models;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The response object structure from the api
@@ -30,11 +31,13 @@ public class Response {
      * @return [GameState]
      */
     public GameState getResult() {
-        return switch (state) {
-            case "WON" -> GameState.WON;
-            case "LOST" -> GameState.LOST;
-            default -> GameState.TIE;
-        };
+        return Optional.ofNullable(state)
+                .map((gstate) -> switch (gstate) {
+                    case "WON" -> GameState.WON;
+                    case "LOST" -> GameState.LOST;
+                    default -> GameState.TIE;
+                })
+                .orElse(GameState.TIE);
     }
 
     /**
@@ -42,9 +45,13 @@ public class Response {
      * @return [SessionState]
      */
     public SessionState getSessionState() {
-        if (cash >= 2000) return SessionState.WON;
-        if (cash <= 0) return SessionState.LOST;
-        else return SessionState.PLAYING;
+        return Optional.ofNullable(cash)
+                .map((money) -> {
+                    if (cash >= 2000) return SessionState.WON;
+                    if (cash <= 0) return SessionState.LOST;
+                    else return SessionState.PLAYING;
+                })
+                .orElse(SessionState.ERROR);
     }
 
     /**
@@ -52,6 +59,8 @@ public class Response {
      * @return [Boolean]
      */
     public Boolean isPlaying() {
-        return state.equals("IN_GAME");
+        return Optional.ofNullable(state)
+                .map((gstate) -> gstate.equals("IN_GAME"))
+                .orElse(false);
     }
 }

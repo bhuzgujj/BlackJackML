@@ -24,10 +24,11 @@
             <TextField fx:id="betAmount" layoutX="61.0" layoutY="350.0" />
          </HBox>
          <HBox>
-            <Button mnemonicParsing="false" text="Deal" onAction="#dealBtn" />
-            <Button mnemonicParsing="false" text="Hit" onAction="#hitBtn"  />
-            <Button mnemonicParsing="false" text="Hold" onAction="#holdBtn" />
-            <Button mnemonicParsing="false" text="Flag" onAction="#flagBtn" />
+            <Button fx:id="dealBtn" mnemonicParsing="false" text="Deal" onAction="#dealBtn" />
+            <Button fx:id="hitBtn" mnemonicParsing="false" text="Hit" onAction="#hitBtn"  />
+            <Button fx:id="holdBtn" mnemonicParsing="false" text="Hold" onAction="#holdBtn" />
+            <Button fx:id="flagBtn" mnemonicParsing="false" text="Flag" onAction="#flagBtn" />
+            <Button mnemonicParsing="false" text="Load" onAction="#loadBtn" />
          </HBox>
       </VBox>
    </bottom>

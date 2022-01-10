@@ -1,9 +1,11 @@
 package dev.emileboucher.blackjackml.controllers;
 
 import dev.emileboucher.blackjackml.api.models.Card;
+import dev.emileboucher.blackjackml.api.models.Response;
 import dev.emileboucher.blackjackml.gamehandlers.PlayerHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -16,6 +18,14 @@ import java.util.ResourceBundle;
 public class PlayerController implements Initializable {
   public static final String betPrefix = "Bet : ";
   private final PlayerHandler handler = new PlayerHandler();
+  @FXML
+  private Button dealBtn = new Button();
+  @FXML
+  private Button holdBtn = new Button();
+  @FXML
+  private Button hitBtn = new Button();
+  @FXML
+  private Button flagBtn = new Button();
   @FXML
   private Slider betSlider = new Slider();
   @FXML
@@ -32,16 +42,22 @@ public class PlayerController implements Initializable {
     betText.setText(betPrefix + betSlider.getValue());
     initializeBetSlider();
     initializeBetAmount();
-    handler.load();
+    hitBtn.setDisable(true);
+    holdBtn.setDisable(true);
+    flagBtn.setDisable(true);
     updateUI();
   }
 
   private void updateUI() {
+    dealerCard.getChildren().clear();
+    playerCard.getChildren().clear();
     for (Card card : handler.getDealerCards()) {
-      System.out.println(card.rank + "" + card.suit);
+      dealerCard.getChildren().add(new Button(card.rank + " " + card.suit));
+      System.out.println(card.rank + " " + card.suit);
     }
     for (Card card : handler.getPlayerCards()) {
-      System.out.println(card.rank + "" + card.suit);
+      playerCard.getChildren().add(new Button(card.rank + " " + card.suit));
+      System.out.println(card.rank + " " + card.suit);
     }
   }
 
@@ -77,18 +93,21 @@ public class PlayerController implements Initializable {
   @FXML
   private void dealBtn() {
     handler.deal(Integer.parseInt(betAmount.getText()));
+    setButtonState(handler.isPlaying());
     updateUI();
   }
 
   @FXML
   private void hitBtn() {
     handler.hit();
+    setButtonState(handler.isPlaying());
     updateUI();
   }
 
   @FXML
   private void holdBtn() {
     handler.hold();
+    setButtonState(handler.isPlaying());
     updateUI();
   }
 
@@ -96,5 +115,17 @@ public class PlayerController implements Initializable {
   private void flagBtn() {
     handler.flag();
     updateUI();
+  }
+
+  @FXML
+  private void loadBtn() {
+    handler.load();
+    updateUI();
+  }
+
+  private void setButtonState(Boolean isPlaying) {
+    dealBtn.setDisable(isPlaying);
+    hitBtn.setDisable(!isPlaying);
+    holdBtn.setDisable(!isPlaying);
   }
 }
