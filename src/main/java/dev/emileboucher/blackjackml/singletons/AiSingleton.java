@@ -19,6 +19,7 @@ public class AiSingleton {
     private final JsonFiles dataManager;
     private List<Runnable> callbacks = new LinkedList<>();
     private Runnable onGamestateChange = null;
+    private Runnable updateSessionResults = null;
 
     private AiSingleton() {
         dataManager = new JsonFiles("./model.json");
@@ -53,6 +54,13 @@ public class AiSingleton {
      */
     public List<ReportRow> getReports() {
         return reports;
+    }
+
+    public void addReport(ReportRow report) {
+        reports.add(report);
+        if (updateSessionResults != null) {
+            updateSessionResults.run();
+        }
     }
 
     /**
@@ -153,5 +161,9 @@ public class AiSingleton {
 
     public void setOnGamestateChange(Runnable onGamestateChange) {
         this.onGamestateChange = onGamestateChange;
+    }
+
+    public void setOnSessionStateChange(Runnable updateSessionResults) {
+        this.updateSessionResults = updateSessionResults;
     }
 }

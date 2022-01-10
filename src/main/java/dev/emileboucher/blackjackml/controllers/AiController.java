@@ -39,6 +39,7 @@ public class AiController implements Initializable {
         AiSingleton.getInstance().EmptyCallbacks();
         AiSingleton.getInstance().getCallbacks().add(this::progressBarUpdate);
         AiSingleton.getInstance().setOnGamestateChange(this::sessionDone);
+        AiSingleton.getInstance().setOnSessionStateChange(this::updateSessionResults);
         sessionToDo.setText("100");
         sessionToDo.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -96,7 +97,7 @@ public class AiController implements Initializable {
     private void useAi() {
         try {
             while (AiSingleton.getInstance().getPlaying()) {
-                AiSingleton.getInstance().getReports().add(ai.play(Integer.parseInt(sessionToDo.getText())));
+                AiSingleton.getInstance().addReport(ai.play(Integer.parseInt(sessionToDo.getText())));
                 AiSingleton.getInstance().saveModel();
             }
         } catch (Exception exception) {
@@ -119,7 +120,7 @@ public class AiController implements Initializable {
     private void progressBarUpdate() {
         int session = Integer.parseInt(sessionToDo.getText());
         if (progress.getProgress() > AiSingleton.getInstance().getProgression(session)) {
-            updateUI();
+            // updateUI();
         }
         progress.setProgress(
                 AiSingleton.getInstance().getProgression(session)
