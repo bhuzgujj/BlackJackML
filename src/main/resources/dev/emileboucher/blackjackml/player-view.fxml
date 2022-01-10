@@ -22,6 +22,11 @@
                </font>
             </Label>
             <TextField fx:id="betAmount" layoutX="61.0" layoutY="350.0" />
+            <Label fx:id="cash" text=" / 1000 $">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </HBox>
          <HBox>
             <Button fx:id="dealBtn" mnemonicParsing="false" text="Deal" onAction="#dealBtn" />

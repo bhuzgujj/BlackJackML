@@ -20,7 +20,8 @@
             <Label text="Sessions per update: ">
                <font>
                   <Font size="14.0" />
-               </font></Label>
+               </font>
+            </Label>
             <TextField fx:id="sessionToDo" />
          </HBox>
          <HBox>

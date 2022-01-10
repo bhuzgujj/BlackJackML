@@ -67,4 +67,9 @@ public class PlayerHandler {
   public Boolean isPlaying() {
     return response.isPlaying();
   }
+
+  public Integer getCash() {
+    return Optional.ofNullable(response.cash)
+            .orElse(1000);
+  }
 }

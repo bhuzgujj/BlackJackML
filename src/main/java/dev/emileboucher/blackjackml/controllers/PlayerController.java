@@ -1,7 +1,6 @@
 package dev.emileboucher.blackjackml.controllers;
 
 import dev.emileboucher.blackjackml.api.models.Card;
-import dev.emileboucher.blackjackml.api.models.Response;
 import dev.emileboucher.blackjackml.gamehandlers.PlayerHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,6 +17,8 @@ import java.util.ResourceBundle;
 public class PlayerController implements Initializable {
   public static final String betPrefix = "Bet : ";
   private final PlayerHandler handler = new PlayerHandler();
+  @FXML
+  public Label cash = new Label();
   @FXML
   private Button dealBtn = new Button();
   @FXML
@@ -51,12 +52,13 @@ public class PlayerController implements Initializable {
   private void updateUI() {
     dealerCard.getChildren().clear();
     playerCard.getChildren().clear();
+    cash.setText(" / " + handler.getCash() + " $");
     for (Card card : handler.getDealerCards()) {
-      dealerCard.getChildren().add(new Button(card.rank + " " + card.suit));
+      dealerCard.getChildren().add(new Label(card.rank + " " + card.suit));
       System.out.println(card.rank + " " + card.suit);
     }
     for (Card card : handler.getPlayerCards()) {
-      playerCard.getChildren().add(new Button(card.rank + " " + card.suit));
+      playerCard.getChildren().add(new Label(card.rank + " " + card.suit));
       System.out.println(card.rank + " " + card.suit);
     }
   }
