@@ -1,6 +1,6 @@
 package dev.emileboucher.blackjackml.singletons;
 
-import dev.emileboucher.blackjackml.models.datamodel.ReinforcementLearning;
+import dev.emileboucher.blackjackml.models.datamodels.ReinforcementLearning;
 import dev.emileboucher.blackjackml.files.JsonFiles;
 import dev.emileboucher.blackjackml.models.ReportRow;
 

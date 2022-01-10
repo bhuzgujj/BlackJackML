@@ -6,10 +6,10 @@ import dev.emileboucher.blackjackml.models.responses.BlackJackResponse;
 
 import java.io.IOException;
 
-public class BlackJackApi {
+public class BlackJackClient {
   RestClient client;
 
-  public BlackJackApi(String ip) {
+  public BlackJackClient(String ip) {
     this.client = new RestClient(ip);
   }
 

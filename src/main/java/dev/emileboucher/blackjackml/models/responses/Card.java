@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.api.models;
+package dev.emileboucher.blackjackml.models.responses;
 
 /**
  * Cards object from the [Response]

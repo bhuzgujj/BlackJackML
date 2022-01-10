@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * The response object structure from the api
  */
-public class Response {
+public class BlackJackResponse {
     public String state;
     public Integer cash;
     public List<Card> dealerHand;

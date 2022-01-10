@@ -51,6 +51,14 @@ public class AiController implements Initializable {
     }
 
     /**
+     * Update the entire UI
+     */
+    private void updateUI() {
+        updateModelData();
+        updateSessionResults();
+    }
+
+    /**
      * Button to start and stop the game
      */
     @FXML
@@ -71,6 +79,15 @@ public class AiController implements Initializable {
                 AiSingleton.getInstance().setPlaying(false);
             }
         }
+    }
+
+    /**
+     * Button to refresh the UI
+     */
+    @FXML
+    protected void refreshBtn() {
+        AiSingleton.getInstance().saveModel();
+        updateUI();
     }
 
     /**
@@ -97,29 +114,16 @@ public class AiController implements Initializable {
     }
 
     /**
-     * Button to refresh the UI
-     */
-    @FXML
-    protected void refreshBtn() {
-        AiSingleton.getInstance().saveModel();
-        updateUI();
-    }
-
-    /**
      * Update the progress bar for the amount of session done
      */
     private void progressBarUpdate() {
+        int session = Integer.parseInt(sessionToDo.getText());
+        if (progress.getProgress() > AiSingleton.getInstance().getProgression(session)) {
+            updateUI();
+        }
         progress.setProgress(
-                AiSingleton.getInstance().getProgression(Integer.parseInt(sessionToDo.getText()))
+                AiSingleton.getInstance().getProgression(session)
         );
-    }
-
-    /**
-     * Update the entire UI
-     */
-    private void updateUI() {
-        updateModelData();
-        updateSessionResults();
     }
 
     /**

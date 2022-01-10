@@ -1,7 +1,7 @@
 package dev.emileboucher.blackjackml.files;
 
 import com.google.gson.Gson;
-import dev.emileboucher.blackjackml.models.datamodel.ReinforcementLearning;
+import dev.emileboucher.blackjackml.models.datamodels.ReinforcementLearning;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

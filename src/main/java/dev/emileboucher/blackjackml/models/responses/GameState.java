@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.api.models;
+package dev.emileboucher.blackjackml.models.responses;
 
 /**
  * State of the game

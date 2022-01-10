@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.models.datamodel;
+package dev.emileboucher.blackjackml.models.datamodels;
 
 import java.util.HashMap;
 
