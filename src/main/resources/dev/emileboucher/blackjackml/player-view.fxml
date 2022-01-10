@@ -1,21 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.emileboucher.blackjackml.controllers.PlayerController">
-   <Button layoutX="21.0" layoutY="403.0" mnemonicParsing="false" text="Deal" />
-   <Button layoutX="68.0" layoutY="403.0" mnemonicParsing="false" text="Hit" />
-   <Button layoutX="108.0" layoutY="403.0" mnemonicParsing="false" text="Hold" />
-   <Button layoutX="158.0" layoutY="403.0" mnemonicParsing="false" text="Flag" />
-   <Canvas height="300.0" layoutX="14.0" layoutY="14.0" width="450.0" />
-   <Slider fx:id="bet" layoutX="21.0" layoutY="320.0" prefHeight="14.0" prefWidth="385.0" />
-   <Label fx:id="betText" layoutX="21.0" layoutY="349.0" text="Bet :">
-      <font>
-         <Font size="18.0" />
-      </font>
-   </Label>
-   <TextField fx:id="betAmount" layoutX="61.0" layoutY="350.0" />
-</AnchorPane>
+<BorderPane
+        stylesheets="@player-view.css"
+        xmlns="http://javafx.com/javafx/16"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="dev.emileboucher.blackjackml.controllers.PlayerController"
+        style="-fx-padding: 14"
+        minHeight="400"
+>
+   <bottom>
+      <VBox>
+         <Slider fx:id="betSlider" layoutX="21.0" layoutY="320.0" prefHeight="14.0" prefWidth="385.0" />
+         <HBox style="-fx-padding: 5">
+            <Label fx:id="betText" layoutX="21.0" layoutY="349.0" text="Bet :">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="betAmount" layoutX="61.0" layoutY="350.0" />
+         </HBox>
+         <HBox>
+            <Button mnemonicParsing="false" text="Deal" />
+            <Button mnemonicParsing="false" text="Hit" />
+            <Button mnemonicParsing="false" text="Hold" />
+            <Button mnemonicParsing="false" text="Flag" />
+         </HBox>
+      </VBox>
+   </bottom>
+   <center>
+      <VBox>
+         <Label text="Dealer's cards: ">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Label>
+         <HBox fx:id="dealerCard" />
+         <Label text="Player's cards: ">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Label>
+         <HBox fx:id="playerCard" />
+      </VBox>
+   </center>
+</BorderPane>

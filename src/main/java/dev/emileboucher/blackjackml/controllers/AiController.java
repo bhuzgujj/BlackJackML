@@ -1,7 +1,7 @@
 package dev.emileboucher.blackjackml.controllers;
 
-import dev.emileboucher.blackjackml.intelligence.AiHandling;
-import dev.emileboucher.blackjackml.intelligence.ReinforcementLearningHandling;
+import dev.emileboucher.blackjackml.gamehandlers.AiHandling;
+import dev.emileboucher.blackjackml.gamehandlers.ReinforcementLearningHandling;
 import dev.emileboucher.blackjackml.models.ModelRow;
 import dev.emileboucher.blackjackml.models.ReportRow;
 import dev.emileboucher.blackjackml.singletons.AiSingleton;
