@@ -1,22 +1,27 @@
 package dev.emileboucher.blackjackml.controllers;
 
+import dev.emileboucher.blackjackml.MainApplication;
 import dev.emileboucher.blackjackml.models.GlobalButtons;
 import dev.emileboucher.blackjackml.models.responses.Card;
 import dev.emileboucher.blackjackml.gamehandlers.PlayerHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class PlayerController extends GlobalButtons implements Initializable {
-  public static final String betPrefix = "Bet : ";
+  public static final String NAME = "PlayerController";
+  public static final String BET_PREFIX = "Bet : ";
   private final PlayerHandler handler = new PlayerHandler();
   @FXML
   public Label cash = new Label();
@@ -43,7 +48,7 @@ public class PlayerController extends GlobalButtons implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    betText.setText(betPrefix + betSlider.getValue());
+    betText.setText(BET_PREFIX + betSlider.getValue());
     initializeBetSlider();
     initializeBetAmount();
     hitBtn.setDisable(true);
@@ -137,5 +142,17 @@ public class PlayerController extends GlobalButtons implements Initializable {
     dealBtn.setDisable(isPlaying);
     hitBtn.setDisable(!isPlaying);
     holdBtn.setDisable(!isPlaying);
+  }
+
+  /**
+   * Get the scene of this controller
+   * @return the scene
+   */
+  public static Scene getScene() throws IOException {
+    return new Scene(
+            new FXMLLoader(
+                    MainApplication.class.getResource("player-view.fxml")
+            ).load()
+    );
   }
 }

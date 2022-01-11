@@ -1,9 +1,10 @@
 package dev.emileboucher.blackjackml;
 
+import dev.emileboucher.blackjackml.controllers.AiController;
+import dev.emileboucher.blackjackml.controllers.PlayerController;
 import dev.emileboucher.blackjackml.singletons.GlobalSingleton;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,15 +21,21 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("BlackJack MachineLearning");
-        GlobalSingleton.getInstance().addScene(NAME, mainMenu(stage));
-        GlobalSingleton.getInstance().setStage(stage);
+        initializeScenes(stage);
         GlobalSingleton.getInstance().loadScene(NAME);
         stage.show();
     }
 
-    public Scene mainMenu(Stage stage) {
+    private void initializeScenes(Stage stage) throws IOException {
+        GlobalSingleton.getInstance().addScene(PlayerController.NAME, PlayerController.getScene());
+        GlobalSingleton.getInstance().addScene(AiController.NAME, AiController.getScene());
+        GlobalSingleton.getInstance().addScene(NAME, mainMenu());
+        GlobalSingleton.getInstance().setStage(stage);
+    }
+
+    public Scene mainMenu() {
         VBox container = new VBox();
-        container.getChildren().add(createMainBtns(stage));
+        container.getChildren().add(createMainBtns());
         container.getChildren().add(createOptionBtns());
         return new Scene(container);
     }
@@ -49,24 +56,19 @@ public class MainApplication extends Application {
         return container;
     }
 
-    private VBox createMainBtns(Stage stage) {
+    private VBox createMainBtns() {
         VBox topButtons = new VBox();
         topButtons.setPadding(new Insets(40));
-        createMenuButton("Play", stage, topButtons, "player-view.fxml");
-        createMenuButton("Reinforcement Learning", stage, topButtons, "ai-view.fxml");
+        createMenuButton("Play", topButtons, PlayerController.NAME);
+        createMenuButton("Reinforcement Learning", topButtons, AiController.NAME);
         return topButtons;
     }
 
-    private void createMenuButton(String title, Stage stage, Pane menu, String ressourceString) {
+    private void createMenuButton(String title, Pane menu, String sceneName) {
         Button btn = new Button(title);
         btn.setFont(new Font(14));
         btn.setOnMouseClicked(mouseEvent -> {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(ressourceString));
-            try {
-                stage.setScene(new Scene(fxmlLoader.load()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            GlobalSingleton.getInstance().loadScene(sceneName);
         });
         menu.getChildren().add(btn);
     }
