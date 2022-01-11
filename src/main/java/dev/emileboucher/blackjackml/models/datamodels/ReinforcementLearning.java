@@ -19,19 +19,26 @@ public class ReinforcementLearning {
   }
 
   /**
-   * Set the data of the model
-   * @param data of the model
-   */
-  public void setData(HashMap<String, Integer> data) {
-    this.data = data;
-  }
-
-  /**
    * Get the session number
    * @return session number
    */
   public Long getSessionNumber() {
     return sessionNumber;
+  }
+
+  /**
+   * Get the total of games played since the last reset
+   * @return total of games played
+   */
+  public Long getGamePlayed() {
+    return gamePlayed;
+  }
+  /**
+   * Set the amount of games played
+   * @param gamePlayed at the moment
+   */
+  public void setGamePlayed(Long gamePlayed) {
+    this.gamePlayed = gamePlayed;
   }
 
   /**
@@ -43,18 +50,11 @@ public class ReinforcementLearning {
   }
 
   /**
-   * Get the total of games played since the last reset
-   * @return total of games played
+   * Set the data of the model
+   * @param data of the model
    */
-  public Long getGamePlayed() {
-    return gamePlayed;
+  public void setData(HashMap<String, Integer> data) {
+    this.data = data;
   }
 
-  /**
-   * Set the amount of games played
-   * @param gamePlayed at the moment
-   */
-  public void setGamePlayed(Long gamePlayed) {
-    this.gamePlayed = gamePlayed;
-  }
 }

@@ -1,6 +1,5 @@
 package dev.emileboucher.blackjackml.controllers;
 
-import dev.emileboucher.blackjackml.MainApplication;
 import dev.emileboucher.blackjackml.gamehandlers.AiHandling;
 import dev.emileboucher.blackjackml.gamehandlers.ReinforcementLearningHandling;
 import dev.emileboucher.blackjackml.models.GlobalButtons;
@@ -8,7 +7,6 @@ import dev.emileboucher.blackjackml.models.ModelRow;
 import dev.emileboucher.blackjackml.models.ReportRow;
 import dev.emileboucher.blackjackml.singletons.AiSingleton;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -19,11 +17,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller for the AI training/play
+ * the controller of the UI for the AI training/play
  */
 public class AiController extends GlobalButtons implements Initializable {
   public static final String NAME = "AiController";
   private final AiHandling ai = new ReinforcementLearningHandling();
+
+  //=======================================================================
+  //  JavaFX components
+  //-----------------------------------------------------------------------
   @FXML
   private Button start = new Button();
   @FXML
@@ -37,6 +39,52 @@ public class AiController extends GlobalButtons implements Initializable {
   @FXML
   private TableView<ReportRow> sessionsResults = new TableView<>();
 
+  //=======================================================================
+  //  External use function
+  //-----------------------------------------------------------------------
+  /**
+   * Get the scene of this controller
+   * @return the scene
+   * @throws IOException if the ressource doesn't exist
+   */
+  public static Scene getScene() throws IOException {
+    return createScene("ai-view.fxml");
+  }
+
+  //=======================================================================
+  //  UI updaters
+  //-----------------------------------------------------------------------
+  /**
+   * Update the entire UI
+   */
+  private void updateUI() {
+    updateModelData();
+    updateSessionResults();
+  }
+
+  /**
+   * Update the data in session results table
+   */
+  private void updateSessionResults() {
+    sessionsResults.getItems().clear();
+    for (var row : AiSingleton.getInstance().getReports()) {
+      sessionsResults.getItems().add(0, row);
+    }
+  }
+
+  /**
+   * Update the data in model data table
+   */
+  private void updateModelData() {
+    modelData.getItems().clear();
+    for (var row : AiSingleton.getInstance().getModel().entrySet()) {
+      modelData.getItems().add(new ModelRow(row.getKey(), row.getValue()));
+    }
+  }
+
+  //=======================================================================
+  //  Initialization
+  //-----------------------------------------------------------------------
   /**
    * Initialize the controller
    * @param url of the controller
@@ -60,13 +108,38 @@ public class AiController extends GlobalButtons implements Initializable {
   }
 
   /**
-   * Update the entire UI
+   * Initialize the model data table
    */
-  private void updateUI() {
-    updateModelData();
-    updateSessionResults();
+  private void initializeModelDataTable() {
+    modelData.setEditable(true);
+    modelData.getColumns().add(createColumnsFromClass("Board states", "key", modelData.getMinWidth()/2));
+    modelData.getColumns().add(createColumnsFromClass("Weight", "value", modelData.getMinWidth()/2));
   }
 
+  /**
+   * Initialize the session results table
+   */
+  private void initializeSessionResultsTable() {
+    sessionsResults.setEditable(true);
+    String[][] columns = {
+            {"Session number", "sessionNumber"},
+            {"Session won", "sessionsWon"},
+            {"Session lost", "sessionsLost"},
+            {"Total games played", "totalGamesPlayed"},
+            {"Games played", "gamesPlayed"},
+            {"Games won", "gamesWon"},
+            {"Games lost", "gamesLost"},
+            {"Win/Loss ratio", "winLostRatio"},
+    };
+    double width = sessionsResults.getPrefWidth() / columns.length;
+    for (var col : columns) {
+      sessionsResults.getColumns().add(createColumnsFromClass(col[0], col[1], width));
+    }
+  }
+
+  //=======================================================================
+  //  JavaFX callbacks
+  //-----------------------------------------------------------------------
   /**
    * Button to start and stop the game
    */
@@ -101,21 +174,9 @@ public class AiController extends GlobalButtons implements Initializable {
     updateUI();
   }
 
-  /**
-   * Use an AI to play and start playing
-   */
-  private void useAi() {
-    try {
-      while (AiSingleton.getInstance().getPlaying()) {
-        AiSingleton.getInstance().addReport(ai.play(Integer.parseInt(sessionToDo.getText())));
-        AiSingleton.getInstance().saveModel();
-      }
-    } catch (Exception exception) {
-      System.out.println(exception.getMessage());
-      AiSingleton.getInstance().setPlaying(false);
-    }
-  }
-
+  //=======================================================================
+  //  Callbacks functions
+  //-----------------------------------------------------------------------
   /**
    * update the UI if the game is not playing
    */
@@ -138,53 +199,21 @@ public class AiController extends GlobalButtons implements Initializable {
     );
   }
 
+  //=======================================================================
+  //  Utility functions
+  //-----------------------------------------------------------------------
   /**
-   * Update the data in session results table
+   * Use an AI to play and start playing
    */
-  private void updateSessionResults() {
-    sessionsResults.getItems().clear();
-    for (var row : AiSingleton.getInstance().getReports()) {
-      sessionsResults.getItems().add(0, row);
-    }
-  }
-
-  /**
-   * Update the data in model data table
-   */
-  private void updateModelData() {
-    modelData.getItems().clear();
-    for (var row : AiSingleton.getInstance().getModel().entrySet()) {
-      modelData.getItems().add(new ModelRow(row.getKey(), row.getValue()));
-    }
-  }
-
-  /**
-   * Initialize the model data table
-   */
-  private void initializeModelDataTable() {
-    modelData.setEditable(true);
-    modelData.getColumns().add(createColumnsFromClass("Board states", "key", modelData.getMinWidth()/2));
-    modelData.getColumns().add(createColumnsFromClass("Weight", "value", modelData.getMinWidth()/2));
-  }
-
-  /**
-   * Initialize the session results table
-   */
-  private void initializeSessionResultsTable() {
-    sessionsResults.setEditable(true);
-    String[][] columns = {
-            {"Session number", "sessionNumber"},
-            {"Session won", "sessionsWon"},
-            {"Session lost", "sessionsLost"},
-            {"Total games played", "totalGamesPlayed"},
-            {"Games played", "gamesPlayed"},
-            {"Games won", "gamesWon"},
-            {"Games lost", "gamesLost"},
-            {"Win/Loss ratio", "winLostRatio"},
-    };
-    double width = sessionsResults.getPrefWidth() / columns.length;
-    for (var col : columns) {
-      sessionsResults.getColumns().add(createColumnsFromClass(col[0], col[1], width));
+  private void useAi() {
+    try {
+      while (AiSingleton.getInstance().getPlaying()) {
+        AiSingleton.getInstance().addReport(ai.play(Integer.parseInt(sessionToDo.getText())));
+        AiSingleton.getInstance().saveModel();
+      }
+    } catch (Exception exception) {
+      System.out.println(exception.getMessage());
+      AiSingleton.getInstance().setPlaying(false);
     }
   }
 
@@ -202,17 +231,5 @@ public class AiController extends GlobalButtons implements Initializable {
     col.setCellValueFactory(new PropertyValueFactory<>(name));
     col.setPrefWidth(width);
     return col;
-  }
-
-  /**
-   * Get the scene of this controller
-   * @return the scene
-   */
-  public static Scene getScene() throws IOException {
-    return new Scene(
-            new FXMLLoader(
-                    MainApplication.class.getResource("ai-view.fxml")
-            ).load()
-    );
   }
 }

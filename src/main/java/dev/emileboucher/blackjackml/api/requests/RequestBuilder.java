@@ -26,6 +26,9 @@ public abstract class RequestBuilder {
    */
   public Body body = new EmptyBody();
 
+  //=======================================================================
+  //  Function to override
+  //-----------------------------------------------------------------------
   /**
    * Add the ip of the server to the request
    * @param ip of the server
@@ -39,6 +42,9 @@ public abstract class RequestBuilder {
    */
   public abstract RequestBuilder addType();
 
+  //=======================================================================
+  //  Function with a default behavior
+  //-----------------------------------------------------------------------
   /**
    * Add cookies to the request if there's one
    * @param manager cookies managers

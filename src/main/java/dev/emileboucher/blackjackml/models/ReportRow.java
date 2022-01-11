@@ -15,6 +15,9 @@ public class ReportRow {
   private int  gamesLost;
   private int precisions = 2;
 
+  //=======================================================================
+  //  Constructors
+  //-----------------------------------------------------------------------
   /**
    * Full constructor if we need to change any value
    * @param sessionNumber of the row
@@ -47,6 +50,9 @@ public class ReportRow {
     this.gamesLost = 0;
   }
 
+  //=======================================================================
+  //  Functions
+  //-----------------------------------------------------------------------
   /**
    * Increase the session number by 1
    */
@@ -65,6 +71,17 @@ public class ReportRow {
   }
 
   /**
+   * Create a full copy of the row
+   * @return [ReportRow]
+   */
+  public ReportRow copy() {
+    return new ReportRow(sessionNumber, sessionsWon, sessionsLost, totalGamesPlayed, gamesWon, gamesLost);
+  }
+
+  //=======================================================================
+  //  Calculated field
+  //-----------------------------------------------------------------------
+  /**
    * Get the win rate as a string with 2 decimale precision
    * @return XX.XX % or Exploration
    */
@@ -76,6 +93,17 @@ public class ReportRow {
     return fractionaryNumber + " %";
   }
 
+  /**
+   * Get the total of games played since the last reset
+   * @return total of games played
+   */
+  public int getGamesPlayed() {
+    return gamesLost + gamesWon;
+  }
+
+  //=======================================================================
+  //  Getters and Setters
+  //-----------------------------------------------------------------------
   /**
    * Get the session number
    * @return session number
@@ -106,14 +134,6 @@ public class ReportRow {
    */
   public long getTotalGamesPlayed() {
     return totalGamesPlayed;
-  }
-
-  /**
-   * Get the total of games played since the last reset
-   * @return total of games played
-   */
-  public int getGamesPlayed() {
-    return gamesLost + gamesWon;
   }
 
   /**
@@ -194,13 +214,5 @@ public class ReportRow {
    */
   public void setPrecisions(int number) {
     this.precisions = number;
-  }
-
-  /**
-   * Create a full copy of the row
-   * @return [ReportRow]
-   */
-  public ReportRow copy() {
-    return new ReportRow(sessionNumber, sessionsWon, sessionsLost, totalGamesPlayed, gamesWon, gamesLost);
   }
 }

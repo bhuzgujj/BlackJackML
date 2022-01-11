@@ -2,7 +2,7 @@ package dev.emileboucher.blackjackml;
 
 import dev.emileboucher.blackjackml.controllers.AiController;
 import dev.emileboucher.blackjackml.controllers.PlayerController;
-import dev.emileboucher.blackjackml.singletons.GlobalSingleton;
+import dev.emileboucher.blackjackml.singletons.SceneSingleton;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -18,27 +18,45 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The application to play or to use AI to play blackjack
+ * @author Émile Boucher
+ */
 public class MainApplication extends Application {
   public static final String NAME = "MainMenu";
   public static final String TITLE = "BlackJack";
   public static final int GENERAL_MARGIN = 20;
   public static final int FONT_SIZE = 14;
 
+  /**
+   * The function starting the app
+   * @param stage of the main scene
+   * @throws IOException when files are missing
+   */
   @Override
   public void start(Stage stage) throws IOException {
     stage.setTitle(TITLE);
     initializeScenes(stage);
-    GlobalSingleton.getInstance().loadScene(NAME);
+    SceneSingleton.getInstance().loadScene(NAME);
     stage.show();
   }
 
+  /**
+   * Add all scene to the Global singleton
+   * @param stage of the main scene
+   * @throws IOException when files are missing
+   */
   private void initializeScenes(Stage stage) throws IOException {
-    GlobalSingleton.getInstance().addScene(PlayerController.NAME, PlayerController.getScene());
-    GlobalSingleton.getInstance().addScene(AiController.NAME, AiController.getScene());
-    GlobalSingleton.getInstance().addScene(NAME, mainMenu());
-    GlobalSingleton.getInstance().setStage(stage);
+    SceneSingleton.getInstance().addScene(PlayerController.NAME, PlayerController.getScene());
+    SceneSingleton.getInstance().addScene(AiController.NAME, AiController.getScene());
+    SceneSingleton.getInstance().addScene(NAME, mainMenu());
+    SceneSingleton.getInstance().setStage(stage);
   }
 
+  /**
+   * Create the scene of the main menu
+   * @return the scene of the main menu
+   */
   public Scene mainMenu() {
     VBox container = new VBox();
     container.getChildren().add(createMainBtns());
@@ -46,6 +64,10 @@ public class MainApplication extends Application {
     return new Scene(container);
   }
 
+  /**
+   * Create the general options buttons
+   * @return the general options buttons
+   */
   private VBox createOptionBtns() {
     Button exit = new Button("Exit");
     exit.setMaxWidth(Double.POSITIVE_INFINITY);
@@ -62,6 +84,10 @@ public class MainApplication extends Application {
     return container;
   }
 
+  /**
+   * Create the buttons that access the other scenes
+   * @return the buttons that access the other scenes
+   */
   private VBox createMainBtns() {
     VBox topButtons = new VBox();
     topButtons.setPadding(new Insets(GENERAL_MARGIN));
@@ -72,6 +98,11 @@ public class MainApplication extends Application {
     return topButtons;
   }
 
+  /**
+   * Create a label
+   * @param title of the label
+   * @param menu to add the label to
+   */
   private void createLabel(String title, Pane menu) {
     Label btn = new Label(title);
     btn.setFont(new Font(FONT_SIZE));
@@ -79,12 +110,18 @@ public class MainApplication extends Application {
     menu.getChildren().add(btn);
   }
 
-  private void createMenuButton(String title, Pane menu, String sceneName) {
+  /**
+   * Create a button to change scene
+   * @param title of the button
+   * @param menu to add the label to
+   * @param name of the scene
+   */
+  private void createMenuButton(String title, Pane menu, String name) {
     Button btn = new Button(title);
     btn.setMaxWidth(Double.POSITIVE_INFINITY);
     btn.setFont(new Font(FONT_SIZE));
     btn.setOnMouseClicked(mouseEvent -> {
-      GlobalSingleton.getInstance().loadScene(sceneName);
+      SceneSingleton.getInstance().loadScene(name);
     });
 
     HBox container = new HBox();
@@ -95,6 +132,10 @@ public class MainApplication extends Application {
     menu.getChildren().add(container);
   }
 
+  /**
+   * The function called when the app is started
+   * @param args in commandline
+   */
   public static void main(String[] args) {
     launch();
   }

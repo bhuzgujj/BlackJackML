@@ -1,11 +1,9 @@
 package dev.emileboucher.blackjackml.controllers;
 
-import dev.emileboucher.blackjackml.MainApplication;
+import dev.emileboucher.blackjackml.gamehandlers.PlayerHandler;
 import dev.emileboucher.blackjackml.models.GlobalButtons;
 import dev.emileboucher.blackjackml.models.responses.Card;
-import dev.emileboucher.blackjackml.gamehandlers.PlayerHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,10 +17,17 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * The controller of the UI for the player interactions
+ */
 public class PlayerController extends GlobalButtons implements Initializable {
   public static final String NAME = "PlayerController";
   public static final String BET_PREFIX = "Bet : ";
   private final PlayerHandler handler = new PlayerHandler();
+
+  //=======================================================================
+  //  JavaFX components
+  //-----------------------------------------------------------------------
   @FXML
   public Label cash = new Label();
   @FXML
@@ -46,17 +51,24 @@ public class PlayerController extends GlobalButtons implements Initializable {
   @FXML
   private final HBox playerCard = new HBox();
 
-  @Override
-  public void initialize(URL url, ResourceBundle resourceBundle) {
-    betText.setText(BET_PREFIX + betSlider.getValue());
-    initializeBetSlider();
-    initializeBetAmount();
-    hitBtn.setDisable(true);
-    holdBtn.setDisable(true);
-    flagBtn.setDisable(true);
-    updateUI();
+  //=======================================================================
+  //  External use function
+  //-----------------------------------------------------------------------
+  /**
+   * Get the scene of this controller
+   * @return the scene
+   * @throws IOException if the ressource doesn't exist
+   */
+  public static Scene getScene() throws IOException {
+    return createScene("player-view.fxml");
   }
 
+  //=======================================================================
+  //  UI updaters
+  //-----------------------------------------------------------------------
+  /**
+   * Update the entire UI
+   */
   private void updateUI() {
     dealerCard.getChildren().clear();
     playerCard.getChildren().clear();
@@ -71,6 +83,28 @@ public class PlayerController extends GlobalButtons implements Initializable {
     }
   }
 
+  //=======================================================================
+  //  Initialization
+  //-----------------------------------------------------------------------
+  /**
+   * Initialize the controller
+   * @param url of the controller
+   * @param resourceBundle sent to the controller
+   */
+  @Override
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+    betText.setText(BET_PREFIX + betSlider.getValue());
+    initializeBetSlider();
+    initializeBetAmount();
+    hitBtn.setDisable(true);
+    holdBtn.setDisable(true);
+    flagBtn.setDisable(true);
+    updateUI();
+  }
+
+  /**
+   * Initialize the slider
+   */
   private void initializeBetSlider() {
     betSlider.setMax(50.4);
     betSlider.setMin(1);
@@ -82,6 +116,9 @@ public class PlayerController extends GlobalButtons implements Initializable {
     });
   }
 
+  /**
+   * Initialize the betAmount field
+   */
   private void initializeBetAmount() {
     betAmount.setText("25");
     betAmount.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -100,6 +137,13 @@ public class PlayerController extends GlobalButtons implements Initializable {
     });
   }
 
+  //=======================================================================
+  //  JavaFX callbacks
+  //-----------------------------------------------------------------------
+
+  /**
+   * Send a request to initiate the game
+   */
   @FXML
   private void dealBtn() {
     dealBtn.setDisable(true);
@@ -108,6 +152,9 @@ public class PlayerController extends GlobalButtons implements Initializable {
     updateUI();
   }
 
+  /**
+   * Send a request to get another card from the dealer
+   */
   @FXML
   private void hitBtn() {
     hitBtn.setDisable(true);
@@ -116,6 +163,9 @@ public class PlayerController extends GlobalButtons implements Initializable {
     updateUI();
   }
 
+  /**
+   * Send a request to hold your current card at get if you win or not
+   */
   @FXML
   private void holdBtn() {
     holdBtn.setDisable(true);
@@ -124,6 +174,9 @@ public class PlayerController extends GlobalButtons implements Initializable {
     updateUI();
   }
 
+  /**
+   * Send a request to finish a session if you have won that session
+   */
   @FXML
   private void flagBtn() {
     flagBtn.setDisable(true);
@@ -131,6 +184,9 @@ public class PlayerController extends GlobalButtons implements Initializable {
     updateUI();
   }
 
+  /**
+   * Send a request to get the board state
+   */
   @FXML
   private void loadBtn() {
     loadBtn.setDisable(true);
@@ -138,21 +194,18 @@ public class PlayerController extends GlobalButtons implements Initializable {
     updateUI();
   }
 
+  //=======================================================================
+  //  Utility functions
+  //-----------------------------------------------------------------------
+
+  /**
+   * Set the right buttons enable or disable depending on if the game
+   *    is still active
+   * @param isPlaying at the moment of the button setting
+   */
   private void setButtonState(Boolean isPlaying) {
     dealBtn.setDisable(isPlaying);
     hitBtn.setDisable(!isPlaying);
     holdBtn.setDisable(!isPlaying);
-  }
-
-  /**
-   * Get the scene of this controller
-   * @return the scene
-   */
-  public static Scene getScene() throws IOException {
-    return new Scene(
-            new FXMLLoader(
-                    MainApplication.class.getResource("player-view.fxml")
-            ).load()
-    );
   }
 }

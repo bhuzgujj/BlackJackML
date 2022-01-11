@@ -5,28 +5,38 @@ import javafx.stage.Stage;
 
 import java.util.HashMap;
 
-public class GlobalSingleton {
-  private static GlobalSingleton instance = null;
-  private Stage stage = null;
+/**
+ * Singleton to handle the scene swapping
+ */
+public class SceneSingleton {
+  private static SceneSingleton instance = null;
   private final HashMap<String, Scene> scenes = new HashMap<>();
+  private Stage stage = null;
 
-  private GlobalSingleton() {
-
-  }
+  //=======================================================================
+  //  Singleton
+  //-----------------------------------------------------------------------
+  /**
+   * Private constructor for the singleton
+   */
+  private SceneSingleton() { }
 
   /**
    * Get the instance
    * @return instance of [AiSingleton]
    */
-  public static GlobalSingleton getInstance() {
+  public static SceneSingleton getInstance() {
     if (instance == null) {
-      synchronized (GlobalSingleton.class) {
-        instance = new GlobalSingleton();
+      synchronized (SceneSingleton.class) {
+        instance = new SceneSingleton();
       }
     }
     return instance;
   }
 
+  //=======================================================================
+  //  Scene
+  //-----------------------------------------------------------------------
   /**
    * Add a scene to the
    * @param name of the scene
