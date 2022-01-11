@@ -1,5 +1,6 @@
 package dev.emileboucher.blackjackml.singletons;
 
+import dev.emileboucher.blackjackml.files.DataManager;
 import dev.emileboucher.blackjackml.models.datamodels.ReinforcementLearning;
 import dev.emileboucher.blackjackml.files.JsonFiles;
 import dev.emileboucher.blackjackml.models.ReportRow;
@@ -16,13 +17,13 @@ public class AiSingleton {
     private final ReinforcementLearning model;
     private final List<ReportRow> reports;
     private Boolean isPlaying = false;
-    private final JsonFiles dataManager;
+    private final DataManager<ReinforcementLearning> dataManager;
     private List<Runnable> callbacks = new LinkedList<>();
     private Runnable onGamestateChange = null;
     private Runnable updateSessionResults = null;
 
     private AiSingleton() {
-        dataManager = new JsonFiles("./model.json");
+        dataManager = new JsonFiles<>("./model.json", ReinforcementLearning.class);
         model = dataManager.load();
         reports = new LinkedList<>();
     }

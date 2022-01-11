@@ -1,7 +1,6 @@
 package dev.emileboucher.blackjackml.files;
 
 import com.google.gson.Gson;
-import dev.emileboucher.blackjackml.models.datamodels.ReinforcementLearning;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,41 +9,40 @@ import java.nio.file.StandardOpenOption;
 /**
  * Save and load as json locally
  */
-public class JsonFiles {
+public class JsonFiles <Model> implements DataManager<Model> {
   private final String filepath;
   private final Gson parser;
+  private final Class<Model> modelClass;
 
   /**
    * DataManager to save/load locally in the json format
    * @param filepath to load or save
    */
-  public JsonFiles(String filepath) {
+  public JsonFiles(String filepath, Class<Model> modelClass) {
     this.filepath = filepath;
+    this.modelClass = modelClass;
     parser = new Gson();
-  }
-
-  /**
-   * Save the model locally
-   * @param model of the ai for reinforcement learning
-   */
-  public void save(ReinforcementLearning model) {
-    try {
-      Files.writeString(Paths.get(filepath), parser.toJson(model), StandardOpenOption.CREATE);
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
   }
 
   /**
    * load the model locally
    * @return  model of the ai for reinforcement learning
    */
-  public ReinforcementLearning load() {
+  public Model load() {
     try {
-      return parser.fromJson(Files.readString(Paths.get(filepath)), ReinforcementLearning.class);
+      return parser.fromJson(Files.readString(Paths.get(filepath)), modelClass);
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
-    return new ReinforcementLearning();
+    return null;
+  }
+
+  @Override
+  public void save(Model model) {
+    try {
+      Files.writeString(Paths.get(filepath), parser.toJson(model), StandardOpenOption.CREATE);
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
   }
 }
