@@ -21,9 +21,11 @@ module dev.emileboucher.blackjackml {
     // MODELS
     exports dev.emileboucher.blackjackml.models;
     exports dev.emileboucher.blackjackml.models.datamodels;
+    exports dev.emileboucher.blackjackml.models.responses;
+
+    // DATAMANAGERS
     exports dev.emileboucher.blackjackml.files;
 
     exports dev.emileboucher.blackjackml.gamehandlers;
     opens dev.emileboucher.blackjackml.models to javafx.fxml;
-    exports dev.emileboucher.blackjackml.models.responses;
 }

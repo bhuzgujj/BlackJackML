@@ -8,6 +8,7 @@ import dev.emileboucher.blackjackml.models.ReportRow;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Singleton use to keep the data needed for the AI
@@ -15,17 +16,27 @@ import java.util.List;
 public class AiSingleton {
     private static AiSingleton instance = null;
     private final ReinforcementLearning model;
-    private final List<ReportRow> reports;
-    private Boolean isPlaying = false;
+    private final List<ReportRow> reports = new LinkedList<>();
     private final DataManager<ReinforcementLearning> dataManager;
-    private List<Runnable> callbacks = new LinkedList<>();
-    private Runnable onGamestateChange = null;
-    private Runnable updateSessionResults = null;
+    private final List<Runnable> onSessionNumberChange = new LinkedList<>();
+    private final List<Runnable> onGamestateChange = new LinkedList<>();
+    private final List<Runnable> updateSessionResults = new LinkedList<>();
+    private Boolean isPlaying = false;
 
+    //=======================================================================
+    //  Singleton
+    //-----------------------------------------------------------------------
+
+    /**
+     * Singleton constructor
+     */
     private AiSingleton() {
-        dataManager = new JsonFiles<>("./model.json", ReinforcementLearning.class);
-        model = dataManager.load();
-        reports = new LinkedList<>();
+        dataManager = new JsonFiles<>(
+            "./model.json",
+            ReinforcementLearning.class
+        );
+        model = Optional.ofNullable(dataManager.load())
+                    .orElse(new ReinforcementLearning());
     }
 
     /**
@@ -41,46 +52,15 @@ public class AiSingleton {
         return instance;
     }
 
+    //=======================================================================
+    //  Model
+    //-----------------------------------------------------------------------
     /**
      * Get the model of the Reinformencent Learning
      * @return the model of Reinformencent Learning
      */
     public HashMap<String, Integer> getModel() {
         return model.getData();
-    }
-
-    /**
-     * Get the list of the reports row
-     * @return the list of all reports
-     */
-    public List<ReportRow> getReports() {
-        return reports;
-    }
-
-    public void addReport(ReportRow report) {
-        reports.add(report);
-        if (updateSessionResults != null) {
-            updateSessionResults.run();
-        }
-    }
-
-    /**
-     * Tell the ai if it needs to stop
-     * @return isPlaying with the api
-     */
-    public Boolean getPlaying() {
-        return isPlaying;
-    }
-
-    /**
-     * Set if the ai should play
-     * @param isPlaying with the api
-     */
-    public void setPlaying(Boolean isPlaying) {
-        this.isPlaying = isPlaying;
-        if (onGamestateChange != null) {
-            onGamestateChange.run();
-        }
     }
 
     /**
@@ -126,7 +106,7 @@ public class AiSingleton {
      */
     public void incrementeSessionNumber() {
         model.setSessionNumber(model.getSessionNumber() + 1);
-        callbacks.forEach(Runnable::run);
+        onSessionNumberChange.forEach(Runnable::run);
     }
 
     /**
@@ -145,26 +125,80 @@ public class AiSingleton {
         model.setGamePlayed(gamePlayed);
     }
 
+    //=======================================================================
+    //  Reports
+    //-----------------------------------------------------------------------
     /**
-     * Get the list of callbacks
-     * @return the list of callbacks
+     * Get the list of the reports row
+     * @return the list of all reports
      */
-    public List<Runnable> getCallbacks() {
-        return callbacks;
+    public List<ReportRow> getReports() {
+        return reports;
     }
 
     /**
-     * Empty the list of callbacks
+     * Add a report to the list of reports
+     * @param report for X amount of sessions
+     */
+    public void addReport(ReportRow report) {
+        reports.add(report);
+        updateSessionResults.forEach(Runnable::run);
+    }
+
+    //=======================================================================
+    //  Is playing
+    //-----------------------------------------------------------------------
+    /**
+     * Tell the ai if it needs to stop
+     * @return isPlaying with the api
+     */
+    public Boolean getPlaying() {
+        return isPlaying;
+    }
+
+    /**
+     * Set if the ai should play
+     * @param isPlaying with the api
+     */
+    public void setPlaying(Boolean isPlaying) {
+        this.isPlaying = isPlaying;
+        onGamestateChange.forEach(Runnable::run);
+    }
+
+    //=======================================================================
+    //  Callbacks
+    //-----------------------------------------------------------------------
+
+    /**
+     * Empty the lists of callbacks
      */
     public void EmptyCallbacks() {
-        callbacks = new LinkedList<>();
+        onSessionNumberChange.clear();
+        onGamestateChange.clear();
+        updateSessionResults.clear();
     }
 
-    public void setOnGamestateChange(Runnable onGamestateChange) {
-        this.onGamestateChange = onGamestateChange;
+    /**
+     * Add a callback for everytime the session number changes
+     * @param callback executed everytime the session number changes
+     */
+    public void addOnSessionNumberChange(Runnable callback) {
+        this.onSessionNumberChange.add(callback);
     }
 
-    public void setOnSessionStateChange(Runnable updateSessionResults) {
-        this.updateSessionResults = updateSessionResults;
+    /**
+     * Add a callback for everytime the gamestate changes
+     * @param callback executed everytime the gamestate changes
+     */
+    public void addOnGamestateChange(Runnable callback) {
+        this.onGamestateChange.add(callback);
+    }
+
+    /**
+     * Add a callback for everytime the session state changes
+     * @param callback executed everytime the session state changes
+     */
+    public void addOnSessionStateChange(Runnable callback) {
+        this.updateSessionResults.add(callback);
     }
 }

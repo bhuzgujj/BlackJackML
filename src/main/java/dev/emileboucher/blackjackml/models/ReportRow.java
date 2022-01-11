@@ -13,6 +13,7 @@ public class ReportRow {
     private long totalGamesPlayed;
     private int  gamesWon;
     private int  gamesLost;
+    private int precisions = 2;
 
     /**
      * Full constructor if we need to change any value
@@ -71,7 +72,7 @@ public class ReportRow {
         if (gamesWon + gamesLost < 1) return "Exploration";
         BigDecimal fractionaryNumber = BigDecimal.valueOf(
                 ((double) gamesWon / (gamesWon + gamesLost)) * 100
-        ).setScale(2, RoundingMode.HALF_UP);
+        ).setScale(precisions, RoundingMode.HALF_UP);
         return fractionaryNumber + " %";
     }
 
@@ -177,6 +178,22 @@ public class ReportRow {
      */
     public void setGamesLost(int gamesLost) {
         this.gamesLost = gamesLost;
+    }
+
+    /**
+     * Get the decimal precision of the win rate
+     * @return the number of digit post comas
+     */
+    public int getPrecisions() {
+        return precisions;
+    }
+
+    /**
+     * Get the decimal precision of the win rate
+     * @param number of digit post comas
+     */
+    public void setPrecisions(int number) {
+        this.precisions = number;
     }
 
     /**

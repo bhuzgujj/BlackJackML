@@ -54,6 +54,13 @@ public class RestClient {
     }
 
     /**
+     * Reset the cookies in the CookieManager
+     */
+    public void resetCookies() {
+        cookieManager = new CookieManager();
+    }
+
+    /**
      * Updates the cookies
      * @param response that have the cookies or not
      * @throws IOException from the [CookieManager]
@@ -70,12 +77,5 @@ public class RestClient {
      */
     private<Model> Model Parse(String body, Class<Model> modelClass) {
         return jsonParser.fromJson(body, modelClass);
-    }
-
-    /**
-     * Reset the cookies in the CookieManager
-     */
-    public void resetCookies() {
-        cookieManager = new CookieManager();
     }
 }

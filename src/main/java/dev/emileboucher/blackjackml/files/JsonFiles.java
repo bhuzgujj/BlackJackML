@@ -25,8 +25,8 @@ public class JsonFiles <Model> implements DataManager<Model> {
   }
 
   /**
-   * load the model locally
-   * @return  model of the ai for reinforcement learning
+   * Load the model from a json file stored locally
+   * @return the [Model]
    */
   public Model load() {
     try {
@@ -37,6 +37,10 @@ public class JsonFiles <Model> implements DataManager<Model> {
     return null;
   }
 
+  /**
+   * Save the model locally as json
+   * @param model of the data
+   */
   @Override
   public void save(Model model) {
     try {

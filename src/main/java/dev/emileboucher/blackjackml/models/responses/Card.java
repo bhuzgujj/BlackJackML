@@ -14,7 +14,7 @@ public class Card {
     @Override
     public String toString() {
         return switch (rank) {
-            case "J", "Q", "K" -> "F";
+            case "10", "J", "Q", "K" -> "F";
             default -> rank;
         };
     }

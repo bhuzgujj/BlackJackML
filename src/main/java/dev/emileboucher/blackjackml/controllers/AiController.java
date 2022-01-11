@@ -1,10 +1,13 @@
 package dev.emileboucher.blackjackml.controllers;
 
+import dev.emileboucher.blackjackml.MainApplication;
 import dev.emileboucher.blackjackml.gamehandlers.AiHandling;
 import dev.emileboucher.blackjackml.gamehandlers.ReinforcementLearningHandling;
+import dev.emileboucher.blackjackml.models.GlobalButtons;
 import dev.emileboucher.blackjackml.models.ModelRow;
 import dev.emileboucher.blackjackml.models.ReportRow;
 import dev.emileboucher.blackjackml.singletons.AiSingleton;
+import dev.emileboucher.blackjackml.singletons.GlobalSingleton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -16,10 +19,12 @@ import java.util.ResourceBundle;
 /**
  * Controller for the AI training/play
  */
-public class AiController implements Initializable {
+public class AiController extends GlobalButtons implements Initializable {
     private final AiHandling ai = new ReinforcementLearningHandling();
     @FXML
     private Button start = new Button();
+    @FXML
+    private Button back = new Button();
     @FXML
     private TextField sessionToDo = new TextField();
     @FXML
@@ -37,9 +42,9 @@ public class AiController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         AiSingleton.getInstance().EmptyCallbacks();
-        AiSingleton.getInstance().getCallbacks().add(this::progressBarUpdate);
-        AiSingleton.getInstance().setOnGamestateChange(this::sessionDone);
-        AiSingleton.getInstance().setOnSessionStateChange(this::updateSessionResults);
+        AiSingleton.getInstance().addOnSessionNumberChange(this::progressBarUpdate);
+        AiSingleton.getInstance().addOnGamestateChange(this::sessionDone);
+        AiSingleton.getInstance().addOnSessionStateChange(this::updateSessionResults);
         sessionToDo.setText("100");
         sessionToDo.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -64,8 +69,10 @@ public class AiController implements Initializable {
      */
     @FXML
     protected void startBtn() {
+        back.setDisable(true);
         if (AiSingleton.getInstance().getPlaying()) {
             AiSingleton.getInstance().setPlaying(false);
+            back.setDisable(false);
             sessionDone();
         } else {
             if (sessionToDo.getText().length() == 0) return;
@@ -106,6 +113,9 @@ public class AiController implements Initializable {
         }
     }
 
+    /**
+     * update the UI if the game is not playing
+     */
     private void sessionDone() {
         if (!AiSingleton.getInstance().getPlaying()) {
             updateUI();
@@ -118,12 +128,10 @@ public class AiController implements Initializable {
      * Update the progress bar for the amount of session done
      */
     private void progressBarUpdate() {
-        int session = Integer.parseInt(sessionToDo.getText());
-        if (progress.getProgress() > AiSingleton.getInstance().getProgression(session)) {
-            // updateUI();
-        }
         progress.setProgress(
-                AiSingleton.getInstance().getProgression(session)
+            AiSingleton.getInstance().getProgression(
+                Integer.parseInt(sessionToDo.getText())
+            )
         );
     }
 
@@ -161,15 +169,20 @@ public class AiController implements Initializable {
      */
     private void initializeSessionResultsTable() {
         sessionsResults.setEditable(true);
-        double width = sessionsResults.getPrefWidth() / 8;
-        sessionsResults.getColumns().add(createColumnsFromClass("Session number", "sessionNumber", width));
-        sessionsResults.getColumns().add(createColumnsFromClass("Session won", "sessionsWon", width));
-        sessionsResults.getColumns().add(createColumnsFromClass("Session lost", "sessionsLost", width));
-        sessionsResults.getColumns().add(createColumnsFromClass("Total games played", "totalGamesPlayed", width));
-        sessionsResults.getColumns().add(createColumnsFromClass("Games played", "gamesPlayed", width));
-        sessionsResults.getColumns().add(createColumnsFromClass("Games won", "gamesWon", width));
-        sessionsResults.getColumns().add(createColumnsFromClass("Games lost", "gamesLost", width));
-        sessionsResults.getColumns().add(createColumnsFromClass("Win/Loss ratio", "winLostRatio", width));
+        String[][] columns = {
+                {"Session number", "sessionNumber"},
+                {"Session won", "sessionsWon"},
+                {"Session lost", "sessionsLost"},
+                {"Total games played", "totalGamesPlayed"},
+                {"Games played", "gamesPlayed"},
+                {"Games won", "gamesWon"},
+                {"Games lost", "gamesLost"},
+                {"Win/Loss ratio", "winLostRatio"},
+        };
+        double width = sessionsResults.getPrefWidth() / columns.length;
+        for (var col : columns) {
+            sessionsResults.getColumns().add(createColumnsFromClass(col[0], col[1], width));
+        }
     }
 
     /**
@@ -187,4 +200,5 @@ public class AiController implements Initializable {
         col.setPrefWidth(width);
         return col;
     }
+
 }

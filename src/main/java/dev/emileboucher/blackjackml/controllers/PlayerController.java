@@ -1,5 +1,6 @@
 package dev.emileboucher.blackjackml.controllers;
 
+import dev.emileboucher.blackjackml.models.GlobalButtons;
 import dev.emileboucher.blackjackml.models.responses.Card;
 import dev.emileboucher.blackjackml.gamehandlers.PlayerHandler;
 import javafx.fxml.FXML;
@@ -14,7 +15,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class PlayerController implements Initializable {
+public class PlayerController extends GlobalButtons implements Initializable {
   public static final String betPrefix = "Bet : ";
   private final PlayerHandler handler = new PlayerHandler();
   @FXML
