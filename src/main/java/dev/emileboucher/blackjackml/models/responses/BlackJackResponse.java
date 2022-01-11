@@ -1,5 +1,7 @@
 package dev.emileboucher.blackjackml.models.responses;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,10 +9,10 @@ import java.util.Optional;
  * The response object structure from the api
  */
 public class BlackJackResponse {
-  public String state;
-  public Integer cash;
-  public List<Card> dealerHand;
-  public List<Card> playerHand;
+  public String state = "";
+  public Integer cash = 1000;
+  public List<Card> dealerHand = new LinkedList<>();
+  public List<Card> playerHand = new LinkedList<>();
 
   /**
    * Get the string representing the state of the board

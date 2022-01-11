@@ -25,9 +25,8 @@ public class PlayerHandler {
    * Create an class to handle the player's interaction with the api
    */
   public PlayerHandler() {
-    response.cash = 1000;
-    response.playerHand = new ArrayList<>();
-    response.dealerHand = new ArrayList<>();
+    response = Optional.ofNullable(send(new Load()))
+            .orElse(new BlackJackResponse());
   }
 
   //=======================================================================

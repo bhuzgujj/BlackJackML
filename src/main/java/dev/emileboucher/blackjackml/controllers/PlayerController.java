@@ -84,6 +84,7 @@ public class PlayerController extends GlobalButtons implements Initializable {
       playerCard.getChildren().add(new Label(card.rank + " " + card.suit));
       System.out.println(card.rank + " " + card.suit);
     }
+    setButtonState(handler.isPlaying());
   }
 
   //=======================================================================
@@ -148,9 +149,8 @@ public class PlayerController extends GlobalButtons implements Initializable {
    */
   @FXML
   private void dealBtn() {
-    dealBtn.setDisable(true);
+    disableAllBtn();
     handler.deal(Integer.parseInt(betAmount.getText()));
-    setButtonState(handler.isPlaying());
     updateUI();
   }
 
@@ -159,9 +159,8 @@ public class PlayerController extends GlobalButtons implements Initializable {
    */
   @FXML
   private void hitBtn() {
-    hitBtn.setDisable(true);
+    disableAllBtn();
     handler.hit();
-    setButtonState(handler.isPlaying());
     updateUI();
   }
 
@@ -170,9 +169,8 @@ public class PlayerController extends GlobalButtons implements Initializable {
    */
   @FXML
   private void holdBtn() {
-    holdBtn.setDisable(true);
+    disableAllBtn();
     handler.hold();
-    setButtonState(handler.isPlaying());
     updateUI();
   }
 
@@ -181,7 +179,7 @@ public class PlayerController extends GlobalButtons implements Initializable {
    */
   @FXML
   private void flagBtn() {
-    flagBtn.setDisable(true);
+    disableAllBtn();
     handler.flag();
     updateUI();
   }
@@ -191,7 +189,7 @@ public class PlayerController extends GlobalButtons implements Initializable {
    */
   @FXML
   private void loadBtn() {
-    loadBtn.setDisable(true);
+    disableAllBtn();
     handler.load();
     updateUI();
   }
@@ -205,8 +203,22 @@ public class PlayerController extends GlobalButtons implements Initializable {
    * @param isPlaying at the moment of the button setting
    */
   private void setButtonState(Boolean isPlaying) {
-    dealBtn.setDisable(isPlaying);
-    hitBtn.setDisable(!isPlaying);
-    holdBtn.setDisable(!isPlaying);
+    boolean hasWon = handler.getCash() >= 2000;
+    dealBtn.setDisable(hasWon || isPlaying);
+    hitBtn.setDisable(hasWon || !isPlaying);
+    holdBtn.setDisable(hasWon || !isPlaying);
+    loadBtn.setDisable(false);
+    flagBtn.setDisable(!hasWon);
+  }
+
+  /**
+   * Disable all button
+   */
+  private void disableAllBtn() {
+    dealBtn.setDisable(true);
+    hitBtn.setDisable(true);
+    flagBtn.setDisable(true);
+    holdBtn.setDisable(true);
+    loadBtn.setDisable(true);
   }
 }

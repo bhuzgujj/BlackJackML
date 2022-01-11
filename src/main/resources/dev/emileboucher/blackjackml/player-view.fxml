@@ -36,18 +36,16 @@
    <bottom>
       <VBox>
          <Slider fx:id="betSlider"
-                 layoutX="21.0"
-                 layoutY="320.0"
                  prefHeight="14.0"
                  maxWidth="Infinity"
          />
          <HBox style="-fx-padding: 5">
-            <Label fx:id="betText" layoutX="21.0" layoutY="349.0" text="Bet :">
+            <Label fx:id="betText" text="Bet :">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="betAmount" layoutX="61.0" layoutY="350.0" />
+            <TextField fx:id="betAmount" />
             <Label fx:id="cash" text=" / 1000 $">
                <font>
                   <Font size="18.0" />
