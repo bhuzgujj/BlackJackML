@@ -163,8 +163,8 @@ public class AiController extends GlobalButtons implements Initializable {
    */
   private void initializeModelDataTable() {
     modelData.setEditable(true);
-    modelData.getColumns().add(createColumnsFromClass("Board states", "key", modelData.getPrefWidth()/2));
-    modelData.getColumns().add(createColumnsFromClass("Weight", "value", modelData.getPrefWidth()/2));
+    modelData.getColumns().add(createColumnsFromClass("Board states", "key", modelData.getMinWidth()/2));
+    modelData.getColumns().add(createColumnsFromClass("Weight", "value", modelData.getMinWidth()/2));
   }
 
   /**

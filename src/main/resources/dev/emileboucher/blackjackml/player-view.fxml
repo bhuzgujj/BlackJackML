@@ -4,17 +4,22 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane
-        stylesheets="@player-view.css"
-        xmlns="http://javafx.com/javafx/16"
-        xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="dev.emileboucher.blackjackml.controllers.PlayerController"
-        style="-fx-padding: 14"
-        minHeight="400"
+<BorderPane fx:controller="dev.emileboucher.blackjackml.controllers.PlayerController"
+            xmlns="http://javafx.com/javafx/16"
+            xmlns:fx="http://javafx.com/fxml/1"
+            style="-fx-padding: 14"
+            stylesheets="@player-view.css"
+            minHeight="400"
+            minWidth="400"
 >
    <bottom>
       <VBox>
-         <Slider fx:id="betSlider" layoutX="21.0" layoutY="320.0" prefHeight="14.0" prefWidth="385.0" />
+         <Slider fx:id="betSlider"
+                 layoutX="21.0"
+                 layoutY="320.0"
+                 prefHeight="14.0"
+                 maxWidth="Infinity"
+         />
          <HBox style="-fx-padding: 5">
             <Label fx:id="betText" layoutX="21.0" layoutY="349.0" text="Bet :">
                <font>
