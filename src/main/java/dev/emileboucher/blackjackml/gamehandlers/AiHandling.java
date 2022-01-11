@@ -1,5 +1,6 @@
 package dev.emileboucher.blackjackml.gamehandlers;
 
+import dev.emileboucher.blackjackml.models.BlackJackClient;
 import dev.emileboucher.blackjackml.models.ReportRow;
 
 /**

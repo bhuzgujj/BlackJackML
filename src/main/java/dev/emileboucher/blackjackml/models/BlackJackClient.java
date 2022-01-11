@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.gamehandlers;
+package dev.emileboucher.blackjackml.models;
 
 import dev.emileboucher.blackjackml.api.RestClient;
 import dev.emileboucher.blackjackml.api.requests.RequestBuilder;

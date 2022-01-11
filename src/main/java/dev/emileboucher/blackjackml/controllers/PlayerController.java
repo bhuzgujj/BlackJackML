@@ -80,24 +80,20 @@ public class PlayerController extends GlobalButtons implements Initializable {
     playerCard.getChildren().clear();
     cash.setText(" / " + handler.getCash() + " $");
     for (Card card : handler.getDealerCards()) {
-      VBox container = new VBox();
-      container.setPadding(new Insets(5));
-      Label rank = new Label(card.rank);
-      Label suit = new Label(card.suit);
-      container.getChildren().addAll(rank, suit);
-      container.alignmentProperty().setValue(Pos.CENTER);
-      dealerCard.getChildren().add(container);
+      addCard(card, dealerCard);
     }
     for (Card card : handler.getPlayerCards()) {
-      VBox container = new VBox();
-      container.setPadding(new Insets(5));
-      Label rank = new Label(card.rank);
-      Label suit = new Label(card.suit);
-      container.getChildren().addAll(rank, suit);
-      container.alignmentProperty().setValue(Pos.CENTER);
-      playerCard.getChildren().add(container);
+      addCard(card, playerCard);
     }
     setButtonState(handler.isPlaying());
+  }
+
+  private void addCard(Card card, HBox hBox) {
+    VBox container = new VBox();
+    container.setPadding(new Insets(5));
+    container.getChildren().addAll(new Label(card.rank), new Label(card.suit));
+    container.alignmentProperty().setValue(Pos.CENTER);
+    hBox.getChildren().add(container);
   }
 
   //=======================================================================

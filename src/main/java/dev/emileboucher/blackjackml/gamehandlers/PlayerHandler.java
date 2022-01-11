@@ -1,12 +1,12 @@
 package dev.emileboucher.blackjackml.gamehandlers;
 
 import dev.emileboucher.blackjackml.api.requests.RequestBuilder;
+import dev.emileboucher.blackjackml.models.BlackJackClient;
 import dev.emileboucher.blackjackml.models.requests.*;
 import dev.emileboucher.blackjackml.models.responses.BlackJackResponse;
 import dev.emileboucher.blackjackml.models.responses.Card;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 public class PlayerHandler {
   private final BlackJackClient client = new BlackJackClient("http://localhost:3000");
-  private BlackJackResponse response = new BlackJackResponse();
+  private BlackJackResponse response;
 
   //=======================================================================
   //  Constructors
@@ -52,37 +52,32 @@ public class PlayerHandler {
   /**
    * A request to initiate the game
    * @param bet for the game
-   * @return the response from the api
    */
-  public BlackJackResponse deal(Integer bet) {
-    client.resetCookies();
-    return send(new Deal(bet));
+  public void deal(Integer bet) {
+    send(new Deal(bet));
   }
 
   /**
    * A request to get another card from the dealer
-   * @return the response from the api
    */
-  public BlackJackResponse hit() {
-    return send(new Hit());
+  public void hit() {
+    send(new Hit());
   }
 
   /**
    * A request to hold your current card at get if you win or not
-   * @return the response from the api
    */
-  public BlackJackResponse hold() {
-    return send(new Hold());
+  public void hold() {
+    send(new Hold());
   }
 
   /**
    * A request to finish a session if you have won that session
-   * @return the response from the api
    */
-  public BlackJackResponse flag() {
+  public void flag() {
     send(new Flag());
     client.resetCookies();
-    return load();
+    load();
   }
 
   /**
