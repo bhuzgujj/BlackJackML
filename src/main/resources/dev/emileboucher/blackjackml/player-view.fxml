@@ -12,7 +12,6 @@
             minHeight="400"
             minWidth="400"
 >
-
    <center>
       <VBox minHeight="300">
          <VBox minHeight="150">
@@ -21,7 +20,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <HBox fx:id="dealerCard" minHeight="100" />
+            <HBox fx:id="dealerCard" minHeight="100" maxWidth="Infinity"/>
          </VBox>
          <VBox minHeight="150">
             <Label text="Player's cards: ">
@@ -29,7 +28,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <HBox fx:id="playerCard" minHeight="100"/>
+            <HBox fx:id="playerCard" minHeight="100" maxWidth="Infinity"/>
          </VBox>
       </VBox>
    </center>

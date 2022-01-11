@@ -5,12 +5,15 @@ import dev.emileboucher.blackjackml.models.GlobalButtons;
 import dev.emileboucher.blackjackml.models.responses.Card;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,9 +53,9 @@ public class PlayerController extends GlobalButtons implements Initializable {
   @FXML
   private TextField betAmount = new TextField();
   @FXML
-  private final HBox dealerCard = new HBox();
+  private HBox dealerCard = new HBox();
   @FXML
-  private final HBox playerCard = new HBox();
+  private HBox playerCard = new HBox();
 
   //=======================================================================
   //  External use function
@@ -77,12 +80,22 @@ public class PlayerController extends GlobalButtons implements Initializable {
     playerCard.getChildren().clear();
     cash.setText(" / " + handler.getCash() + " $");
     for (Card card : handler.getDealerCards()) {
-      dealerCard.getChildren().add(new Label(card.rank + " " + card.suit));
-      System.out.println(card.rank + " " + card.suit);
+      VBox container = new VBox();
+      container.setPadding(new Insets(5));
+      Label rank = new Label(card.rank);
+      Label suit = new Label(card.suit);
+      container.getChildren().addAll(rank, suit);
+      container.alignmentProperty().setValue(Pos.CENTER);
+      dealerCard.getChildren().add(container);
     }
     for (Card card : handler.getPlayerCards()) {
-      playerCard.getChildren().add(new Label(card.rank + " " + card.suit));
-      System.out.println(card.rank + " " + card.suit);
+      VBox container = new VBox();
+      container.setPadding(new Insets(5));
+      Label rank = new Label(card.rank);
+      Label suit = new Label(card.suit);
+      container.getChildren().addAll(rank, suit);
+      container.alignmentProperty().setValue(Pos.CENTER);
+      playerCard.getChildren().add(container);
     }
     setButtonState(handler.isPlaying());
   }
