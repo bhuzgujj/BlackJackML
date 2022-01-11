@@ -1,6 +1,6 @@
-package dev.emileboucher.blackjackml.intelligence;
+package dev.emileboucher.blackjackml.gamehandlers;
 
-import dev.emileboucher.blackjackml.api.RestClient;
+import dev.emileboucher.blackjackml.models.BlackJackClient;
 import dev.emileboucher.blackjackml.models.ReportRow;
 
 /**
@@ -8,7 +8,7 @@ import dev.emileboucher.blackjackml.models.ReportRow;
  */
 public abstract class AiHandling {
   ReportRow row = new ReportRow(0, 0);
-  RestClient client = new RestClient("http://localhost:3000");
+  BlackJackClient client = new BlackJackClient("http://localhost:3000");
 
   /**
    * Let the AI play

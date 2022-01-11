@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:controller="dev.emileboucher.blackjackml.controllers.PlayerController"
+            xmlns="http://javafx.com/javafx/16"
+            xmlns:fx="http://javafx.com/fxml/1"
+            style="-fx-padding: 14"
+            stylesheets="@player-view.css"
+            minHeight="400"
+            minWidth="400"
+>
+   <center>
+      <VBox minHeight="300">
+         <VBox minHeight="150">
+            <Label text="Dealer's cards: ">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <HBox fx:id="dealerCard" minHeight="100" maxWidth="Infinity"/>
+         </VBox>
+         <VBox minHeight="150">
+            <Label text="Player's cards: ">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <HBox fx:id="playerCard" minHeight="100" maxWidth="Infinity"/>
+         </VBox>
+      </VBox>
+   </center>
+   <bottom>
+      <VBox>
+         <Slider fx:id="betSlider"
+                 prefHeight="14.0"
+                 maxWidth="Infinity"
+         />
+         <HBox style="-fx-padding: 5">
+            <Label fx:id="betText" text="Bet :">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="betAmount" />
+            <Label fx:id="cash" text=" / 1000 $">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </HBox>
+         <HBox>
+            <HBox HBox.hgrow="ALWAYS">
+               <Button fx:id="dealBtn" mnemonicParsing="false" text="Deal" onAction="#dealBtn" />
+               <Button fx:id="hitBtn" mnemonicParsing="false" text="Hit" onAction="#hitBtn"  />
+               <Button fx:id="holdBtn" mnemonicParsing="false" text="Hold" onAction="#holdBtn" />
+               <Button fx:id="flagBtn" mnemonicParsing="false" text="Flag" onAction="#flagBtn" />
+               <Button fx:id="loadBtn" mnemonicParsing="false" text="Load" onAction="#loadBtn" />
+            </HBox>
+            <Button mnemonicParsing="false" text="Back to menu" onAction="#backToMainMenu" />
+         </HBox>
+      </VBox>
+   </bottom>
+</BorderPane>

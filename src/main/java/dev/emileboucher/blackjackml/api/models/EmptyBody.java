@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.api.models.bodies;
+package dev.emileboucher.blackjackml.api.models;
 
 /**
  * An empty object for a json body
