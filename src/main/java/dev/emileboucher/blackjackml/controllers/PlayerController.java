@@ -21,8 +21,11 @@ import java.util.ResourceBundle;
  * The controller of the UI for the player interactions
  */
 public class PlayerController extends GlobalButtons implements Initializable {
+  /**
+   * Name of the scene
+   */
   public static final String NAME = "PlayerController";
-  public static final String BET_PREFIX = "Bet : ";
+  private static final String BET_PREFIX = "Bet : ";
   private final PlayerHandler handler = new PlayerHandler();
 
   //=======================================================================
@@ -140,7 +143,6 @@ public class PlayerController extends GlobalButtons implements Initializable {
   //=======================================================================
   //  JavaFX callbacks
   //-----------------------------------------------------------------------
-
   /**
    * Send a request to initiate the game
    */
@@ -197,7 +199,6 @@ public class PlayerController extends GlobalButtons implements Initializable {
   //=======================================================================
   //  Utility functions
   //-----------------------------------------------------------------------
-
   /**
    * Set the right buttons enable or disable depending on if the game
    *    is still active

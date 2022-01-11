@@ -8,6 +8,7 @@
             xmlns="http://javafx.com/javafx/16"
             xmlns:fx="http://javafx.com/fxml/1"
             style="-fx-padding: 14"
+            stylesheets="@ai-view.css"
 >
    <center>
       <HBox maxHeight="Infinity">

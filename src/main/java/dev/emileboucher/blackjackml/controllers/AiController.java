@@ -20,6 +20,9 @@ import java.util.ResourceBundle;
  * the controller of the UI for the AI training/play
  */
 public class AiController extends GlobalButtons implements Initializable {
+  /**
+   * Name of the scene
+   */
   public static final String NAME = "AiController";
   private final AiHandling ai = new ReinforcementLearningHandling();
 

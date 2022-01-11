@@ -12,6 +12,27 @@
             minHeight="400"
             minWidth="400"
 >
+
+   <center>
+      <VBox minHeight="300">
+         <VBox minHeight="150">
+            <Label text="Dealer's cards: ">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <HBox fx:id="dealerCard" minHeight="100" />
+         </VBox>
+         <VBox minHeight="150">
+            <Label text="Player's cards: ">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <HBox fx:id="playerCard" minHeight="100"/>
+         </VBox>
+      </VBox>
+   </center>
    <bottom>
       <VBox>
          <Slider fx:id="betSlider"
@@ -45,24 +66,4 @@
          </HBox>
       </VBox>
    </bottom>
-   <center>
-      <VBox minHeight="300">
-         <VBox minHeight="150">
-            <Label text="Dealer's cards: ">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <HBox fx:id="dealerCard" minHeight="100" />
-         </VBox>
-         <VBox minHeight="150">
-            <Label text="Player's cards: ">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <HBox fx:id="playerCard" minHeight="100"/>
-         </VBox>
-      </VBox>
-   </center>
 </BorderPane>
