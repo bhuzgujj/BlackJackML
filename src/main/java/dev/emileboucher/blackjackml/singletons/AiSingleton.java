@@ -16,8 +16,8 @@ import java.util.Optional;
 public class AiSingleton {
   private static AiSingleton instance = null;
   private final ReinforcementLearning model;
-  private final List<ReportRow> reports = new LinkedList<>();
   private final DataManager<ReinforcementLearning> dataManager;
+  private final List<ReportRow> reports = new LinkedList<>();
   private final List<Runnable> onSessionNumberChange = new LinkedList<>();
   private final List<Runnable> onGamestateChange = new LinkedList<>();
   private final List<Runnable> updateSessionResults = new LinkedList<>();
@@ -91,16 +91,16 @@ public class AiSingleton {
   }
 
   /**
-   * Get the pourcentage of progression toward the next update
+   * Get the percentage of progression toward the next update
    * @param maximum session number per updates
-   * @return pourcentage of progression toward the next update
+   * @return percentage of progression toward the next update
    */
   public double getProgression(int maximum) {
     return (double) (model.getSessionNumber() % maximum) / maximum;
   }
 
   /**
-   * Incremente the session number and trigger an update
+   * Increment the session number and trigger an update
    *      on the progression bar
    */
   public void incrementeSessionNumber() {
@@ -167,7 +167,6 @@ public class AiSingleton {
   //=======================================================================
   //  Callbacks
   //-----------------------------------------------------------------------
-
   /**
    * Empty the lists of callbacks
    */
@@ -186,8 +185,8 @@ public class AiSingleton {
   }
 
   /**
-   * Add a callback for everytime the gamestate changes
-   * @param callback executed everytime the gamestate changes
+   * Add a callback for everytime the game-state changes
+   * @param callback executed everytime the game-state changes
    */
   public void addOnGamestateChange(Runnable callback) {
     this.onGamestateChange.add(callback);

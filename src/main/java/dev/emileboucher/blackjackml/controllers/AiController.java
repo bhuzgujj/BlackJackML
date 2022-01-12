@@ -1,7 +1,7 @@
 package dev.emileboucher.blackjackml.controllers;
 
 import dev.emileboucher.blackjackml.gamehandlers.AiHandling;
-import dev.emileboucher.blackjackml.gamehandlers.ReinforcementLearningHandling;
+import dev.emileboucher.blackjackml.gamehandlers.RLHandler;
 import dev.emileboucher.blackjackml.models.GlobalButtons;
 import dev.emileboucher.blackjackml.models.ModelRow;
 import dev.emileboucher.blackjackml.models.ReportRow;
@@ -24,7 +24,7 @@ public class AiController extends GlobalButtons implements Initializable {
    * Name of the scene
    */
   public static final String NAME = "AiController";
-  private final AiHandling ai = new ReinforcementLearningHandling();
+  private final AiHandling ai = new RLHandler();
 
   //=======================================================================
   //  JavaFX components
@@ -79,7 +79,9 @@ public class AiController extends GlobalButtons implements Initializable {
    * Update the data in model data table
    */
   private void updateModelData() {
-    modelData.getItems().clear();
+    if (modelData.getItems().size() > 0) {
+      modelData.getItems().clear();
+    }
     for (var row : AiSingleton.getInstance().getModel().entrySet()) {
       modelData.getItems().add(new ModelRow(row.getKey(), row.getValue()));
     }
@@ -98,7 +100,7 @@ public class AiController extends GlobalButtons implements Initializable {
     AiSingleton.getInstance().EmptyCallbacks();
     AiSingleton.getInstance().addOnSessionNumberChange(this::progressBarUpdate);
     AiSingleton.getInstance().addOnGamestateChange(this::sessionDone);
-    AiSingleton.getInstance().addOnSessionStateChange(this::updateSessionResults);
+    AiSingleton.getInstance().addOnSessionStateChange(this::updateUI);
     sessionToDo.setText("100");
     sessionToDo.textProperty().addListener((observable, oldValue, newValue) -> {
       if (!newValue.matches("\\d*")) {
@@ -143,6 +145,7 @@ public class AiController extends GlobalButtons implements Initializable {
   //=======================================================================
   //  JavaFX callbacks
   //-----------------------------------------------------------------------
+
   /**
    * Button to start and stop the game
    */
@@ -163,6 +166,7 @@ public class AiController extends GlobalButtons implements Initializable {
         game.start();
         start.setText("Stop");
       } catch (InterruptedException e) {
+        e.getStackTrace();
         AiSingleton.getInstance().setPlaying(false);
       }
     }
@@ -216,6 +220,7 @@ public class AiController extends GlobalButtons implements Initializable {
       }
     } catch (Exception exception) {
       System.out.println(exception.getMessage());
+      exception.getStackTrace();
       AiSingleton.getInstance().setPlaying(false);
     }
   }

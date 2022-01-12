@@ -18,4 +18,16 @@ public class Card {
       default -> rank;
     };
   }
+
+  /**
+   * Get the maximum value of a card
+   * @return the maximum value of a card
+   */
+  public int getValue() {
+    return switch (rank) {
+      case "10", "J", "Q", "K" -> 10;
+      case "A" -> 11;
+      default -> Integer.parseInt(rank);
+    };
+  }
 }
