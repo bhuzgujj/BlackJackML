@@ -32,7 +32,7 @@ public class RLHandler extends AiHandling {
    */
   public ReportRow play(int amountSessions) {
     row.reset();
-    Boolean exploration = nbReport % 5 == 0;
+    Boolean exploration = (nbReport + 1) % 5 == 0;
     do {
       session(exploration);
       row.increaseSessionNumber();

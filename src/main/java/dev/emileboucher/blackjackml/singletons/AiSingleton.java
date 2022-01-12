@@ -1,9 +1,11 @@
 package dev.emileboucher.blackjackml.singletons;
 
+import dev.emileboucher.blackjackml.files.CsvFiles;
 import dev.emileboucher.blackjackml.files.DataManager;
-import dev.emileboucher.blackjackml.models.datamodels.ReinforcementLearning;
+import dev.emileboucher.blackjackml.models.datamodels.RLDataModel;
 import dev.emileboucher.blackjackml.files.JsonFiles;
 import dev.emileboucher.blackjackml.models.ReportRow;
+import dev.emileboucher.blackjackml.models.datamodels.ReportDataModel;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -15,8 +17,9 @@ import java.util.Optional;
  */
 public class AiSingleton {
   private static AiSingleton instance = null;
-  private final ReinforcementLearning model;
-  private final DataManager<ReinforcementLearning> dataManager;
+  private final RLDataModel model;
+  private final DataManager<RLDataModel> jsonManager;
+  private final DataManager<ReportDataModel> csvManager;
   private final List<ReportRow> reports = new LinkedList<>();
   private final List<Runnable> onSessionNumberChange = new LinkedList<>();
   private final List<Runnable> onGamestateChange = new LinkedList<>();
@@ -30,12 +33,13 @@ public class AiSingleton {
    * Singleton constructor
    */
   private AiSingleton() {
-    dataManager = new JsonFiles<>(
+    jsonManager = new JsonFiles<>(
             "./model.json",
-            ReinforcementLearning.class
+            RLDataModel.class
     );
-    model = Optional.ofNullable(dataManager.load())
-            .orElse(new ReinforcementLearning());
+    csvManager = new CsvFiles<>("./reports.csv");
+    model = Optional.ofNullable(jsonManager.load())
+            .orElse(new RLDataModel());
   }
 
   /**
@@ -79,7 +83,7 @@ public class AiSingleton {
    * Save the model
    */
   public void saveModel() {
-    dataManager.save(model);
+    jsonManager.save(model);
   }
 
   /**
@@ -144,6 +148,7 @@ public class AiSingleton {
       reports.remove(0);
     }
     reports.add(report);
+    csvManager.save(new ReportDataModel(report));
     updateSessionResults.forEach(Runnable::run);
   }
 

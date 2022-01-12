@@ -31,8 +31,13 @@ public class Card implements Comparable<Card> {
     };
   }
 
+  /**
+   * Compare this card to another card
+   * @param card compared with
+   * @return 1,0,-1 depending on how it compares to
+   */
   @Override
-  public int compareTo(Card compared) {
-    return this.toString().compareTo(compared.toString());
+  public int compareTo(Card card) {
+    return this.toString().compareTo(card.toString());
   }
 }
