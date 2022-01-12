@@ -3,7 +3,7 @@ package dev.emileboucher.blackjackml.models.responses;
 /**
  * Cards object from the [Response]
  */
-public class Card {
+public class Card implements Comparable<Card> {
   public String rank;
   public String suit;
 
@@ -29,5 +29,10 @@ public class Card {
       case "A" -> 11;
       default -> Integer.parseInt(rank);
     };
+  }
+
+  @Override
+  public int compareTo(Card compared) {
+    return this.toString().compareTo(compared.toString());
   }
 }

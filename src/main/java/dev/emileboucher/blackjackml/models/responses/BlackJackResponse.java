@@ -1,8 +1,6 @@
 package dev.emileboucher.blackjackml.models.responses;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The response object structure from the api
@@ -21,7 +19,8 @@ public class BlackJackResponse {
   public String toString() {
     if (dealerHand == null || dealerHand.size() < 1) return "EMPTY";
     StringBuilder val = new StringBuilder(dealerHand.get(0).toString() + "-");
-    for (var card : playerHand) {
+    Collections.sort(playerHand);
+    for (Card card : playerHand) {
         val.append(card.toString());
     }
     return val.toString();

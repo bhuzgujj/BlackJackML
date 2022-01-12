@@ -140,6 +140,9 @@ public class AiSingleton {
    * @param report for X amount of sessions
    */
   public void addReport(ReportRow report) {
+    if (reports.size() > 100) {
+      reports.remove(0);
+    }
     reports.add(report);
     updateSessionResults.forEach(Runnable::run);
   }
