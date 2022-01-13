@@ -1,23 +1,24 @@
 package dev.emileboucher.blackjackml.singletons;
 
+import dev.emileboucher.blackjackml.files.CsvFiles;
 import dev.emileboucher.blackjackml.files.DataManager;
-import dev.emileboucher.blackjackml.models.datamodels.ReinforcementLearning;
+import dev.emileboucher.blackjackml.models.datamodels.RLDataModel;
 import dev.emileboucher.blackjackml.files.JsonFiles;
 import dev.emileboucher.blackjackml.models.ReportRow;
+import dev.emileboucher.blackjackml.models.datamodels.ReportDataModel;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * Singleton use to keep the data needed for the AI
  */
 public class AiSingleton {
   private static AiSingleton instance = null;
-  private final ReinforcementLearning model;
+  private final RLDataModel model;
+  private final DataManager<RLDataModel> jsonManager;
+  private final DataManager<ReportDataModel> csvManager;
   private final List<ReportRow> reports = new LinkedList<>();
-  private final DataManager<ReinforcementLearning> dataManager;
   private final List<Runnable> onSessionNumberChange = new LinkedList<>();
   private final List<Runnable> onGamestateChange = new LinkedList<>();
   private final List<Runnable> updateSessionResults = new LinkedList<>();
@@ -30,12 +31,13 @@ public class AiSingleton {
    * Singleton constructor
    */
   private AiSingleton() {
-    dataManager = new JsonFiles<>(
-            "./model.json",
-            ReinforcementLearning.class
+    jsonManager = new JsonFiles<>(
+            "./data/model.json",
+            RLDataModel.class
     );
-    model = Optional.ofNullable(dataManager.load())
-            .orElse(new ReinforcementLearning());
+    csvManager = new CsvFiles<>("./data/reports.csv");
+    model = Optional.ofNullable(jsonManager.load())
+              .orElse(new RLDataModel());
   }
 
   /**
@@ -79,7 +81,7 @@ public class AiSingleton {
    * Save the model
    */
   public void saveModel() {
-    dataManager.save(model);
+    jsonManager.save(model);
   }
 
   /**
@@ -91,16 +93,16 @@ public class AiSingleton {
   }
 
   /**
-   * Get the pourcentage of progression toward the next update
+   * Get the percentage of progression toward the next update
    * @param maximum session number per updates
-   * @return pourcentage of progression toward the next update
+   * @return percentage of progression toward the next update
    */
   public double getProgression(int maximum) {
     return (double) (model.getSessionNumber() % maximum) / maximum;
   }
 
   /**
-   * Incremente the session number and trigger an update
+   * Increment the session number and trigger an update
    *      on the progression bar
    */
   public void incrementeSessionNumber() {
@@ -140,6 +142,12 @@ public class AiSingleton {
    * @param report for X amount of sessions
    */
   public void addReport(ReportRow report) {
+    if (reports.size() > 100) {
+      reports.remove(0);
+    }
+    if (!Objects.equals(report.getWinrate(), BigDecimal.ZERO)) {
+      csvManager.save(new ReportDataModel(report));
+    }
     reports.add(report);
     updateSessionResults.forEach(Runnable::run);
   }
@@ -167,7 +175,6 @@ public class AiSingleton {
   //=======================================================================
   //  Callbacks
   //-----------------------------------------------------------------------
-
   /**
    * Empty the lists of callbacks
    */
@@ -186,8 +193,8 @@ public class AiSingleton {
   }
 
   /**
-   * Add a callback for everytime the gamestate changes
-   * @param callback executed everytime the gamestate changes
+   * Add a callback for everytime the game-state changes
+   * @param callback executed everytime the game-state changes
    */
   public void addOnGamestateChange(Runnable callback) {
     this.onGamestateChange.add(callback);

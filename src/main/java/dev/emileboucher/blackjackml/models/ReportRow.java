@@ -94,6 +94,18 @@ public class ReportRow {
   }
 
   /**
+   * Get the win rate as a string with 2 decimale precision
+   * @return XX.XX % or Exploration
+   */
+  public BigDecimal getWinrate() {
+    if (gamesWon + gamesLost < 1) {
+      return BigDecimal.ZERO;
+    }
+    return  BigDecimal.valueOf(((double) gamesWon / (gamesWon + gamesLost)) * 100)
+            .setScale(precisions, RoundingMode.HALF_UP);
+  }
+
+  /**
    * Get the total of games played since the last reset
    * @return total of games played
    */

@@ -35,6 +35,11 @@ public class BlackJackClient {
    * @throws InterruptedException from the [HttpClient]
    */
   public BlackJackResponse send(RequestBuilder requestBuilder) throws IOException, InterruptedException {
-    return client.send(requestBuilder, BlackJackResponse.class);
+    try {
+      return client.send(requestBuilder, BlackJackResponse.class);
+    } catch (Exception ex) {
+      System.out.println(ex.getClass());
+    }
+    return new BlackJackResponse("ERROR");
   }
 }

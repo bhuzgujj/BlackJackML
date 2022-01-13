@@ -1,9 +1,6 @@
 package dev.emileboucher.blackjackml.models.responses;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The response object structure from the api
@@ -15,6 +12,19 @@ public class BlackJackResponse {
   public List<Card> playerHand = new LinkedList<>();
 
   /**
+   * Basic constructor
+   */
+  public BlackJackResponse() { }
+
+  /**
+   * Create a response for errors
+   * @param state to set to ERROR
+   */
+  public BlackJackResponse(String state) {
+    this.state = state;
+  }
+
+  /**
    * Get the string representing the state of the board
    * @return [String] of the state of the board
    */
@@ -22,7 +32,8 @@ public class BlackJackResponse {
   public String toString() {
     if (dealerHand == null || dealerHand.size() < 1) return "EMPTY";
     StringBuilder val = new StringBuilder(dealerHand.get(0).toString() + "-");
-    for (var card : playerHand) {
+    Collections.sort(playerHand);
+    for (Card card : playerHand) {
         val.append(card.toString());
     }
     return val.toString();
@@ -64,5 +75,36 @@ public class BlackJackResponse {
     return Optional.ofNullable(state)
             .map((gstate) -> gstate.equals("IN_GAME"))
             .orElse(false);
+  }
+
+  /**
+   * Get the current value of the player's hand
+   * @return the current value of the player's hand
+   */
+  public int getPlayerHandValue() {
+    int value = 0;
+    int nbAces = 0;
+    for (Card card : playerHand) {
+      int cardVal = card.getValue();
+      value += cardVal;
+      if (cardVal > 10) {
+        nbAces++;
+      }
+    }
+    return aceAjustement(value, nbAces);
+  }
+
+  /**
+   * Ajuste the value for aces if the current value is higher than 21
+   * @param value of the hand currently
+   * @param nbAces number of aces
+   * @return ajusted valued for aces
+   */
+  private int aceAjustement(int value, int nbAces) {
+    for (int i = 0; i < nbAces; i++) {
+      if (value <= 21) return value;
+      value -= 10;
+    }
+    return value;
   }
 }

@@ -19,7 +19,11 @@ public class JsonFiles <Model> implements DataManager<Model> {
    * @param filepath to load or save
    */
   public JsonFiles(String filepath, Class<Model> modelClass) {
-    this.filepath = filepath;
+    if (filepath.endsWith(".json")) {
+      this.filepath = filepath;
+    } else {
+      this.filepath = filepath + ".json";
+    }
     this.modelClass = modelClass;
     parser = new Gson();
   }

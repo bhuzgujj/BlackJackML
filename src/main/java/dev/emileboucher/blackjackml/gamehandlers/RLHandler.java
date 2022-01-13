@@ -9,16 +9,17 @@ import dev.emileboucher.blackjackml.singletons.AiSingleton;
 import java.io.IOException;
 
 /**
- * Ai interaction with the api
+ * Ai interaction with the api using the Reinforcement Learning methodology
  */
-public class ReinforcementLearningHandling extends AiHandling {
+public class RLHandler extends AiHandling {
   private int nbReport = 0;
   private int money = 1000;
 
   /**
    * Constructor of the class handling the interaction between the AI and the api
+   *    using the Reinforcement Learning methodology
    */
-  public ReinforcementLearningHandling() {
+  public RLHandler() {
     row = new ReportRow(0,0);
     row.setTotalGamesPlayed(AiSingleton.getInstance().getGamePlayed());
     row.setSessionNumber(AiSingleton.getInstance().getSessionNumber());
@@ -31,7 +32,7 @@ public class ReinforcementLearningHandling extends AiHandling {
    */
   public ReportRow play(int amountSessions) {
     row.reset();
-    Boolean exploration = nbReport % 5 == 0;
+    Boolean exploration = (nbReport + 1) % 5 == 0;
     do {
       session(exploration);
       row.increaseSessionNumber();
@@ -71,6 +72,7 @@ public class ReinforcementLearningHandling extends AiHandling {
         try {
           client.send(new Flag());
         } catch (IOException | InterruptedException e) {
+          e.getStackTrace();
           System.out.println(e.getMessage());
         }
         return true;
@@ -110,9 +112,9 @@ public class ReinforcementLearningHandling extends AiHandling {
    */
   private BlackJackResponse deal() throws IOException, InterruptedException {
     int bet = Math.min(money, 50);
-    BlackJackResponse response = (BlackJackResponse) client.send(new Deal(bet));
+    BlackJackResponse response = client.send(new Deal(bet));
     while (response == null) {
-      response = (BlackJackResponse) client.send(new Deal(bet));
+      response = client.send(new Deal(bet));
     }
     money = response.cash;
     return response;
@@ -134,6 +136,8 @@ public class ReinforcementLearningHandling extends AiHandling {
         }
       }
     }
-    AiSingleton.getInstance().reward(response.toString(), response.getResult().reward());
+    if (response.getPlayerHandValue() < 21) {
+      AiSingleton.getInstance().reward(response.toString(), response.getResult().reward());
+    }
   }
 }

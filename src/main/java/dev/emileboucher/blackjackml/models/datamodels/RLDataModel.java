@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * Model of reinforcement learning
  */
-public class ReinforcementLearning {
+public class RLDataModel {
   public Long sessionNumber = 0L;
   public Long gamePlayed = 0L;
   public HashMap<String, Integer> data = new HashMap<>();
@@ -33,6 +33,7 @@ public class ReinforcementLearning {
   public Long getGamePlayed() {
     return gamePlayed;
   }
+
   /**
    * Set the amount of games played
    * @param gamePlayed at the moment
