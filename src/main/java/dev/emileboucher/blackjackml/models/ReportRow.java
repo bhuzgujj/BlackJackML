@@ -99,8 +99,7 @@ public class ReportRow {
    */
   public BigDecimal getWinrate() {
     if (gamesWon + gamesLost < 1) {
-      return BigDecimal.valueOf(0)
-              .setScale(precisions, RoundingMode.HALF_UP);
+      return BigDecimal.ZERO;
     }
     return  BigDecimal.valueOf(((double) gamesWon / (gamesWon + gamesLost)) * 100)
             .setScale(precisions, RoundingMode.HALF_UP);

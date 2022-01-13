@@ -145,7 +145,6 @@ public class AiController extends GlobalButtons implements Initializable {
   //=======================================================================
   //  JavaFX callbacks
   //-----------------------------------------------------------------------
-
   /**
    * Button to start and stop the game
    */

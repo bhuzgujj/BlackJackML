@@ -7,10 +7,8 @@ import dev.emileboucher.blackjackml.files.JsonFiles;
 import dev.emileboucher.blackjackml.models.ReportRow;
 import dev.emileboucher.blackjackml.models.datamodels.ReportDataModel;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * Singleton use to keep the data needed for the AI
@@ -34,12 +32,12 @@ public class AiSingleton {
    */
   private AiSingleton() {
     jsonManager = new JsonFiles<>(
-            "./model.json",
+            "./data/model.json",
             RLDataModel.class
     );
-    csvManager = new CsvFiles<>("./reports.csv");
+    csvManager = new CsvFiles<>("./data/reports.csv");
     model = Optional.ofNullable(jsonManager.load())
-            .orElse(new RLDataModel());
+              .orElse(new RLDataModel());
   }
 
   /**
@@ -147,8 +145,10 @@ public class AiSingleton {
     if (reports.size() > 100) {
       reports.remove(0);
     }
+    if (!Objects.equals(report.getWinrate(), BigDecimal.ZERO)) {
+      csvManager.save(new ReportDataModel(report));
+    }
     reports.add(report);
-    csvManager.save(new ReportDataModel(report));
     updateSessionResults.forEach(Runnable::run);
   }
 

@@ -12,6 +12,19 @@ public class BlackJackResponse {
   public List<Card> playerHand = new LinkedList<>();
 
   /**
+   * Basic constructor
+   */
+  public BlackJackResponse() { }
+
+  /**
+   * Create a response for errors
+   * @param state to set to ERROR
+   */
+  public BlackJackResponse(String state) {
+    this.state = state;
+  }
+
+  /**
    * Get the string representing the state of the board
    * @return [String] of the state of the board
    */

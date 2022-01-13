@@ -4,6 +4,9 @@ import dev.emileboucher.blackjackml.models.ReportRow;
 
 import java.math.BigDecimal;
 
+/**
+ * The model to save in a .csv
+ */
 public class ReportDataModel {
   public Long sessionsDone;
   public Integer sessionsWon;
@@ -14,6 +17,10 @@ public class ReportDataModel {
   public Integer gamesLost;
   public BigDecimal winrate;
 
+  /**
+   * Creation of the data modell from a ReportRow
+   * @param report to save
+   */
   public ReportDataModel(ReportRow report) {
     this.sessionsDone = report.getSessionNumber();
     this.sessionsWon = report.getSessionsWon();
@@ -25,6 +32,10 @@ public class ReportDataModel {
     this.winrate = report.getWinrate();
   }
 
+  /**
+   * Title row
+   * @return the title row
+   */
   public static String getTitle() {
     return "Sessions Done," +
             "Sessions Won," +
@@ -36,6 +47,10 @@ public class ReportDataModel {
             "Winrate (%)\n";
   }
 
+  /**
+   * The data in a csv line format
+   * @return the data in a csv line format
+   */
   @Override
   public String toString() {
     return sessionsDone + "," +
@@ -46,37 +61,5 @@ public class ReportDataModel {
             gamesWon + "," +
             gamesLost + "," +
             winrate + "\n";
-  }
-
-  public Long getSessionsDone() {
-    return sessionsDone;
-  }
-
-  public Integer getSessionsWon() {
-    return sessionsWon;
-  }
-
-  public Integer getSessionsLost() {
-    return sessionsLost;
-  }
-
-  public Long getTotalGamesPlayed() {
-    return totalGamesPlayed;
-  }
-
-  public Integer getGamesPlayed() {
-    return gamesPlayed;
-  }
-
-  public Integer getGamesWon() {
-    return gamesWon;
-  }
-
-  public Integer getGamesLost() {
-    return gamesLost;
-  }
-
-  public BigDecimal getWinrate() {
-    return winrate;
   }
 }
