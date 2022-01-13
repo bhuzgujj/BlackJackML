@@ -1,6 +1,7 @@
 package dev.emileboucher.blackjackml;
 
-import dev.emileboucher.blackjackml.controllers.AiController;
+import dev.emileboucher.blackjackml.controllers.NeuroController;
+import dev.emileboucher.blackjackml.controllers.RLController;
 import dev.emileboucher.blackjackml.controllers.PlayerController;
 import dev.emileboucher.blackjackml.singletons.SceneSingleton;
 import javafx.application.Application;
@@ -48,7 +49,8 @@ public class MainApplication extends Application {
    */
   private void initializeScenes(Stage stage) throws IOException {
     SceneSingleton.getInstance().addScene(PlayerController.NAME, PlayerController.getScene());
-    SceneSingleton.getInstance().addScene(AiController.NAME, AiController.getScene());
+    SceneSingleton.getInstance().addScene(RLController.NAME, RLController.getScene());
+    SceneSingleton.getInstance().addScene(NeuroController.NAME, NeuroController.getScene());
     SceneSingleton.getInstance().addScene(NAME, mainMenu());
     SceneSingleton.getInstance().setStage(stage);
   }
@@ -92,9 +94,10 @@ public class MainApplication extends Application {
     VBox topButtons = new VBox();
     topButtons.setPadding(new Insets(GENERAL_MARGIN));
     createLabel("Player's interactions options:", topButtons);
-    createMenuButton("Play", topButtons, PlayerController.NAME);
+    createMenuButton("Play", topButtons, PlayerController.NAME, false);
     createLabel("Artificial intelligences options:", topButtons);
-    createMenuButton("Reinforcement Learning", topButtons, AiController.NAME);
+    createMenuButton("Reinforcement Learning", topButtons, RLController.NAME, false);
+    createMenuButton("Neural Network", topButtons, NeuroController.NAME, true);
     return topButtons;
   }
 
@@ -115,14 +118,16 @@ public class MainApplication extends Application {
    * @param title of the button
    * @param menu to add the label to
    * @param name of the scene
+   * @param disable the button
    */
-  private void createMenuButton(String title, Pane menu, String name) {
+  private void createMenuButton(String title, Pane menu, String name, Boolean disable) {
     Button btn = new Button(title);
     btn.setMaxWidth(Double.POSITIVE_INFINITY);
     btn.setFont(new Font(FONT_SIZE));
     btn.setOnMouseClicked(mouseEvent -> {
       SceneSingleton.getInstance().loadScene(name);
     });
+    btn.setDisable(disable);
 
     HBox container = new HBox();
     container.getChildren().add(btn);

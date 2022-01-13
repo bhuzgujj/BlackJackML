@@ -2,9 +2,9 @@ package dev.emileboucher.blackjackml.singletons;
 
 import dev.emileboucher.blackjackml.files.CsvFiles;
 import dev.emileboucher.blackjackml.files.DataManager;
-import dev.emileboucher.blackjackml.models.datamodels.RLDataModel;
 import dev.emileboucher.blackjackml.files.JsonFiles;
 import dev.emileboucher.blackjackml.models.ReportRow;
+import dev.emileboucher.blackjackml.models.datamodels.RLDataModel;
 import dev.emileboucher.blackjackml.models.datamodels.ReportDataModel;
 
 import java.math.BigDecimal;
@@ -13,8 +13,8 @@ import java.util.*;
 /**
  * Singleton use to keep the data needed for the AI
  */
-public class AiSingleton {
-  private static AiSingleton instance = null;
+public class NeuroSingleton {
+  private static NeuroSingleton instance = null;
   private final RLDataModel model;
   private final DataManager<RLDataModel> jsonManager;
   private final DataManager<ReportDataModel> csvManager;
@@ -30,7 +30,7 @@ public class AiSingleton {
   /**
    * Singleton constructor
    */
-  private AiSingleton() {
+  private NeuroSingleton() {
     jsonManager = new JsonFiles<>(
             "./data/model.json",
             RLDataModel.class
@@ -44,10 +44,10 @@ public class AiSingleton {
    * Get the instance
    * @return instance of [AiSingleton]
    */
-  public static AiSingleton getInstance() {
+  public static NeuroSingleton getInstance() {
     if (instance == null) {
-      synchronized (AiSingleton.class) {
-        instance = new AiSingleton();
+      synchronized (NeuroSingleton.class) {
+        instance = new NeuroSingleton();
       }
     }
     return instance;

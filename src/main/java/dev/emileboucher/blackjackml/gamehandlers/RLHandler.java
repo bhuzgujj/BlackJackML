@@ -4,7 +4,7 @@ import dev.emileboucher.blackjackml.models.responses.BlackJackResponse;
 import dev.emileboucher.blackjackml.models.requests.Deal;
 import dev.emileboucher.blackjackml.models.requests.Flag;
 import dev.emileboucher.blackjackml.models.ReportRow;
-import dev.emileboucher.blackjackml.singletons.AiSingleton;
+import dev.emileboucher.blackjackml.singletons.RLSingleton;
 
 import java.io.IOException;
 
@@ -21,8 +21,8 @@ public class RLHandler extends AiHandling {
    */
   public RLHandler() {
     row = new ReportRow(0,0);
-    row.setTotalGamesPlayed(AiSingleton.getInstance().getGamePlayed());
-    row.setSessionNumber(AiSingleton.getInstance().getSessionNumber());
+    row.setTotalGamesPlayed(RLSingleton.getInstance().getGamePlayed());
+    row.setSessionNumber(RLSingleton.getInstance().getSessionNumber());
   }
 
   /**
@@ -36,9 +36,9 @@ public class RLHandler extends AiHandling {
     do {
       session(exploration);
       row.increaseSessionNumber();
-      if (!AiSingleton.getInstance().getPlaying()) break;
-      AiSingleton.getInstance().incrementeSessionNumber();
-      AiSingleton.getInstance().setGamePlayed(row.getTotalGamesPlayed());
+      if (!RLSingleton.getInstance().getPlaying()) break;
+      RLSingleton.getInstance().incrementeSessionNumber();
+      RLSingleton.getInstance().setGamePlayed(row.getTotalGamesPlayed());
     } while (row.getSessionNumber() % amountSessions != 0);
     nbReport++;
     return row.copy();
@@ -54,7 +54,7 @@ public class RLHandler extends AiHandling {
     do {
       response = game(isExploring);
       gamePlayed++;
-      if (!AiSingleton.getInstance().getPlaying()) break;
+      if (!RLSingleton.getInstance().getPlaying()) break;
     } while (!recordSession(response));
     client.resetCookies();
     row.setTotalGamesPlayed(row.getTotalGamesPlayed() + gamePlayed);
@@ -137,7 +137,7 @@ public class RLHandler extends AiHandling {
       }
     }
     if (response.getPlayerHandValue() < 21) {
-      AiSingleton.getInstance().reward(response.toString(), response.getResult().reward());
+      RLSingleton.getInstance().reward(response.toString(), response.getResult().reward());
     }
   }
 }

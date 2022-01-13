@@ -5,7 +5,7 @@ import dev.emileboucher.blackjackml.gamehandlers.RLHandler;
 import dev.emileboucher.blackjackml.models.GlobalButtons;
 import dev.emileboucher.blackjackml.models.ModelRow;
 import dev.emileboucher.blackjackml.models.ReportRow;
-import dev.emileboucher.blackjackml.singletons.AiSingleton;
+import dev.emileboucher.blackjackml.singletons.RLSingleton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 /**
  * the controller of the UI for the AI training/play
  */
-public class AiController extends GlobalButtons implements Initializable {
+public class RLController extends GlobalButtons implements Initializable {
   /**
    * Name of the scene
    */
@@ -70,7 +70,7 @@ public class AiController extends GlobalButtons implements Initializable {
    */
   private void updateSessionResults() {
     sessionsResults.getItems().clear();
-    for (var row : AiSingleton.getInstance().getReports()) {
+    for (var row : RLSingleton.getInstance().getReports()) {
       sessionsResults.getItems().add(0, row);
     }
   }
@@ -82,7 +82,7 @@ public class AiController extends GlobalButtons implements Initializable {
     if (modelData.getItems().size() > 0) {
       modelData.getItems().clear();
     }
-    for (var row : AiSingleton.getInstance().getModel().entrySet()) {
+    for (var row : RLSingleton.getInstance().getModel().entrySet()) {
       modelData.getItems().add(new ModelRow(row.getKey(), row.getValue()));
     }
   }
@@ -97,10 +97,10 @@ public class AiController extends GlobalButtons implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    AiSingleton.getInstance().EmptyCallbacks();
-    AiSingleton.getInstance().addOnSessionNumberChange(this::progressBarUpdate);
-    AiSingleton.getInstance().addOnGamestateChange(this::sessionDone);
-    AiSingleton.getInstance().addOnSessionStateChange(this::updateUI);
+    RLSingleton.getInstance().EmptyCallbacks();
+    RLSingleton.getInstance().addOnSessionNumberChange(this::progressBarUpdate);
+    RLSingleton.getInstance().addOnGamestateChange(this::sessionDone);
+    RLSingleton.getInstance().addOnSessionStateChange(this::updateUI);
     sessionToDo.setText("100");
     sessionToDo.textProperty().addListener((observable, oldValue, newValue) -> {
       if (!newValue.matches("\\d*")) {
@@ -151,13 +151,13 @@ public class AiController extends GlobalButtons implements Initializable {
   @FXML
   protected void startBtn() {
     back.setDisable(true);
-    if (AiSingleton.getInstance().getPlaying()) {
-      AiSingleton.getInstance().setPlaying(false);
+    if (RLSingleton.getInstance().getPlaying()) {
+      RLSingleton.getInstance().setPlaying(false);
       back.setDisable(false);
       sessionDone();
     } else {
       if (sessionToDo.getText().length() == 0) return;
-      AiSingleton.getInstance().setPlaying(true);
+      RLSingleton.getInstance().setPlaying(true);
       Thread game = new Thread(this::useAi);
       sessionToDo.setDisable(true);
       try {
@@ -166,7 +166,7 @@ public class AiController extends GlobalButtons implements Initializable {
         start.setText("Stop");
       } catch (InterruptedException e) {
         e.getStackTrace();
-        AiSingleton.getInstance().setPlaying(false);
+        RLSingleton.getInstance().setPlaying(false);
       }
     }
   }
@@ -176,7 +176,7 @@ public class AiController extends GlobalButtons implements Initializable {
    */
   @FXML
   protected void refreshBtn() {
-    AiSingleton.getInstance().saveModel();
+    RLSingleton.getInstance().saveModel();
     updateUI();
   }
 
@@ -187,7 +187,7 @@ public class AiController extends GlobalButtons implements Initializable {
    * update the UI if the game is not playing
    */
   private void sessionDone() {
-    if (!AiSingleton.getInstance().getPlaying()) {
+    if (!RLSingleton.getInstance().getPlaying()) {
       updateUI();
       start.setDisable(false);
       start.setText("Start");
@@ -199,7 +199,7 @@ public class AiController extends GlobalButtons implements Initializable {
    */
   private void progressBarUpdate() {
     progress.setProgress(
-            AiSingleton.getInstance().getProgression(
+            RLSingleton.getInstance().getProgression(
                     Integer.parseInt(sessionToDo.getText())
             )
     );
@@ -213,14 +213,14 @@ public class AiController extends GlobalButtons implements Initializable {
    */
   private void useAi() {
     try {
-      while (AiSingleton.getInstance().getPlaying()) {
-        AiSingleton.getInstance().addReport(ai.play(Integer.parseInt(sessionToDo.getText())));
-        AiSingleton.getInstance().saveModel();
+      while (RLSingleton.getInstance().getPlaying()) {
+        RLSingleton.getInstance().addReport(ai.play(Integer.parseInt(sessionToDo.getText())));
+        RLSingleton.getInstance().saveModel();
       }
     } catch (Exception exception) {
       System.out.println(exception.getMessage());
       exception.getStackTrace();
-      AiSingleton.getInstance().setPlaying(false);
+      RLSingleton.getInstance().setPlaying(false);
     }
   }
 

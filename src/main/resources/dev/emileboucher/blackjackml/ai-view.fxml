@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:controller="dev.emileboucher.blackjackml.controllers.AiController"
+<BorderPane fx:controller="dev.emileboucher.blackjackml.controllers.RLController"
             xmlns="http://javafx.com/javafx/16"
             xmlns:fx="http://javafx.com/fxml/1"
             style="-fx-padding: 14"

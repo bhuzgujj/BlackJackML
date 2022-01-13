@@ -4,7 +4,7 @@ import dev.emileboucher.blackjackml.models.responses.BlackJackResponse;
 import dev.emileboucher.blackjackml.api.requests.RequestBuilder;
 import dev.emileboucher.blackjackml.models.requests.Hit;
 import dev.emileboucher.blackjackml.models.requests.Hold;
-import dev.emileboucher.blackjackml.singletons.AiSingleton;
+import dev.emileboucher.blackjackml.singletons.RLSingleton;
 
 import java.util.Optional;
 import java.util.Random;
@@ -24,7 +24,7 @@ public class DecisionMaker {
   public static RequestBuilder reinforcementLearning(BlackJackResponse response, Boolean isExploring) {
     if (isExploring) return (random.nextInt(2) == 0) ? new Hold() : new Hit();
     if (response.getPlayerHandValue() == 21) return new Hold();
-    var value = Optional.ofNullable(AiSingleton.getInstance().getModel().get(response.toString()))
+    var value = Optional.ofNullable(RLSingleton.getInstance().getModel().get(response.toString()))
             .orElse(0);
     return (value < 0) ? new Hit() : new Hold();
   }
