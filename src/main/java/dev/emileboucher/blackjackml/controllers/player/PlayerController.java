@@ -1,15 +1,17 @@
-package dev.emileboucher.blackjackml.controllers;
+package dev.emileboucher.blackjackml.controllers.player;
 
 import dev.emileboucher.blackjackml.gamehandlers.PlayerHandler;
 import dev.emileboucher.blackjackml.models.GlobalButtons;
 import dev.emileboucher.blackjackml.models.responses.Card;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -22,11 +24,10 @@ import java.util.ResourceBundle;
  * The controller of the UI for the player interactions
  */
 public class PlayerController extends GlobalButtons implements Initializable {
-  /**
-   * Name of the scene
-   */
-  public static final String NAME = "PlayerController";
   private static final String BET_PREFIX = "Bet : ";
+  private static final Integer BET_MIN = 1;
+  private static final Integer BET_DEFAULT = 25;
+  private static final Integer BET_MAX = 50;
   private final PlayerHandler handler = new PlayerHandler();
 
   //=======================================================================
@@ -67,6 +68,11 @@ public class PlayerController extends GlobalButtons implements Initializable {
     return createScene("player-view.fxml");
   }
 
+  @Override
+  public String getName() {
+    return getClass().getName();
+  }
+
   //=======================================================================
   //  UI updaters
   //-----------------------------------------------------------------------
@@ -74,18 +80,30 @@ public class PlayerController extends GlobalButtons implements Initializable {
    * Update the entire UI
    */
   private void updateUI() {
+    cash.setText(" / " + handler.getCash() + " $");
+    updateCards();
+    setButtonState(handler.isPlaying());
+  }
+
+  /**
+   * Update the cards shown
+   */
+  private void updateCards() {
     dealerCard.getChildren().clear();
     playerCard.getChildren().clear();
-    cash.setText(" / " + handler.getCash() + " $");
     for (Card card : handler.getDealerCards()) {
       addCard(card, dealerCard);
     }
     for (Card card : handler.getPlayerCards()) {
       addCard(card, playerCard);
     }
-    setButtonState(handler.isPlaying());
   }
 
+  /**
+   * Add a card to an HBox
+   * @param card to add
+   * @param hBox to add it to
+   */
   private void addCard(Card card, HBox hBox) {
     VBox container = new VBox();
     container.setPadding(new Insets(5));
@@ -104,12 +122,11 @@ public class PlayerController extends GlobalButtons implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
+    initializeControlBtns();
     betText.setText(BET_PREFIX + betSlider.getValue());
     initializeBetSlider();
     initializeBetAmount();
-    hitBtn.setDisable(true);
-    holdBtn.setDisable(true);
-    flagBtn.setDisable(true);
+    setButtonState(false);
     updateUI();
   }
 
@@ -117,9 +134,9 @@ public class PlayerController extends GlobalButtons implements Initializable {
    * Initialize the slider
    */
   private void initializeBetSlider() {
-    betSlider.setMax(50.4);
-    betSlider.setMin(1);
-    betSlider.setValue(25);
+    betSlider.setMax(BET_MAX + 0.4);
+    betSlider.setMin(BET_MIN);
+    betSlider.setValue(BET_DEFAULT);
     betSlider.valueProperty().addListener((observableValue, number, t1) -> {
       if (Integer.parseInt(betAmount.getText()) != number.intValue()) {
         betAmount.setText("" + number.intValue());
@@ -131,17 +148,18 @@ public class PlayerController extends GlobalButtons implements Initializable {
    * Initialize the betAmount field
    */
   private void initializeBetAmount() {
-    betAmount.setText("25");
+    betAmount.setText(BET_DEFAULT.toString());
     betAmount.textProperty().addListener((observable, oldValue, newValue) -> {
-      if (Objects.equals(oldValue, newValue)) return;
+      if (Objects.equals(betAmount.getText(), newValue)) return;
       if (!newValue.matches("\\d*")) {
         betAmount.setText(newValue.replaceAll("[^\\d]", ""));
       }
       if (betAmount.getText().length() > 0) {
         int value = Integer.parseInt(betAmount.getText());
-        if (value > 50) betAmount.setText("50");
-        else if (value < 1) betAmount.setText("1");
+        if (value > BET_MAX) betAmount.setText(BET_MAX.toString());
+        else if (value < BET_MIN) betAmount.setText(BET_MIN.toString());
         else betAmount.setText("" + value);
+        betSlider.setValue(Integer.parseInt(betAmount.getText()));
         return;
       }
       betAmount.setText("1");

@@ -1,7 +1,7 @@
 package dev.emileboucher.blackjackml.gamehandlers;
 
 import dev.emileboucher.blackjackml.models.BlackJackClient;
-import dev.emileboucher.blackjackml.models.ReportRow;
+import dev.emileboucher.blackjackml.models.tables.ReportRow;
 
 /**
  * Template for an AI interaction with the api

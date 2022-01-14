@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.models;
+package dev.emileboucher.blackjackml.models.tables;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -48,6 +48,26 @@ public class ReportRow {
     this.totalGamesPlayed = totalGamesPlayed;
     this.gamesWon = 0;
     this.gamesLost = 0;
+  }
+
+  //=======================================================================
+  //  Static Functions
+  //-----------------------------------------------------------------------
+  /**
+   * Get the name of the variables and the name of the columns
+   * @return the name of the variables and the name of the columns
+   */
+  public static String[][] getFieldInfos() {
+    return new String[][] {
+            {"Session number", "sessionNumber"},
+            {"Session won", "sessionsWon"},
+            {"Session lost", "sessionsLost"},
+            {"Total games played", "totalGamesPlayed"},
+            {"Games played", "gamesPlayed"},
+            {"Games won", "gamesWon"},
+            {"Games lost", "gamesLost"},
+            {"Win/Loss ratio", "winLostRatio"},
+    };
   }
 
   //=======================================================================

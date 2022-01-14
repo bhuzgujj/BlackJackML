@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.controllers;
+package dev.emileboucher.blackjackml.controllers.ai;
 
 import dev.emileboucher.blackjackml.models.GlobalButtons;
 import javafx.fxml.Initializable;
@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The controller of the UI for the neural network AI training/play
+ */
 public class NeuroController extends GlobalButtons implements Initializable {
-  public static final String NAME = "NeuroController";
   //=======================================================================
   //  External use function
   //-----------------------------------------------------------------------
@@ -22,6 +24,11 @@ public class NeuroController extends GlobalButtons implements Initializable {
     return createScene("neuro-view.fxml");
   }
 
+  @Override
+  public String getName() {
+    return getClass().getName();
+  }
+
   //=======================================================================
   //  Initialization
   //-----------------------------------------------------------------------
@@ -32,6 +39,6 @@ public class NeuroController extends GlobalButtons implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-
+    initializeControlBtns();
   }
 }

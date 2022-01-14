@@ -2,19 +2,17 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.text.Font?>
 
-<?import javafx.scene.shape.Box?>
-<BorderPane fx:controller="dev.emileboucher.blackjackml.controllers.PlayerController"
+<BorderPane fx:controller="dev.emileboucher.blackjackml.controllers.player.PlayerController"
             xmlns="http://javafx.com/javafx/16"
             xmlns:fx="http://javafx.com/fxml/1"
-            style="-fx-padding: 14"
             stylesheets="@player-view.css"
             minHeight="400"
             minWidth="400"
 >
    <center>
-      <VBox minHeight="300">
+      <VBox style="-fx-padding: 10" minHeight="300">
          <VBox minHeight="150">
             <Label text="Dealer's cards: ">
                <font>
@@ -38,8 +36,9 @@
          <Slider fx:id="betSlider"
                  prefHeight="14.0"
                  maxWidth="Infinity"
+                 style="-fx-padding: 10"
          />
-         <HBox style="-fx-padding: 5">
+         <HBox style="-fx-padding: 10">
             <Label fx:id="betText" text="Bet :">
                <font>
                   <Font size="18.0" />
@@ -53,14 +52,14 @@
             </Label>
          </HBox>
          <HBox>
-            <HBox HBox.hgrow="ALWAYS">
+            <HBox style="-fx-padding: 10" HBox.hgrow="ALWAYS">
                <Button fx:id="dealBtn" mnemonicParsing="false" text="Deal" onAction="#dealBtn" />
                <Button fx:id="hitBtn" mnemonicParsing="false" text="Hit" onAction="#hitBtn"  />
                <Button fx:id="holdBtn" mnemonicParsing="false" text="Hold" onAction="#holdBtn" />
                <Button fx:id="flagBtn" mnemonicParsing="false" text="Flag" onAction="#flagBtn" />
                <Button fx:id="loadBtn" mnemonicParsing="false" text="Load" onAction="#loadBtn" />
             </HBox>
-            <Button mnemonicParsing="false" text="Back to menu" onAction="#backToMainMenu" />
+            <HBox style="-fx-padding: 10" fx:id="controlBtns"/>
          </HBox>
       </VBox>
    </bottom>

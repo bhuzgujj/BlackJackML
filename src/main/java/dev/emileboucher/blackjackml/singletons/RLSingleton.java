@@ -4,7 +4,7 @@ import dev.emileboucher.blackjackml.files.CsvFiles;
 import dev.emileboucher.blackjackml.files.DataManager;
 import dev.emileboucher.blackjackml.models.datamodels.RLDataModel;
 import dev.emileboucher.blackjackml.files.JsonFiles;
-import dev.emileboucher.blackjackml.models.ReportRow;
+import dev.emileboucher.blackjackml.models.tables.ReportRow;
 import dev.emileboucher.blackjackml.models.datamodels.ReportDataModel;
 
 import java.math.BigDecimal;
@@ -32,10 +32,10 @@ public class RLSingleton {
    */
   private RLSingleton() {
     jsonManager = new JsonFiles<>(
-            "./data/model.json",
+            "./data/ReinforcementLearning/model.json",
             RLDataModel.class
     );
-    csvManager = new CsvFiles<>("./data/reports.csv");
+    csvManager = new CsvFiles<>("./data/ReinforcementLearning/reports.csv");
     model = Optional.ofNullable(jsonManager.load())
               .orElse(new RLDataModel());
   }

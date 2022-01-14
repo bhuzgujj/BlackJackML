@@ -3,9 +3,10 @@ package dev.emileboucher.blackjackml.singletons;
 import dev.emileboucher.blackjackml.files.CsvFiles;
 import dev.emileboucher.blackjackml.files.DataManager;
 import dev.emileboucher.blackjackml.files.JsonFiles;
-import dev.emileboucher.blackjackml.models.ReportRow;
+import dev.emileboucher.blackjackml.models.tables.ReportRow;
 import dev.emileboucher.blackjackml.models.datamodels.RLDataModel;
 import dev.emileboucher.blackjackml.models.datamodels.ReportDataModel;
+import javafx.scene.Scene;
 
 import java.math.BigDecimal;
 import java.util.*;

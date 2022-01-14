@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="dev.emileboucher.blackjackml.controllers.player.AlgoController">
+    <center>
+        <HBox maxHeight="Infinity" style="-fx-padding: 14">
+            <TableView fx:id="results"
+                       prefHeight="400.0"
+                       minWidth="200.0"
+                       minHeight="200.0"
+                       prefWidth="800.0"
+                       HBox.hgrow="ALWAYS"
+                       BorderPane.alignment="TOP_LEFT"/>
+        </HBox>
+    </center>
+    <bottom>
+        <VBox style="-fx-padding: 14">
+            <HBox>
+                <HBox HBox.hgrow="ALWAYS">
+
+                </HBox>
+                <HBox fx:id="controlBtns"/>
+            </HBox>
+        </VBox>
+    </bottom>
+</BorderPane>

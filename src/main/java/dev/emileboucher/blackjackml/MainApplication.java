@@ -1,12 +1,14 @@
 package dev.emileboucher.blackjackml;
 
-import dev.emileboucher.blackjackml.controllers.NeuroController;
-import dev.emileboucher.blackjackml.controllers.RLController;
-import dev.emileboucher.blackjackml.controllers.PlayerController;
+import dev.emileboucher.blackjackml.controllers.ai.NeuroController;
+import dev.emileboucher.blackjackml.controllers.ai.RLController;
+import dev.emileboucher.blackjackml.controllers.player.AlgoController;
+import dev.emileboucher.blackjackml.controllers.player.PlayerController;
 import dev.emileboucher.blackjackml.singletons.SceneSingleton;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,10 +26,10 @@ import java.io.IOException;
  * @author Émile Boucher
  */
 public class MainApplication extends Application {
-  public static final String NAME = "MainMenu";
   public static final String TITLE = "BlackJack";
   public static final int GENERAL_MARGIN = 20;
   public static final int FONT_SIZE = 14;
+  public VBox errors = new VBox();
 
   /**
    * The function starting the app
@@ -38,20 +40,23 @@ public class MainApplication extends Application {
   public void start(Stage stage) throws IOException {
     stage.setTitle(TITLE);
     initializeScenes(stage);
-    SceneSingleton.getInstance().loadScene(NAME);
+    SceneSingleton.getInstance().discardLoadScene(
+            null,
+            this.getClass().getName()
+    );
     stage.show();
   }
 
   /**
    * Add all scene to the Global singleton
    * @param stage of the main scene
-   * @throws IOException when files are missing
    */
-  private void initializeScenes(Stage stage) throws IOException {
-    SceneSingleton.getInstance().addScene(PlayerController.NAME, PlayerController.getScene());
-    SceneSingleton.getInstance().addScene(RLController.NAME, RLController.getScene());
-    SceneSingleton.getInstance().addScene(NeuroController.NAME, NeuroController.getScene());
-    SceneSingleton.getInstance().addScene(NAME, mainMenu());
+  private void initializeScenes(Stage stage) {
+    SceneSingleton.getInstance().addScene(PlayerController.class.getName(), PlayerController::getScene);
+    SceneSingleton.getInstance().addScene(RLController.class.getName(), RLController::getScene);
+    SceneSingleton.getInstance().addScene(NeuroController.class.getName(), NeuroController::getScene);
+    SceneSingleton.getInstance().addScene(AlgoController.class.getName(), AlgoController::getScene);
+    SceneSingleton.getInstance().addScene(this.getClass().getName(), this::mainMenu);
     SceneSingleton.getInstance().setStage(stage);
   }
 
@@ -61,9 +66,16 @@ public class MainApplication extends Application {
    */
   public Scene mainMenu() {
     VBox container = new VBox();
+    container.getChildren().add(createErrorContainer());
     container.getChildren().add(createMainBtns());
     container.getChildren().add(createOptionBtns());
     return new Scene(container);
+  }
+
+  private VBox createErrorContainer() {
+    errors.setAlignment(Pos.BOTTOM_CENTER);
+    VBox.setVgrow(errors, Priority.ALWAYS);
+    return errors;
   }
 
   /**
@@ -94,10 +106,11 @@ public class MainApplication extends Application {
     VBox topButtons = new VBox();
     topButtons.setPadding(new Insets(GENERAL_MARGIN));
     createLabel("Player's interactions options:", topButtons);
-    createMenuButton("Play", topButtons, PlayerController.NAME, false);
+    createMenuButton("Play", topButtons, PlayerController.class.getName(), false);
+    createMenuButton("Algorithm builder", topButtons, AlgoController.class.getName(), false);
     createLabel("Artificial intelligences options:", topButtons);
-    createMenuButton("Reinforcement Learning", topButtons, RLController.NAME, false);
-    createMenuButton("Neural Network", topButtons, NeuroController.NAME, true);
+    createMenuButton("Reinforcement Learning", topButtons, RLController.class.getName(), false);
+    createMenuButton("Neural Network", topButtons, NeuroController.class.getName(), true);
     return topButtons;
   }
 
@@ -125,12 +138,16 @@ public class MainApplication extends Application {
     btn.setMaxWidth(Double.POSITIVE_INFINITY);
     btn.setFont(new Font(FONT_SIZE));
     btn.setOnMouseClicked(mouseEvent -> {
-      SceneSingleton.getInstance().loadScene(name);
+      if (errors.getChildren().size() > 0) {
+        errors.getChildren().clear();
+      }
+      if (!SceneSingleton.getInstance().discardLoadScene(this.getClass().getName(), name)) {
+        errors.getChildren().add(new Label("The option \"" + title + "\" failed to load..."));
+      }
     });
     btn.setDisable(disable);
 
-    HBox container = new HBox();
-    container.getChildren().add(btn);
+    HBox container = new HBox(btn);
     HBox.setHgrow(container, Priority.ALWAYS);
     HBox.setHgrow(btn, Priority.ALWAYS);
 

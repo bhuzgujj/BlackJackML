@@ -1,6 +1,6 @@
 package dev.emileboucher.blackjackml.models.datamodels;
 
-import dev.emileboucher.blackjackml.models.ReportRow;
+import dev.emileboucher.blackjackml.models.tables.ReportRow;
 
 import java.math.BigDecimal;
 
