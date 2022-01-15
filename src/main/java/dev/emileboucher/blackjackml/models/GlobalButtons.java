@@ -1,6 +1,7 @@
 package dev.emileboucher.blackjackml.models;
 
 import dev.emileboucher.blackjackml.MainApplication;
+import dev.emileboucher.blackjackml.controllers.MainMenu;
 import dev.emileboucher.blackjackml.gamehandlers.singletons.SceneSingleton;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -71,13 +72,13 @@ public abstract class GlobalButtons {
    * Return to the main menu and save the current scene
    */
   private void saveAndBack(ActionEvent actionEvent) {
-    SceneSingleton.getInstance().saveLoadScene(getName(), MainApplication.class.getName());
+    SceneSingleton.getInstance().saveLoadScene(getName(), MainMenu.class.getName());
   }
 
   /**
    * Return to the main menu
    */
   private void backToMainMenu(ActionEvent actionEvent) {
-    SceneSingleton.getInstance().discardLoadScene(getName(), MainApplication.class.getName());
+    SceneSingleton.getInstance().discardLoadScene(getName(), MainMenu.class.getName());
   }
 }

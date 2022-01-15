@@ -9,7 +9,7 @@ import java.nio.file.StandardOpenOption;
 /**
  * Save and load as json locally
  */
-public class JsonFiles <Model> implements DataManager<Model> {
+public class JsonFiles<Model> implements DataManager<Model> {
   private final String filepath;
   private final Gson parser;
   private final Class<Model> modelClass;
