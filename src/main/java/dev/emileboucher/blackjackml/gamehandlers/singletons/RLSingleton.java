@@ -1,12 +1,11 @@
-package dev.emileboucher.blackjackml.singletons;
+package dev.emileboucher.blackjackml.gamehandlers.singletons;
 
 import dev.emileboucher.blackjackml.files.CsvFiles;
 import dev.emileboucher.blackjackml.files.DataManager;
+import dev.emileboucher.blackjackml.models.datamodels.RLDataModel;
 import dev.emileboucher.blackjackml.files.JsonFiles;
 import dev.emileboucher.blackjackml.models.tables.ReportRow;
-import dev.emileboucher.blackjackml.models.datamodels.RLDataModel;
 import dev.emileboucher.blackjackml.models.datamodels.ReportDataModel;
-import javafx.scene.Scene;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -14,8 +13,8 @@ import java.util.*;
 /**
  * Singleton use to keep the data needed for the AI
  */
-public class NeuroSingleton {
-  private static NeuroSingleton instance = null;
+public class RLSingleton {
+  private static RLSingleton instance = null;
   private final RLDataModel model;
   private final DataManager<RLDataModel> jsonManager;
   private final DataManager<ReportDataModel> csvManager;
@@ -31,12 +30,12 @@ public class NeuroSingleton {
   /**
    * Singleton constructor
    */
-  private NeuroSingleton() {
+  private RLSingleton() {
     jsonManager = new JsonFiles<>(
-            "./data/model.json",
+            "./data/ReinforcementLearning/model.json",
             RLDataModel.class
     );
-    csvManager = new CsvFiles<>("./data/reports.csv");
+    csvManager = new CsvFiles<>("./data/ReinforcementLearning/reports.csv");
     model = Optional.ofNullable(jsonManager.load())
               .orElse(new RLDataModel());
   }
@@ -45,10 +44,10 @@ public class NeuroSingleton {
    * Get the instance
    * @return instance of [AiSingleton]
    */
-  public static NeuroSingleton getInstance() {
+  public static RLSingleton getInstance() {
     if (instance == null) {
-      synchronized (NeuroSingleton.class) {
-        instance = new NeuroSingleton();
+      synchronized (RLSingleton.class) {
+        instance = new RLSingleton();
       }
     }
     return instance;

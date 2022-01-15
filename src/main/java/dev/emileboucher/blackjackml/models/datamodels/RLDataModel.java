@@ -57,5 +57,4 @@ public class RLDataModel {
   public void setData(HashMap<String, Integer> data) {
     this.data = data;
   }
-
 }

@@ -3,11 +3,10 @@ package dev.emileboucher.blackjackml.controllers.player;
 import dev.emileboucher.blackjackml.controllers.utils.Tables;
 import dev.emileboucher.blackjackml.models.GlobalButtons;
 import dev.emileboucher.blackjackml.models.tables.ReportRow;
-import dev.emileboucher.blackjackml.singletons.RLSingleton;
+import dev.emileboucher.blackjackml.gamehandlers.singletons.RLSingleton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 
 import java.io.IOException;
@@ -19,8 +18,6 @@ import java.util.ResourceBundle;
  *    algorithm
  */
 public class AlgoController extends GlobalButtons implements Initializable {
-  @FXML
-  public Button back = new Button();
   @FXML
   public TableView<ReportRow> results = new TableView<>();
 

@@ -1,10 +1,10 @@
-package dev.emileboucher.blackjackml.singletons;
+package dev.emileboucher.blackjackml.gamehandlers.singletons;
 
 import dev.emileboucher.blackjackml.files.CsvFiles;
 import dev.emileboucher.blackjackml.files.DataManager;
-import dev.emileboucher.blackjackml.models.datamodels.RLDataModel;
 import dev.emileboucher.blackjackml.files.JsonFiles;
 import dev.emileboucher.blackjackml.models.tables.ReportRow;
+import dev.emileboucher.blackjackml.models.datamodels.RLDataModel;
 import dev.emileboucher.blackjackml.models.datamodels.ReportDataModel;
 
 import java.math.BigDecimal;
@@ -13,8 +13,8 @@ import java.util.*;
 /**
  * Singleton use to keep the data needed for the AI
  */
-public class RLSingleton {
-  private static RLSingleton instance = null;
+public class NeuroSingleton {
+  private static NeuroSingleton instance = null;
   private final RLDataModel model;
   private final DataManager<RLDataModel> jsonManager;
   private final DataManager<ReportDataModel> csvManager;
@@ -30,12 +30,12 @@ public class RLSingleton {
   /**
    * Singleton constructor
    */
-  private RLSingleton() {
+  private NeuroSingleton() {
     jsonManager = new JsonFiles<>(
-            "./data/ReinforcementLearning/model.json",
+            "./data/model.json",
             RLDataModel.class
     );
-    csvManager = new CsvFiles<>("./data/ReinforcementLearning/reports.csv");
+    csvManager = new CsvFiles<>("./data/reports.csv");
     model = Optional.ofNullable(jsonManager.load())
               .orElse(new RLDataModel());
   }
@@ -44,10 +44,10 @@ public class RLSingleton {
    * Get the instance
    * @return instance of [AiSingleton]
    */
-  public static RLSingleton getInstance() {
+  public static NeuroSingleton getInstance() {
     if (instance == null) {
-      synchronized (RLSingleton.class) {
-        instance = new RLSingleton();
+      synchronized (NeuroSingleton.class) {
+        instance = new NeuroSingleton();
       }
     }
     return instance;

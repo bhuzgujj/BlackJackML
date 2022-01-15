@@ -6,7 +6,7 @@ import dev.emileboucher.blackjackml.gamehandlers.RLHandler;
 import dev.emileboucher.blackjackml.models.GlobalButtons;
 import dev.emileboucher.blackjackml.models.tables.ModelRow;
 import dev.emileboucher.blackjackml.models.tables.ReportRow;
-import dev.emileboucher.blackjackml.singletons.RLSingleton;
+import dev.emileboucher.blackjackml.gamehandlers.singletons.RLSingleton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -14,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.net.URL;

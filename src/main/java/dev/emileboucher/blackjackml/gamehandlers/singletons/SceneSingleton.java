@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.singletons;
+package dev.emileboucher.blackjackml.gamehandlers.singletons;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;

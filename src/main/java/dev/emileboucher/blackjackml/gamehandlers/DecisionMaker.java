@@ -4,7 +4,7 @@ import dev.emileboucher.blackjackml.models.responses.BlackJackResponse;
 import dev.emileboucher.blackjackml.api.requests.RequestBuilder;
 import dev.emileboucher.blackjackml.models.requests.Hit;
 import dev.emileboucher.blackjackml.models.requests.Hold;
-import dev.emileboucher.blackjackml.singletons.RLSingleton;
+import dev.emileboucher.blackjackml.gamehandlers.singletons.RLSingleton;
 
 import java.util.Optional;
 import java.util.Random;
@@ -13,7 +13,7 @@ import java.util.Random;
  * Static class making a decision depending on the type of AI chosen
  */
 public class DecisionMaker {
-  private static final Random random = new Random();
+  protected static final Random random = new Random();
 
   /**
    * Use the reinforcement learning methodologie to pick
@@ -22,9 +22,9 @@ public class DecisionMaker {
    * @return the [RequestBuilder] to send to the api
    */
   public static RequestBuilder reinforcementLearning(BlackJackResponse response, Boolean isExploring) {
-    if (isExploring) return (random.nextInt(2) == 0) ? new Hold() : new Hit();
     if (response.getPlayerHandValue() == 21) return new Hold();
-    var value = Optional.ofNullable(RLSingleton.getInstance().getModel().get(response.toString()))
+    if (isExploring) return (random.nextBoolean()) ? new Hold() : new Hit();
+    Integer value = Optional.ofNullable(RLSingleton.getInstance().getModel().get(response.toString()))
             .orElse(0);
     return (value < 0) ? new Hit() : new Hold();
   }

@@ -100,7 +100,7 @@ public class BlackJackResponse {
    * @param nbAces number of aces
    * @return ajusted valued for aces
    */
-  private int aceAjustement(int value, int nbAces) {
+  protected int aceAjustement(int value, int nbAces) {
     for (int i = 0; i < nbAces; i++) {
       if (value <= 21) return value;
       value -= 10;

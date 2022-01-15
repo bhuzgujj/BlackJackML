@@ -7,6 +7,12 @@ public class Card implements Comparable<Card> {
   public String rank;
   public String suit;
 
+  public Card() { }
+  public Card(String rank, String suit) {
+    this.rank = rank;
+    this.suit = suit;
+  }
+
   /**
    * Get the character representing the card for the singleton
    * @return [String]
@@ -34,7 +40,7 @@ public class Card implements Comparable<Card> {
   /**
    * Compare this card to another card
    * @param card compared with
-   * @return 1,0,-1 depending on how it compares to
+   * @return string compare result or the rank
    */
   @Override
   public int compareTo(Card card) {
