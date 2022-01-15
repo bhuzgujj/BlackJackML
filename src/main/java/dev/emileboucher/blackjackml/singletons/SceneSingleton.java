@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.gamehandlers.singletons;
+package dev.emileboucher.blackjackml.singletons;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -70,6 +70,11 @@ public class SceneSingleton {
     this.stage = stage;
   }
 
+  /**
+   * Save the state of the scene and load another one
+   * @return if the function has been executed with success
+   */
+  @SuppressWarnings("UnusedReturnValue")
   public Boolean saveLoadScene(String previousScene, String nextScene) {
     try {
       savedScene.put(previousScene, stage.getScene());
@@ -80,6 +85,12 @@ public class SceneSingleton {
     }
   }
 
+  /**
+   * Load a scene from the cache or create a new one
+   * @param name of the scene
+   * @return the scene
+   * @throws Exception if it failed to load
+   */
   private Scene loadCached(String name) throws Exception {
     Scene scene = savedScene.get(name);
     if (scene == null) {

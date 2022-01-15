@@ -4,7 +4,7 @@ import dev.emileboucher.blackjackml.models.responses.BlackJackResponse;
 import dev.emileboucher.blackjackml.models.requests.Deal;
 import dev.emileboucher.blackjackml.models.requests.Flag;
 import dev.emileboucher.blackjackml.models.tables.ReportRow;
-import dev.emileboucher.blackjackml.gamehandlers.singletons.RLSingleton;
+import dev.emileboucher.blackjackml.singletons.RLSingleton;
 
 import java.io.IOException;
 

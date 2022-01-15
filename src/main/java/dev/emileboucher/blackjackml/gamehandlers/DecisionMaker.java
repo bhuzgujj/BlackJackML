@@ -4,7 +4,7 @@ import dev.emileboucher.blackjackml.models.responses.BlackJackResponse;
 import dev.emileboucher.blackjackml.api.requests.RequestBuilder;
 import dev.emileboucher.blackjackml.models.requests.Hit;
 import dev.emileboucher.blackjackml.models.requests.Hold;
-import dev.emileboucher.blackjackml.gamehandlers.singletons.RLSingleton;
+import dev.emileboucher.blackjackml.singletons.RLSingleton;
 
 import java.util.Optional;
 import java.util.Random;

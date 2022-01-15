@@ -2,7 +2,7 @@ package dev.emileboucher.blackjackml.models;
 
 import dev.emileboucher.blackjackml.MainApplication;
 import dev.emileboucher.blackjackml.controllers.MainMenu;
-import dev.emileboucher.blackjackml.gamehandlers.singletons.SceneSingleton;
+import dev.emileboucher.blackjackml.singletons.SceneSingleton;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

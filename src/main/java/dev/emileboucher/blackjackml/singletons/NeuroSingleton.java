@@ -1,4 +1,4 @@
-package dev.emileboucher.blackjackml.gamehandlers.singletons;
+package dev.emileboucher.blackjackml.singletons;
 
 import dev.emileboucher.blackjackml.files.CsvFiles;
 import dev.emileboucher.blackjackml.files.DataManager;

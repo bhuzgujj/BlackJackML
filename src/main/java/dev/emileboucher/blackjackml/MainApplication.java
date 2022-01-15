@@ -5,7 +5,7 @@ import dev.emileboucher.blackjackml.controllers.ai.NeuroController;
 import dev.emileboucher.blackjackml.controllers.ai.RLController;
 import dev.emileboucher.blackjackml.controllers.player.AlgoController;
 import dev.emileboucher.blackjackml.controllers.player.PlayerController;
-import dev.emileboucher.blackjackml.gamehandlers.singletons.SceneSingleton;
+import dev.emileboucher.blackjackml.singletons.SceneSingleton;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -27,10 +27,7 @@ public class MainApplication extends Application {
   public void start(Stage stage) throws IOException {
     stage.setTitle(TITLE);
     initializeScenes(stage);
-    SceneSingleton.getInstance().discardLoadScene(
-            null,
-            MainMenu.class.getName()
-    );
+    SceneSingleton.getInstance().discardLoadScene(null, MainMenu.class.getName());
     stage.show();
   }
 
