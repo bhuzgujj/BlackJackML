@@ -6,6 +6,8 @@ import dev.emileboucher.blackjackml.models.datamodels.RLDataModel;
 import dev.emileboucher.blackjackml.files.JsonFiles;
 import dev.emileboucher.blackjackml.models.tables.ReportRow;
 import dev.emileboucher.blackjackml.models.datamodels.ReportDataModel;
+import dev.emileboucher.blackjackml.utils.ListHandling;
+import javafx.application.Platform;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -20,7 +22,6 @@ public class RLSingleton {
   private final DataManager<ReportDataModel> csvManager;
   private final List<ReportRow> reports = new LinkedList<>();
   private final List<Runnable> onSessionNumberChange = new LinkedList<>();
-  private final List<Runnable> onGamestateChange = new LinkedList<>();
   private final List<Runnable> updateSessionResults = new LinkedList<>();
   private Boolean isPlaying = false;
 
@@ -107,7 +108,7 @@ public class RLSingleton {
    */
   public void incrementeSessionNumber() {
     model.setSessionNumber(model.getSessionNumber() + 1);
-    onSessionNumberChange.forEach(Runnable::run);
+    onSessionNumberChange.forEach(Platform::runLater);
   }
 
   /**
@@ -142,14 +143,11 @@ public class RLSingleton {
    * @param report for X amount of sessions
    */
   public void addReport(ReportRow report) {
-    if (reports.size() > 100) {
-      reports.remove(0);
-    }
+    ListHandling.addWithMaximum(reports, report, 100);
     if (!Objects.equals(report.getWinrate(), BigDecimal.ZERO)) {
       csvManager.save(new ReportDataModel(report));
     }
-    reports.add(report);
-    updateSessionResults.forEach(Runnable::run);
+    updateSessionResults.forEach(Platform::runLater);
   }
 
   //=======================================================================
@@ -169,7 +167,6 @@ public class RLSingleton {
    */
   public void setPlaying(Boolean isPlaying) {
     this.isPlaying = isPlaying;
-    onGamestateChange.forEach(Runnable::run);
   }
 
   //=======================================================================
@@ -180,7 +177,6 @@ public class RLSingleton {
    */
   public void EmptyCallbacks() {
     onSessionNumberChange.clear();
-    onGamestateChange.clear();
     updateSessionResults.clear();
   }
 
@@ -190,14 +186,6 @@ public class RLSingleton {
    */
   public void addOnSessionNumberChange(Runnable callback) {
     this.onSessionNumberChange.add(callback);
-  }
-
-  /**
-   * Add a callback for everytime the game-state changes
-   * @param callback executed everytime the game-state changes
-   */
-  public void addOnGamestateChange(Runnable callback) {
-    this.onGamestateChange.add(callback);
   }
 
   /**

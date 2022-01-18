@@ -44,13 +44,12 @@
          <HBox>
             <HBox HBox.hgrow="ALWAYS">
                <Button fx:id="start"
-                       mnemonicParsing="false"
                        onAction="#startBtn"
                        text="Start"
                />
                <Button mnemonicParsing="false" onAction="#refreshBtn" text="Refresh" />
             </HBox>
-            <HBox fx:id="controlBtns"/>
+            <HBox fx:id="controlBox"/>
          </HBox>
       </VBox>
    </bottom>

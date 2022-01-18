@@ -37,11 +37,12 @@ public class RestClient {
   /**
    * Send a request to the server et receives it.
    * @param requestBuilder builder to send
-   * @return [Response] from the api queried
+   * @param <M> model of the reply
+   * @return [M] from the api queried
    * @throws IOException from the [HttpClient]
    * @throws InterruptedException from the [HttpClient]
    */
-  public <Model> Model send(RequestBuilder requestBuilder, Class<Model> modelClass) throws IOException, InterruptedException {
+  public <M> M send(RequestBuilder requestBuilder, Class<M> modelClass) throws IOException, InterruptedException {
     HttpResponse<String> response = client.send(
             requestBuilder.addIp(ip)
                     .addCookie(cookieManager)
@@ -73,9 +74,10 @@ public class RestClient {
    * Create an object from a string formated in json
    * @param body of the request
    * @param modelClass to return
+   * @param <M> model to get from that text
    * @return the [Response]
    */
-  private<Model> Model Parse(String body, Class<Model> modelClass) {
+  private<M> M Parse(String body, Class<M> modelClass) {
     return jsonParser.fromJson(body, modelClass);
   }
 }

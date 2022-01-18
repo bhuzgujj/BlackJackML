@@ -59,7 +59,7 @@
                <Button fx:id="flagBtn" mnemonicParsing="false" text="Flag" onAction="#flagBtn" />
                <Button fx:id="loadBtn" mnemonicParsing="false" text="Load" onAction="#loadBtn" />
             </HBox>
-            <HBox style="-fx-padding: 10" fx:id="controlBtns"/>
+            <HBox style="-fx-padding: 10" fx:id="controlBox"/>
          </HBox>
       </VBox>
    </bottom>

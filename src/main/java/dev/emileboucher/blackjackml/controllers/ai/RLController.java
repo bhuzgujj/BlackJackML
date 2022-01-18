@@ -1,6 +1,7 @@
 package dev.emileboucher.blackjackml.controllers.ai;
 
-import dev.emileboucher.blackjackml.controllers.utils.Tables;
+import dev.emileboucher.blackjackml.utils.async.Async;
+import dev.emileboucher.blackjackml.utils.Tables;
 import dev.emileboucher.blackjackml.gamehandlers.AiHandling;
 import dev.emileboucher.blackjackml.gamehandlers.RLHandler;
 import dev.emileboucher.blackjackml.models.GlobalButtons;
@@ -30,8 +31,6 @@ public class RLController extends GlobalButtons implements Initializable {
   //-----------------------------------------------------------------------
   @FXML
   private Button start = new Button();
-  @FXML
-  private Button back = new Button();
   @FXML
   private TextField sessionToDo = new TextField();
   @FXML
@@ -73,14 +72,14 @@ public class RLController extends GlobalButtons implements Initializable {
    * Update the data in session results table
    */
   private void updateResultData() {
-    Tables.updateDataOf(resultData, RLSingleton.getInstance().getReports().toArray(ReportRow[]::new), true);
+    Tables.replaceDataOf(resultData, RLSingleton.getInstance().getReports().toArray(ReportRow[]::new), true);
   }
 
   /**
    * Update the data in model data table
    */
   private void updateModelData() {
-    Tables.updateDataOf(modelData, ModelRow.toArray(RLSingleton.getInstance().getModel()), false);
+    Tables.replaceDataOf(modelData, ModelRow.toArray(RLSingleton.getInstance().getModel()), false);
   }
 
   //=======================================================================
@@ -102,7 +101,7 @@ public class RLController extends GlobalButtons implements Initializable {
   }
 
   /**
-   * Setup a textfield to only accept integer
+   * Set up a text field to only accept integer
    * @param field to setup
    * @param defaultValue to set
    */
@@ -115,10 +114,12 @@ public class RLController extends GlobalButtons implements Initializable {
     });
   }
 
+  /**
+   * Initialize the callback methods
+   */
   private void initializeCallbacks() {
     RLSingleton.getInstance().EmptyCallbacks();
     RLSingleton.getInstance().addOnSessionNumberChange(this::progressBarUpdate);
-    RLSingleton.getInstance().addOnGamestateChange(this::sessionDone);
     RLSingleton.getInstance().addOnSessionStateChange(this::updateUI);
   }
 
@@ -130,25 +131,17 @@ public class RLController extends GlobalButtons implements Initializable {
    */
   @FXML
   protected void startBtn() {
-    back.setDisable(true);
     if (RLSingleton.getInstance().getPlaying()) {
+      setDisableBtns(true);
+      start.setDisable(true);
       RLSingleton.getInstance().setPlaying(false);
-      back.setDisable(false);
-      sessionDone();
-    } else {
-      if (sessionToDo.getText().length() == 0) return;
-      RLSingleton.getInstance().setPlaying(true);
-      Thread game = new Thread(this::useAi);
-      sessionToDo.setDisable(true);
-      try {
-        game.join();
-        game.start();
-        start.setText("Stop");
-      } catch (InterruptedException e) {
-        e.getStackTrace();
-        RLSingleton.getInstance().setPlaying(false);
-      }
+      return;
     }
+    if (sessionToDo.getText().length() == 0) return;
+    start.setText("Stop");
+    sessionToDo.setDisable(true);
+    RLSingleton.getInstance().setPlaying(true);
+    Async.Run(this::useAi, this::sessionDone);
   }
 
   /**
@@ -169,6 +162,7 @@ public class RLController extends GlobalButtons implements Initializable {
   private void sessionDone() {
     if (!RLSingleton.getInstance().getPlaying()) {
       updateUI();
+      setDisableBtns(false);
       start.setDisable(false);
       start.setText("Start");
     }

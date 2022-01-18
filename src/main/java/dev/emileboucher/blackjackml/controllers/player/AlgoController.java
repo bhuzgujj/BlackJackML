@@ -1,13 +1,18 @@
 package dev.emileboucher.blackjackml.controllers.player;
 
-import dev.emileboucher.blackjackml.controllers.utils.Tables;
+import dev.emileboucher.blackjackml.utils.Menu;
+import dev.emileboucher.blackjackml.utils.Tables;
 import dev.emileboucher.blackjackml.models.GlobalButtons;
 import dev.emileboucher.blackjackml.models.tables.ReportRow;
 import dev.emileboucher.blackjackml.singletons.RLSingleton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,6 +25,8 @@ import java.util.ResourceBundle;
 public class AlgoController extends GlobalButtons implements Initializable {
   @FXML
   public TableView<ReportRow> results = new TableView<>();
+  @FXML
+  public VBox algobar = new VBox();
 
   //=======================================================================
   //  External use function
@@ -52,7 +59,7 @@ public class AlgoController extends GlobalButtons implements Initializable {
    * Update the data in session results table
    */
   private void updateResultData() {
-    Tables.updateDataOf(results, RLSingleton.getInstance().getReports().toArray(ReportRow[]::new), true);
+    Tables.replaceDataOf(results, RLSingleton.getInstance().getReports().toArray(ReportRow[]::new), true);
   }
 
   //=======================================================================
@@ -66,7 +73,16 @@ public class AlgoController extends GlobalButtons implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     initializeControlBtns();
+    initializeAlgoBar();
     Tables.setupColumnsOf(results, ReportRow.getFieldInfos());
     updateUI();
+  }
+
+  private void initializeAlgoBar() {
+    Menu.createMenuButton(algobar);
+    Menu.createMenuButton(algobar);
+    Menu.createMenuButton(algobar);
+    Menu.createMenuButton(algobar);
+    Menu.createMenuButton(algobar);
   }
 }

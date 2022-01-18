@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-public class CsvFiles<Model> implements DataManager<Model> {
+public class CsvFiles<T> implements DataManager<T> {
   private final String filepath;
 
   public CsvFiles(String filepath) {
@@ -18,7 +18,7 @@ public class CsvFiles<Model> implements DataManager<Model> {
   }
 
   @Override
-  public void save(Model model) {
+  public void save(T model) {
     try {
       if (!Files.exists(Paths.get(filepath))) {
         Files.writeString(
@@ -34,7 +34,7 @@ public class CsvFiles<Model> implements DataManager<Model> {
   }
 
   @Override
-  public Model load() {
+  public T load() {
     return null;
   }
 }

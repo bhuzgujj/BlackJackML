@@ -6,6 +6,7 @@ import dev.emileboucher.blackjackml.files.JsonFiles;
 import dev.emileboucher.blackjackml.models.tables.ReportRow;
 import dev.emileboucher.blackjackml.models.datamodels.RLDataModel;
 import dev.emileboucher.blackjackml.models.datamodels.ReportDataModel;
+import dev.emileboucher.blackjackml.utils.ListHandling;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -142,13 +143,10 @@ public class NeuroSingleton {
    * @param report for X amount of sessions
    */
   public void addReport(ReportRow report) {
-    if (reports.size() > 100) {
-      reports.remove(0);
-    }
+    ListHandling.addWithMaximum(reports, report, 100);
     if (!Objects.equals(report.getWinrate(), BigDecimal.ZERO)) {
       csvManager.save(new ReportDataModel(report));
     }
-    reports.add(report);
     updateSessionResults.forEach(Runnable::run);
   }
 

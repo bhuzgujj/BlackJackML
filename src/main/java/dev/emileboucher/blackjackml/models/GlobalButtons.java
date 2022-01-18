@@ -12,13 +12,16 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class to put the globals buttons and logic in all controllers
  */
 public abstract class GlobalButtons {
+  private List<Button> controlBtns = new ArrayList<>();
   @FXML
-  private HBox controlBtns = new HBox();
+  private HBox controlBox = new HBox();
 
   /**
    * Get the name of the instanced class within the abstract
@@ -46,7 +49,14 @@ public abstract class GlobalButtons {
   private void createAndAddButtonToBox(String name, EventHandler<ActionEvent> onAction) {
     Button back = new Button(name);
     back.onActionProperty().setValue(onAction);
-    controlBtns.getChildren().add(back);
+    controlBtns.add(back);
+    controlBox.getChildren().add(back);
+  }
+
+  public void setDisableBtns(Boolean isDisable) {
+    for (var btns : controlBtns) {
+      btns.setDisable(isDisable);
+    }
   }
 
 

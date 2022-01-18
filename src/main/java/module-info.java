@@ -3,11 +3,14 @@ module dev.emileboucher.blackjackml {
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
-    requires java.net.http;
     requires com.google.gson;
+    requires java.net.http;
 
+    // BASE
     exports dev.emileboucher.blackjackml;
     opens dev.emileboucher.blackjackml to javafx.fxml;
+
+    // CONTROLLERS
     exports dev.emileboucher.blackjackml.controllers.ai;
     opens dev.emileboucher.blackjackml.controllers.ai to javafx.fxml;
     exports dev.emileboucher.blackjackml.controllers.player;
@@ -28,7 +31,7 @@ module dev.emileboucher.blackjackml {
     exports dev.emileboucher.blackjackml.models.datamodels;
     exports dev.emileboucher.blackjackml.models.responses;
 
-    // DATAMANAGERS
+    // DATA MANAGERS
     exports dev.emileboucher.blackjackml.files;
 
     // HANDLERS

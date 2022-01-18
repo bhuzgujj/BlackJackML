@@ -14,7 +14,7 @@ public class SceneSingleton {
   private final HashMap<String, Callable<Scene>> scenes = new HashMap<>();
   private final HashMap<String, Scene> savedScene = new HashMap<>();
   private Stage stage = null;
-
+ 
   //=======================================================================
   //  Singleton
   //-----------------------------------------------------------------------

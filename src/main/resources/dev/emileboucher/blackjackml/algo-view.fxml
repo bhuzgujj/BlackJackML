@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -17,7 +14,9 @@
                        minHeight="200.0"
                        prefWidth="800.0"
                        HBox.hgrow="ALWAYS"
-                       BorderPane.alignment="TOP_LEFT"/>
+                       BorderPane.alignment="TOP_LEFT"
+            />
+            <VBox fx:id="algobar"/>
         </HBox>
     </center>
     <bottom>
@@ -26,7 +25,7 @@
                 <HBox HBox.hgrow="ALWAYS">
 
                 </HBox>
-                <HBox fx:id="controlBtns"/>
+                <HBox fx:id="controlBox"/>
             </HBox>
         </VBox>
     </bottom>
